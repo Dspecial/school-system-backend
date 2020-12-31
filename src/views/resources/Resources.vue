@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="resources-container">
     <!-- 登录信息 -->
     <global-tips></global-tips>
     <!-- 资源概况 -->

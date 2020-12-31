@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-24 11:19:21
 * @Last Modified by:   dxx
-* @Last Modified time: 2020-12-29 17:08:59
+* @Last Modified time: 2020-12-31 10:31:25
 */
 @charset "UTF-8";
 
@@ -73,6 +73,17 @@
 }
 
 /*ElementUI自定义修改样式*/
+/*el-card*/
+.el-card{
+  color: #333;
+}
+/*form*/
+.el-form-item__label{
+  color: #333;
+}
+.el-form-item:last-child{
+  margin-bottom:0;
+}
 /*el-table*/
 .el-table{
   color: rgba(0, 0, 0, 0.65)!important;
@@ -239,23 +250,27 @@ html,body,#app,.page-container{
   }
 }
 
-/*Application*/
-.steps-approval{
-  width: 80%;
-  margin: 0 auto;
+/*rescources.vue*/
+.resourceAdd_form{
+  border:1px solid var(--grey-200);
+}
+.isisCell::after{
+  background-color:var(--grey-200);
+  height: 1px;
+  display: block;
+  margin: 0 -20px;
+  margin-top: 15px;
 }
 
-.application_detail{
-  .manufacturer >.el-card__body{
-    height: 100%;
-    box-sizing: border-box;
-    >.d-flex{
-      height: calc(100% - 51px);
-    }
+/*user.vue*/
+.auth_dept_select{
+  .el-tag.el-tag--info{
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
   }
-}
-.progress-demo{
-  .el-progress-bar__outer{
-    background: var(--grey-300);
+  .el-tag.el-tag--info .el-tag__close{
+    background-color: var(--white);
+    color: var(--primary);
   }
 }
