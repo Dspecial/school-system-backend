@@ -4,7 +4,7 @@
 	  :visible.sync="userData.dialog"
 	  width="30%"
 	  @open="openEdit"
-	  @closed="closedEdit('deptForm')"
+	  @closed="closedEdit('userForm')"
 	  :before-close="handleClose">
 	  <el-form :model="userForm" :rules="rules" ref="userForm" label-width="120px">
 	  	<el-form-item label="工号" prop="employeeNumber">

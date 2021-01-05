@@ -9,25 +9,27 @@
 	  <el-form :model="categoryForm" ref="categoryForm" label-width="100px" label-position="left" class="p-3 resourceAdd_form">
 	  	<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-primary">新增类别</h4>
 	  	<el-form-item label="类别编号">
-		    <el-select v-model="categoryForm.No" placeholder="请选择类别编号" class="w-80">
+		    <el-select v-model="categoryForm.No" placeholder="请选择类别编号" class="w-90">
 		      <el-option label="101001" value="1"></el-option>
 		      <el-option label="101002" value="2"></el-option>
 		    </el-select>
 		  </el-form-item>
 		  <el-form-item label="类别名称">
-		    <el-select v-model="categoryForm.name" placeholder="请选择类别编号" class="w-80">
+		    <el-select v-model="categoryForm.name" placeholder="请选择类别编号" class="w-90">
 		      <el-option label="服务器1" value="1"></el-option>
 		      <el-option label="服务器2" value="2"></el-option>
 		    </el-select>
 		  </el-form-item>
 		  <template v-for="(field, index) in categoryForm.fieldArray">
 			  <el-form-item :label="'字段'+ (index+1)">
-			    <el-select v-model="field.value" placeholder="请选择字段" class="w-80">
-			      <el-option label="服务器1" value="1"></el-option>
-			      <el-option label="服务器2" value="2"></el-option>
-			    </el-select>
-			    <span class="ml-3 text-primary cursor-pointer" v-if="index == 0" @click="addField()">添加</span>
-			    <span class="ml-3 text-danger cursor-pointer" v-if="index != 0" @click="delField(index)">删除</span>
+			  	<div class="d-flex justify-content-between">
+				    <el-select v-model="field.value" placeholder="请选择字段" class="w-90">
+				      <el-option label="服务器1" value="1"></el-option>
+				      <el-option label="服务器2" value="2"></el-option>
+				    </el-select>
+				    <span class="text-primary cursor-pointer w-10 text-right" v-if="index == 0" @click="addField()">添加</span>
+				    <span class="text-danger cursor-pointer w-10 text-right" v-if="index != 0" @click="delField(index)">删除</span>
+			  	</div>
 			  </el-form-item>
 		  </template>
 		  <div class="text-center">
