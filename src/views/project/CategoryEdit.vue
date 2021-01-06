@@ -17,7 +17,7 @@
 			  </el-select>
 		  </el-form-item>
 		  <el-form-item label="设置人" prop="person">
-		    <el-input v-model="categoryForm.person" placeholder="请输入部门名称" class="w-90"></el-input>
+		    <el-input v-model="categoryForm.person" placeholder="请输入设置人" class="w-90"></el-input>
 		  </el-form-item>
 		  <el-form-item label="类型备注" prop="remark">
 		    <el-input type="textarea" v-model="categoryForm.remark" placeholder="请输入类型备注" :autosize="{ minRows: 5, maxRows: 10}" maxlength="30" show-word-limit class="w-90"></el-input>

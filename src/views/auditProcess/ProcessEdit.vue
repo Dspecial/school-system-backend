@@ -4,46 +4,57 @@
 	  :visible.sync="processData.dialog"
 	  width="30%"
 	  @open="openEdit"
-	  @closed="closedEdit('categoryForm')"
+	  @closed="closedEdit('processForm')"
 	  :before-close="handleClose">
-	  <el-form :model="categoryForm" :rules="rules" ref="categoryForm" label-width="110px">
-	  	<el-form-item label="项目类别" prop="category">
-		    <el-input v-model="categoryForm.category" placeholder="项目类别" class="w-90"></el-input>
+	  <el-form :model="processForm" :rules="rules" ref="processForm" label-width="100px">
+	  	<el-form-item label="流程名称" prop="processName">
+		    <el-input v-model="processForm.processName" placeholder="流程名称" class="w-90"></el-input>
 		  </el-form-item>
-		  <el-form-item label="项目类别编号" prop="categoryNum">
-		    <el-select v-model="categoryForm.categoryNum" filterable placeholder="下拉选择或搜索输入" class="w-90">
-			    <el-option label="v1" value="1"></el-option>
-			    <el-option label="v2" value="2"></el-option>
-			  </el-select>
+		  <el-form-item label="流程编号" prop="processCode">
+		    <el-input v-model="processForm.processCode" placeholder="流程编号" class="w-90"></el-input>
 		  </el-form-item>
 		  <el-form-item label="设置人" prop="person">
-		    <el-input v-model="categoryForm.person" placeholder="请输入部门名称" class="w-90"></el-input>
+		    <el-input v-model="processForm.person" placeholder="设置人" class="w-90"></el-input>
 		  </el-form-item>
-		  <el-form-item label="类型备注" prop="remark">
-		    <el-input type="textarea" v-model="categoryForm.remark" placeholder="请输入类型备注" :autosize="{ minRows: 5, maxRows: 10}" maxlength="30" show-word-limit class="w-90"></el-input>
-		  </el-form-item>
-		  <template v-for="(field, index) in categoryForm.fieldArray">
-			  <el-form-item :label="'流程'+ (index+1)">
-			  	<div class="d-flex justify-content-between">
-				    <el-select v-model="field.value" placeholder="请选择审核流程" class="w-90">
-				      <el-option label="流程1" value="1"></el-option>
-				      <el-option label="流程2" value="2"></el-option>
-				    </el-select>
-				    <span class="text-primary cursor-pointer w-10 text-right" v-if="index == 0" @click="addField()">添加</span>
-				    <span class="text-danger cursor-pointer w-10 text-right" v-if="index != 0" @click="delField(index)">删除</span>
-			  	</div>
-			  </el-form-item>
-		  </template>
-		  <el-form-item label="项目节点" prop="node">
-		    <el-select v-model="categoryForm.node" filterable placeholder="选择项目节点" class="w-90">
-			    <el-option label="节点1" value="1"></el-option>
-			    <el-option label="节点2" value="2"></el-option>
+		  <el-form-item label="配置类型" prop="type" class="isisCell">
+		    <el-select v-model="processForm.type" placeholder="下拉选择配置类型" class="w-90">
+			    <el-option label="类型1" value="1"></el-option>
+			    <el-option label="类型2" value="2"></el-option>
 			  </el-select>
 		  </el-form-item>
+
+		  <template v-for="(examine, index) in processForm.examineArray">
+		  	<el-row type="flex" align="middle">
+		  		<el-col :span="11">
+				  	<el-form-item :label="(index+1) + '. 审核部门'">
+					  	<div class="d-flex justify-content-between">
+						    <el-select v-model="examine.dept" placeholder="请选择审核流程" class="w-100">
+						      <el-option label="直属部门" value="1"></el-option>
+						      <el-option label="学工办" value="2"></el-option>
+						    </el-select>
+					  	</div>
+					  </el-form-item>
+		  		</el-col>
+		  		<el-col :span="11">
+				  	<el-form-item :label="'审核人'" label-width="80px">
+					  	<div class="d-flex justify-content-between">
+						    <el-select v-model="examine.person" placeholder="请选择审核流程" class="w-100">
+						      <el-option label="刘政" value="1"></el-option>
+						      <el-option label="张三" value="2"></el-option>
+						    </el-select>
+					  	</div>
+					  </el-form-item>
+		  		</el-col>
+		  		<el-col :span="2" style="margin-bottom:18px" class="text-right">
+				    <span class="text-primary cursor-pointer" v-if="index == 0" @click="addField()">添加</span>
+				    <span class="text-danger cursor-pointer" v-if="index != 0" @click="delField(index)">删除</span>
+		  		</el-col>
+			  </el-row>
+		  </template>
 	  </el-form>
 	  <span slot="footer" class="dialog-footer">
-	    <el-button @click="closedEdit('categoryForm')">取 消</el-button>
-	    <el-button type="primary" @click="submitForm('categoryForm')">确 定</el-button>
+	    <el-button @click="closedEdit('processForm')">取 消</el-button>
+	    <el-button type="primary" @click="submitForm('processForm')">确 定</el-button>
 	  </span>
 	</el-dialog>
 </template>
@@ -55,34 +66,31 @@
 		name: 'ProcessEdit',
 		data () {
 			return {
-				categoryForm:{
-					category:"",
-					categoryNum:"",
+				processForm:{
+					processName:"",
+					processCode:"",
 					person:"",
-					remark:"",
-					fieldArray:[
+					type:"",
+					examineArray:[
 						{
 							id:"",
-							value:"",
+							dept:"",
+							person:"",
 						},
 					],
-					node:"",
 				},
 				rules: {
-          category: [
-            { required: true, message: '请输入项目类别', trigger: 'blur' }
+          processName: [
+            { required: true, message: '请输入流程名称', trigger: 'blur' }
           ],
-          categoryNum: [
-            { required: true, message: '请选择项目类别编号', trigger: 'change' }
+          processCode: [
+            { required: true, message: '请输入流程编号', trigger: 'blur' }
           ],
           person: [
             { required: true, message: '请输入设置人', trigger: 'blur' },
           ],
-          remark: [
-            { required: true, message: '请输入类型备注', trigger: 'blur' },
-          ],
-          node: [
-            { required: true, message: '请选择项目节点', trigger: 'change' }
+          type: [
+            { required: true, message: '请选择配置类型', trigger: 'change' },
           ],
         }
 			}
@@ -104,11 +112,11 @@
 			},
 			// 添加字段
 			addField(){
-				this.categoryForm.fieldArray.push({});
+				this.processForm.examineArray.push({});
 			},
 			// 删除字段
 			delField(index){
-				this.categoryForm.fieldArray.splice(index, 1);
+				this.processForm.examineArray.splice(index, 1);
 			},
 			// form提交
 			submitForm(formName) {

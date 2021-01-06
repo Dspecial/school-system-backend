@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-24 11:19:21
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-01-05 17:41:25
+* @Last Modified time: 2021-01-06 18:37:07
 */
 @charset "UTF-8";
 
@@ -245,6 +245,19 @@ html,body,#app,.page-container{
 }
 .tab_nav span.active{
   color: var(--primary);
+  position: relative;
+  display:inline-block;
+  opacity: 1;
+  filter:Alpha(opacity=100); /* IE8 以及更早的浏览器 */
+}
+.tab_nav span.active::after{
+  content: '';
+  display:block;
+  position: absolute;
+  bottom: -22px;
+  background-color:var(--primary);
+  height: 2px;
+  width:100%;
 }
 .handleType{
   .el-col:nth-of-type(1) >p{
