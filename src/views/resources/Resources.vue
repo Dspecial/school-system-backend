@@ -21,7 +21,7 @@
 		</el-card>
     <!-- 资源列表 -->
     <el-card class="mt-3">
-      <data-tables-server :data="tableData" layout="tool, table,pagination" :total="total" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60] }" @query-change="loadData" :filters="filters" :table-props="tableProps">
+      <data-tables-server :data="tableData" layout="tool, table,pagination" :total="total" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60]}" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
           <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">资源列表</h4>
           <div class="d-flex align-items-center">
@@ -217,6 +217,9 @@
       }
     },
     computed: {
+    },
+    mounted(){
+      this.total = this.tableData.length;
     },
     methods: {
       // 自增序列

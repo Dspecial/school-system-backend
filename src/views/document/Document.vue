@@ -22,7 +22,7 @@
 					  </div>
 					</el-tree>
       	</div>
-	      <data-tables-server class="w-80 panel" :data="tableData" layout="tool, table,pagination" :total="total" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60] }" @query-change="loadData" :filters="filters" :table-props="tableProps">
+	      <data-tables-server class="w-80 panel" :data="tableData" layout="tool, table,pagination" :total="total" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60]}" @query-change="loadData" :filters="filters" :table-props="tableProps">
 	        <div class="mb-3" slot="tool">
 	          <div class="d-flex align-items-center">
 	          	<div class="mr-auto d-flex align-items-center">
@@ -147,6 +147,9 @@
         },
 			}
 		},
+		mounted(){
+      this.total = this.tableData.length;
+    },
 		methods:{
 			append(data) {
         const newChild = { id: this.newId++, label: 'testtest', children: [] };

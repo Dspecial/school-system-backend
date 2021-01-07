@@ -4,7 +4,7 @@
 	  :visible.sync="resourceData.dialog"
 	  width="40%" top="4vh"
 	  @open="openEdit"
-	  @closed="closedEdit('form')"
+	  @closed="closedEdit('categoryForm')"
 	  :before-close="handleClose">
 	  <el-form :model="categoryForm" ref="categoryForm" label-width="100px" label-position="left" class="p-3 resourceAdd_form">
 	  	<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-primary">新增类别</h4>
@@ -33,8 +33,8 @@
 			  </el-form-item>
 		  </template>
 		  <div class="text-center">
-		  	<el-button @click="closedEdit('form')">取 消</el-button>
-	    	<el-button type="primary" @click="submitForm('form')">确 定</el-button>
+		  	<el-button @click="closedEdit('categoryForm')">取 消</el-button>
+	    	<el-button type="primary" @click="submitForm('categoryForm')">确 定</el-button>
 		  </div>
 	  </el-form>
 
@@ -88,8 +88,8 @@
 		  </el-row>
 
 		  <div class="text-center">
-		  	<el-button @click="closedEdit('form')">取 消</el-button>
-	    	<el-button type="primary" @click="submitForm('form')">确 定</el-button>
+		  	<el-button @click="closedEdit('rescourceForm')">取 消</el-button>
+	    	<el-button type="primary" @click="submitForm('rescourceForm')">确 定</el-button>
 		  </div>
 	  </el-form>
 
