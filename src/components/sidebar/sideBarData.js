@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-24 11:19:21
 * @Last Modified by:   dxx
-* @Last Modified time: 2020-12-29 17:48:05
+* @Last Modified time: 2021-01-07 17:15:06
 */
 export const sideBarData = {
 	menu:[
@@ -134,7 +134,7 @@ export const sideBarData = {
 			id:"10",
 			icon:"icon-coin-yen",
 			name:"经费管理",
-			route:"/outlay",
+			route:"/funds",
 			childs:null,
 		},
 		{

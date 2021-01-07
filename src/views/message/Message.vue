@@ -59,19 +59,21 @@
         <el-table-column prop="endTime" label="完结时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="250" align="center">
           <template slot-scope="scope">
+          	<span class="text-primary cursor-pointer" @click="showDetail(scope.$index,scope.row)">查看</span>
             <span class="text-primary cursor-pointer ml-3">修改</span>
-            <span class="text-primary cursor-pointer ml-3">删除</span>
           </template>
         </el-table-column>
       </data-tables-server>
     </el-card>
+    <message-reply :replyData="replyData"></message-reply>
 	</div>
 </template>
 
 <script>
 	import GlobalTips from "@/components/GlobalTips";
+	import MessageReply from "./MessageReply";
 	export default {
-		name: 'ManufacturerSub',
+		name: 'Message',
 		provide() {
       return {
         loadData: this.loadData
@@ -79,6 +81,7 @@
     },
 		components: {
 			GlobalTips,
+			MessageReply
 		},
 		data () {
 			return {
@@ -173,7 +176,7 @@
         total: 0, //总条数
         currentPage: 1, //当前页
         pageSize: 0, //每页显示条数
-        mfuserData:{
+        replyData:{
         	dialog:false,
         	title:"",
         	id:"",
@@ -210,12 +213,12 @@
         //   }
         // })
       },
-      // 新增顶级菜单
-      handleAdd(){
-      	this.mfuserData.dialog = true;
-      	this.mfuserData.title = "新增厂商用户";
-      	this.mfuserData.id = '';
-      },
+      // 查看详细
+      showDetail(index,row){
+      	this.replyData.dialog = true;
+      	this.replyData.title = "工单回复";
+      	this.replyData.id = '';
+      }
 		},
 	}
 </script>

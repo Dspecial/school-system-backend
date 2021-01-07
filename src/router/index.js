@@ -141,9 +141,9 @@ export default new Router({
 				  children: null
 				},
 				{
-				  path: '/outlay',
-				  component: resolve => require(['@/views/outlay/Outlay'], resolve),
-				  name: 'Outlay',
+				  path: '/funds',
+				  component: resolve => require(['@/views/funds/Funds'], resolve),
+				  name: 'Funds',
 				  meta: {
 				    title: '经费管理'
 				  },

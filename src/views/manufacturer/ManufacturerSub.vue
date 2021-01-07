@@ -28,7 +28,7 @@
         <el-table-column prop="post" label="职位"></el-table-column>
         <el-table-column fixed="right" label="操作" width="250" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer ml-3">修改</span>
+            <span class="text-primary cursor-pointer">修改</span>
             <span class="text-primary cursor-pointer ml-3">删除</span>
           </template>
         </el-table-column>

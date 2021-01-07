@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="projectnodeData.title"
 	  :visible.sync="projectnodeData.dialog"
-	  width="48%"
+	  width="45%"
 	  @open="openEdit"
 	  @closed="closedEdit('projectnodeForm')"
 	  :before-close="handleClose">
@@ -32,7 +32,7 @@
 		    <el-table :data="projectnodeForm.tableData" style="width: 100%">
 			    <el-table-column type="selection" width="55"></el-table-column>
 	        <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-	        <el-table-column prop="node" label="节点"></el-table-column>
+	        <el-table-column prop="node" label="节点" width="110"></el-table-column>
 	        <el-table-column prop="step1" label="合同及付款方式确认">
 	        	<template slot-scope="scope">
 		        	<el-switch
@@ -68,7 +68,7 @@
 	        </el-table-column>
 	        <el-table-column fixed="right" label="操作" align="center">
 	          <template slot-scope="scope">
-	            <span class="text-primary cursor-pointer ml-3" @click="delField()">删除</span>
+	            <span class="text-primary cursor-pointer" @click="delField()">删除</span>
 	          </template>
 	        </el-table-column>
 		    </el-table>
@@ -172,7 +172,7 @@
         return ++index;
       },
       // 加载数据
-      loadData(queryInfo) { 
+      loadNodeData(queryInfo) { 
         let _this = this;
         if (queryInfo != null) {
           this.currentPage = queryInfo.page;

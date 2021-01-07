@@ -154,9 +154,11 @@
 			}
 		},
 		methods:{
+			// 上传成功
 			handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
+        // this.imageUrl = URL.createObjectURL(file.raw);
       },
+      // 上传前验证
       beforeAvatarUpload(file) {
         const isPic = file.type === 'image/gif' || file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/png';
         const isLt = file.size / 1024  < 100;
@@ -169,7 +171,7 @@
           return isLt
         }
         return isPic && isLt;
-      }
+      },
 		},
 	}
 </script>

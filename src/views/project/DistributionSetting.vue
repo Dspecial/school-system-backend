@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="settingData.title"
 	  :visible.sync="settingData.dialog"
-	  width="48%"
+	  width="45%"
 	  @open="openEdit"
 	  @closed="closedEdit('settingForm')"
 	  :before-close="handleClose">

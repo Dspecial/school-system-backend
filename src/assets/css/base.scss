@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-24 11:19:21
 * @Last Modified by:   dxx
-* @Last Modified time: 2020-12-29 14:27:59
+* @Last Modified time: 2021-01-07 16:35:05
 */
 @charset "UTF-8";
 /*css 初始化 */
@@ -65,7 +65,7 @@ a:hover{text-decoration: none;}
   border-radius: 100px;
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.2);
   box-shadow: inset 0 0 6px rgba(0,0,0,.2);
-  background-color: #67758C;
+  background-color: #DCDFE6;
 }
 
 /*标签 初始化*/
@@ -1061,6 +1061,18 @@ input[type=number]::-webkit-outer-spin-button {
 .align-self-stretch {
   -ms-flex-item-align: stretch !important;
   align-self: stretch !important;
+}
+
+.order-0{
+  order:0;
+}
+
+.order-1{
+  order:1;
+}
+
+.order-2{
+  order:2;
 }
 
 /*字号 font-size*/

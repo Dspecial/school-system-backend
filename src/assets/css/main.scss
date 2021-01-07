@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-24 11:19:21
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-01-06 18:37:07
+* @Last Modified time: 2021-01-07 17:05:28
 */
 @charset "UTF-8";
 
@@ -46,6 +46,13 @@
 }
 .bg-success{
   background-color: var(--success)!important;
+  color: var(--white);
+}
+.text-warning{
+  color: var(--warning)!important;
+}
+.bg-warning{
+  background-color: var(--warning)!important;
   color: var(--white);
 }
 .text-grey-300{
@@ -181,6 +188,15 @@ html,body,#app,.page-container{
   background-color:var(--primary-600);
   box-shadow: 2px 0px 6px 0px rgba(0, 21, 41, 0.35);
 }
+.el-menu-vertical-demo{
+  &:not(.el-menu--collapse) {
+    width: 240px;
+    min-height: 400px;
+  }
+  &.el-menu--collapse{
+    width: 74px;
+  }
+}
 .el-menu{
   background-color:inherit;
   border-right:0;
@@ -223,7 +239,41 @@ html,body,#app,.page-container{
   color: var(--white);
   height: 60px;
 }
-
+/* 缩小后的菜单 */
+.el-menu--collapse{
+  .el-submenu__title span {
+    display: none;
+  }
+  .el-submenu__title i.el-icon-arrow-right {
+    display: none;
+  }
+  .el-menu-item-group__title span {
+    display: none;
+  }
+  .el-menu-item-group__title i {
+    display: block;
+  }
+  .el-submenu.is-active >.el-submenu__title{
+    position: relative;
+  }
+  .el-submenu.is-active >.el-submenu__title::before{
+    content: "";
+    display:inline-block;
+    position: absolute;
+    left: 0;
+    top:50%;
+    transform: translate(-50%,-50%);
+    width: 10px;
+    height: 100%;
+    border-radius: 0px 5px 5px 0px;
+  }
+  .el-tooltip{
+    text-align: center;
+  }
+  .myMenuIcon{
+    margin-right: 0;
+  }
+}
 /*header.vue*/
 .el-header{
   height: 60px;
@@ -304,4 +354,26 @@ html,body,#app,.page-container{
   .el-tag--dark .el-tag__close:hover{
     background-color: #0b8888;
   }
+}
+
+/*message*/
+.reply-dialog{
+
+}
+
+.panel{
+  padding: 20px;
+  border:1px solid var(--grey-200);
+}
+.custom-tree-node .action{
+  opacity:0;
+}
+.custom-tree-node:hover .action{
+  opacity:1;
+}
+/*document*/
+.documentUpload .el-form-item__content >div,
+.documentUpload .el-form-item__content .el-upload,
+.documentUpload .el-form-item__content .el-upload-dragger{
+  width: 100%;
 }
