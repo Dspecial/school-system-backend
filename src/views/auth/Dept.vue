@@ -126,7 +126,7 @@
         ],
         total: 0, //总条数
         currentPage: 1, //当前页
-        pageSize: 0, //每页显示条数
+        pageSize: 15, //每页显示条数
         deptData:{
         	dialog:false,
         	title:"",

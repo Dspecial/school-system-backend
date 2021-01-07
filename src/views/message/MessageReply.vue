@@ -54,7 +54,7 @@
 		  				<span>{{item.title}}</span>
 		  			</h5>
 		  			<el-row class="mt-3" :gutter="20">
-		  				<el-col :span="12" v-for="(list,index) in item.imgList">
+		  				<el-col :span="12" v-for="(list,index) in item.imgList" :key="index">
 		  					<el-image :src="list.url" fit="contain"></el-image>
 		  				</el-col>
 		  			</el-row>
@@ -77,7 +77,7 @@
 		  				<span>{{item.title}}</span>
 		  			</h5>
 		  			<el-row class="mt-3" :gutter="20">
-		  				<el-col :span="12" v-for="(list,index) in item.imgList">
+		  				<el-col :span="12" v-for="(list,index) in item.imgList" :key="index">
 		  					<el-image :src="list.url" fit="contain"></el-image>
 		  				</el-col>
 		  			</el-row>

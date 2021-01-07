@@ -116,7 +116,7 @@ export default new Router({
 				{
 				  path: '/manufacturer/sub',
 				  component: resolve => require(['@/views/manufacturer/ManufacturerSub'], resolve),
-				  name: 'ManufacturerUser',
+				  name: 'ManufacturerSub',
 				  meta: {
 				    title: '厂商子账号管理'
 				  },
