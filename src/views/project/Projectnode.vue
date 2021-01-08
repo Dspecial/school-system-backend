@@ -4,7 +4,7 @@
     <global-tips></global-tips>
     <!-- 项目节点配置 -->
     <el-card class="mt-3">
-      <data-tables-server :data="tableData" layout="tool, table,pagination" :total="total" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60]}" @query-change="loadData" :filters="filters" :table-props="tableProps">
+      <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
           <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">项目节点配置</h4>
           <div class="d-flex align-items-center">
@@ -106,7 +106,7 @@
 			}
 		},
     mounted(){
-      this.total = this.tableData.length;
+      
     },
 		methods:{
 			// 自增序列
@@ -120,6 +120,7 @@
           this.currentPage = queryInfo.page;
           this.pageSize = queryInfo.pageSize;
         }
+        this.total = this.tableData.length;
         // this.MyAxios.post(this.globalUrl.baseURL + "/forklift/achievements/achievements_list", {
         //   page: this.currentPage,
         //   limit: this.pageSize,
