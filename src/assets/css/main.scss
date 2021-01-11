@@ -3,11 +3,11 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-24 11:19:21
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-01-07 17:05:28
+* @Last Modified time: 2021-01-11 14:47:29
 */
 @charset "UTF-8";
 
-/* 改变主题色变量 */
+/* 整体配色 */
 :root{
   --primary: #005DDA;
   --primary-600:#00347A;
@@ -181,6 +181,35 @@ html,body,#app,.page-container{
 }
 .page{
   background-color:#F0F2F5;
+}
+/*Login.vue*/
+.login-container{
+  background-color:#F3F7FF;
+  position: relative;
+  .login{
+    height: 500px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    border-radius:10px;
+    box-shadow: 0px 4px 20px 4px rgba(77, 130, 234, 0.4); 
+  }
+  .login-left{
+    box-sizing: border-box;
+    width:55%;
+  }
+  .login-right{
+    width:45%;
+    box-sizing: border-box;
+  }
+  .login-box{
+    width: 70%;
+    margin: 0 auto;
+    .login-header{
+      margin-top: 5rem;
+    }
+  }
 }
 /*sidebar.vue*/
 .el-aside{

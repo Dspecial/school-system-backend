@@ -5,8 +5,16 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+  		path: '/',
+		  component: resolve => require(['@/views/Login'], resolve),
+		  name: 'Login',
+		  meta: {
+		    title: '登录'
+		  },
+  	},
 		{
-		  path: '/',
+		  path: '/home',
 		  component: resolve => require(['@/views/Home'], resolve),
 		  name: 'Home',
 		  redirect: '/index',
