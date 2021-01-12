@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-24 11:19:21
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-01-07 17:15:06
+* @Last Modified time: 2021-01-12 16:33:28
 */
 export const sideBarData = {
 	menu:[
@@ -144,12 +144,12 @@ export const sideBarData = {
 			route:"/log",
 			childs:null,
 		},
-		{
-			id:"11",
-			icon:"el-icon-info",
-			name:"版本管理",
-			route:"/version",
-			childs:null,
-		},
+		// {
+		// 	id:"11",
+		// 	icon:"el-icon-info",
+		// 	name:"版本管理",
+		// 	route:"/version",
+		// 	childs:null,
+		// },
 	],
 }
