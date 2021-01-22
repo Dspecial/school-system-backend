@@ -9,18 +9,17 @@ import ElementUI from 'element-ui';
 import VueDataTables from 'vue-data-tables';
 import moment from 'moment'; 
 import echarts from 'echarts';
-import VueCookie from 'vue-cookie'; // api: https://github.com/alfhen/vue-cookie
-import MyAxios from '@/core/axios.js';
-import globalUrl from '@/core/globalUrl.js';
+import VueCookies  from 'vue-cookies'; 
+import api from '@/core/api.js'; // 引入公共api
 import commonJs from '@/core/commonJs.js'; // 引入公共js
 
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 });// 声明使用ElementUI
 Vue.use(VueDataTables);
+Vue.use(VueCookies);
 Vue.use(echarts);
 Vue.prototype.$echarts = echarts
-Vue.prototype.MyAxios = MyAxios;
-Vue.prototype.globalUrl = globalUrl;
 Vue.prototype.commonJs = commonJs; // 挂载原型链
+Vue.prototype.$api = api;
 
 Vue.config.productionTip = false
 
