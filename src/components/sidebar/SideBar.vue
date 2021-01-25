@@ -12,8 +12,8 @@
 
 <script>
   import Menu from './Menu.vue'
-  import {sideBarData} from './sideBarData.js'
-  import {globalBus} from '@/core/globalBus';
+  import { sideBarData } from './sideBarData.js'
+  import { globalBus } from '@/core/globalBus';
 
   export default {
 		data () {
@@ -41,17 +41,36 @@
 	    },
 	  },
     mounted(){
+      this.loadMenu();
+
       window.onresize = () => {
         return (() => {
           this.mediaCollapse();
         })();
       };
-
       this.mediaCollapse();
-
     },
 
 	  methods:{
+      // 加载菜单
+      loadMenu(){
+        this.$api.menu({
+        }).then(data =>{
+          if(data.code == 0){
+            this.menuDatas = data.data
+          }else{
+            const h = this.$createElement;
+            this.$notify({
+              title: "加载失败",
+              message: h('i', {
+                style: 'color: teal'
+              }, data.msg),
+              type: 'warning',
+              duration: 3000,
+            });
+          }
+        });
+      },
       // 高亮菜单
       setCurrentMenu(){
         var path = this.$route.path.split('#');

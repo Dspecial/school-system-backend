@@ -5,7 +5,7 @@
 				<el-image :src="loginBg" fit="fill" class="h-100"></el-image>
 			</div>
 			<div class="login-right">
-				<el-form ref="loginForm" :model="loginForm" :rules="rules" label-width="0" class="login-box" size="large">
+				<el-form ref="loginForm" :model="loginForm" label-width="0" class="login-box" size="large">
 	        <div class="login-header mb-5">
 	          <p class="fs_28 text-000 text-center">账号登录</p>
 	        </div>
@@ -14,13 +14,13 @@
 	          </el-input>
 	        </el-form-item>
 	        <el-form-item prop="password">
-	          <el-input :type="pwdType" placeholder="密码" prefix-icon="el-icon-lock" v-model="loginForm.password" autocomplete="off" @keyup.enter.native ="onSubmit('loginFrom')">
+	          <el-input :type="pwdType" placeholder="密码" prefix-icon="el-icon-lock" v-model="loginForm.password" autocomplete="off">
 	            <i slot="suffix" :class="['el-input__icon icon cursor-pointer',suffixIcon]" @click="showPwd"></i>
 	          </el-input>
 	        </el-form-item>
 	        <el-checkbox v-model="rememberPwd">记住密码</el-checkbox>
 	        <el-form-item>
-	          <el-button type="primary" class="w-100 fs_16 mt-5" @click="onSubmit('loginForm')">登录</el-button>
+	          <el-button type="primary" class="w-100 fs_16 mt-5" @click="onSubmit()">登录</el-button>
 	        </el-form-item>
 	      </el-form>
 			</div>
@@ -42,14 +42,6 @@
         pwdType:"password",
         suffixIcon:'icon-eye2',
         rememberPwd:true,
-        rules:{
-          username: [
-            { required: true, message: '请输入用户名', trigger: 'blur' },
-          ],
-          password:[
-            { required: true, message: '请输入密码', trigger: 'blur' },
-          ],
-        },
 			}
 		},
 		created() {
@@ -62,46 +54,49 @@
       }
     },
     mounted(){
+      if(this.rememberPwd){
+        this.loginForm.username = this.$cookies.get('userName');
+      }
     },
     methods:{
     	showPwd(){
         this.pwdType === 'password' ? this.pwdType = '' : this.pwdType = 'password';
         this.pwdType == '' ? this.suffixIcon = 'icon-eye-blocked2' : this.suffixIcon = 'icon-eye2';
       },
-      onSubmit(formName){
+      onSubmit(){
         var that  = this;
-        this.$refs[formName].validate((valid) => {
-          if(valid){
-            this.$api.login({
-              name:this.loginForm.username,
-              password:this.loginForm.password,
-            }).then( data =>{
-              if(data.code == 0){
-                // 存值给cookies
-                this.$cookies.set('token', data.token);
-                this.$cookies.set('userId', data.id);
-                this.$cookies.set('userName', data.name);
-                // 存值给localStorage
-                
-                this.$router.push("/home");
-              }else{
-                const h = this.$createElement;
-                this.$notify({
-                  title: "登录失败",
-                  message: h('i', {
-                    style: 'color: teal'
-                  }, data.msg),
-                  type: 'warning',
-                  duration: 3000,
-                });
-              }
+        this.$api.login({
+          name:this.loginForm.username,
+          password:this.loginForm.password,
+        }).then( data =>{
+          if(data.code == 0){
+            // 存值给cookies
+            this.$cookies.set('token', data.data.token);
+            this.$cookies.set('userId', data.data.id);
+            this.$cookies.set('userName', data.data.name);
 
+            // dxx：判断，如果初次进入，直接跳转home页面；如果在别的页面停留过久，token失效，则登录以后直接跳转到当前页面
+            var redirect = this.$route.query.redirect;
+            if(redirect){
+              this.$router.push(redirect);
+            }else{
+              this.$router.push("/home");
+            }
+            
+          }else{
+            const h = this.$createElement;
+            this.$notify({
+              title: "登录失败",
+              message: h('i', {
+                style: 'color: teal'
+              }, data.msg),
+              type: 'warning',
+              duration: 3000,
             });
-          }else {
-            console.log('error submit!!');
-            return false;
           }
+
         });
+
       },
     },
 	}

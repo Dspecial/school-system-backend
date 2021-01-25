@@ -1,12 +1,31 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import VueCookies from 'vue-cookies';
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
+  	{
+      path: '*',
+      hidden: true,
+      component: ()=>import('@/views/404'),
+      name: 'notFound',
+      hidden: true,
+		  meta: {
+		    title: '404'
+		  },
+    },
     {
   		path: '/',
+		  component: resolve => require(['@/views/Login'], resolve),
+		  name: '首次进入',
+		  meta: {
+		    title: '登录'
+		  },
+  	},
+  	{
+  		path: '/login',
 		  component: resolve => require(['@/views/Login'], resolve),
 		  name: 'Login',
 		  meta: {
@@ -41,11 +60,29 @@ export default new Router({
 				  children: null
 				},
 				{
-				  path: '/resources',
-				  component: resolve => require(['@/views/resources/Resources'], resolve),
-				  name: 'Resources',
+				  path: '/resources/cate',
+				  component: resolve => require(['@/views/resources/Cate'], resolve),
+				  name: 'Cate',
 				  meta: {
-				    title: '资源管理'
+				    title: '类别管理'
+				  },
+				  children: null
+				},
+				{
+				  path: '/resources/form',
+				  component: resolve => require(['@/views/resources/Form'], resolve),
+				  name: 'Form',
+				  meta: {
+				    title: '参数设置'
+				  },
+				  children: null
+				},
+				{
+				  path: '/resources/resource',
+				  component: resolve => require(['@/views/resources/Resource'], resolve),
+				  name: 'Resource',
+				  meta: {
+				    title: '资源列表'
 				  },
 				  children: null
 				},
@@ -73,6 +110,15 @@ export default new Router({
 				  name: 'Role',
 				  meta: {
 				    title: '角色管理'
+				  },
+				  children: null
+				},
+				{
+				  path: '/auth/router',
+				  component: resolve => require(['@/views/auth/Router'], resolve),
+				  name: 'Router',
+				  meta: {
+				    title: '路由管理'
 				  },
 				  children: null
 				},
@@ -179,3 +225,26 @@ export default new Router({
 		}
   ]
 })
+
+
+// 导航守卫
+// 使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') {
+    next();
+  } else {
+    let token = VueCookies.get('token');
+ 
+    if (token === null || token === '') {
+      next({
+      	path:'/login',
+      	query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+      });
+    } else {
+      next();
+    }
+  }
+});
+
+
+export default router;

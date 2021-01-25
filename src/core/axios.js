@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-24 16:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-01-22 17:28:57
+* @Last Modified time: 2021-01-25 15:34:03
 */
 import Vue from 'vue';
 import axios from 'axios';
@@ -36,7 +36,7 @@ axios.interceptors.request.use(
     // 即使本地存在token，也有可能token是过期的，所以在响应拦截器中要对返回状态进行判断 
     var token = '';
     if(VueCookies.get("token")){
-      token = VueCookies.get("token");;// 从VueCookies中拿到token
+      token = VueCookies.get("token");// 从VueCookies中拿到token
     };
     // config.headers.post['Resquest-Token'] = token;
     // config.headers['Authorization'] = 'Bearer ' + token
@@ -96,7 +96,6 @@ axios.interceptors.response.use(
   // 然后根据返回的状态码进行一些操作，例如登录过期提示，错误提示等等
   // 下面列举几个常见的操作，其他需求可自行扩展
   error => {
-    console.log("失败了",error.response.status);
     if (error.response.status) {
       switch (error.response.status) {
           // 401: 未登录
@@ -200,6 +199,8 @@ const setParams = (url, params) => {
 //返回一个Promise(发送post请求)
 export function post (url, params) {  // eslint-disable-line no-unused-vars
   let opt = setParams(url, params);
+  // 设置公共的user_token
+  opt.params.user_token = VueCookies.get("token");
   return new Promise((resolve, reject) => {
     axios.post(opt.url, qs.stringify(opt.params))
     .then(res => { 
@@ -215,6 +216,8 @@ export function post (url, params) {  // eslint-disable-line no-unused-vars
 // postJson 请求
 export function postJson (url, params) { 
     let opt = setParams(url, params);
+    // 设置公共的user_token
+    opt.params.user_token = VueCookies.get("token");
     return new Promise((resolve, reject) => {
         axios.post(opt.url, opt.params, { 
           headers: { 'Content-Type': 'application/json;charset=UTF-8' } 
@@ -232,6 +235,8 @@ export function postJson (url, params) {
 //返回一个Promise(发送get请求)
 export function get(url, params) {   
     let opt = setParams(url, params);
+    // 设置公共的user_token
+    opt.params.user_token = VueCookies.get("token");
     return new Promise((resolve, reject) => {
         axios.get(opt.url, { params: opt.params })
         .then(res => { 

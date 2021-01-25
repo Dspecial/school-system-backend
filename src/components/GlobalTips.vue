@@ -20,7 +20,6 @@
 		},
 		components: {},
 		mounted(){
-			console.log(this.$cookies.keys());
 			this.userId = this.$cookies.get('userId');
 			this.userName = this.$cookies.get('userName');
 			this.time = this.getDayjsTime();

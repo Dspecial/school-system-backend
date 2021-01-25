@@ -78,20 +78,20 @@
           </template>
         </el-table-column>
       </data-tables-server>
-      <resources-add :resourceData="resourceData"></resources-add>
+      <resource-add :resourceData="resourceData"></resource-add>
     </el-card>
   </div>
 </template>
 
 <script>
   import GlobalTips from "@/components/GlobalTips";
-  import ResourcesAdd from "./ResourcesAdd";
+  import ResourceAdd from "./ResourceAdd";
 
 	export default {
-    name: 'Resources',
+    name: 'Cate',
     components: {
       GlobalTips,
-      ResourcesAdd,
+      ResourceAdd,
     },
     data() {
       return {
