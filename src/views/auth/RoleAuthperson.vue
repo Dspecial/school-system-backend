@@ -194,26 +194,5 @@
 </script>
 
 <style lang="scss">
-.authTree{
-	.el-tree-node.is-expanded>.el-tree-node__children{
-		display: flex;
-		flex-wrap: wrap;
-		margin-left: 22px;
-		background: #eee;
-		.el-tree-node__content{
 
-		}
-	}
-	.el-tree-node{
-		
-	}
-	.el-tree-node__content{
-		padding-left:0!important;
-		margin: 5px 0;
-	}
-	.el-tree-node__content:hover{
-		background-color: transparent;
-	}
-
-}
 </style>

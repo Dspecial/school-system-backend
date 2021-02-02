@@ -21,11 +21,10 @@
             </div>
           </div>
         </div>
-        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
         <el-table-column prop="title" label="菜单名称"></el-table-column>
-        <el-table-column prop="path" label="路由名称"></el-table-column>
-        <el-table-column prop="folder" label="路径名称"></el-table-column>
+        <el-table-column prop="name" label="路由" width="200"></el-table-column>
+        <el-table-column prop="path" label="路径" width="200"></el-table-column>
         <el-table-column prop="icon" label="图标">
         	<template slot-scope="scope">
 	        	<i :class="scope.row.icon"></i>
@@ -46,18 +45,20 @@
         <el-table-column prop="createtime" label="创建时间"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-          	<span class="text-primary cursor-pointer" @click="">新增子集</span>
-          	<span class="text-primary cursor-pointer ml-3" @click="">编辑</span>
-            <span class="text-primary cursor-pointer ml-3">删除</span>
+          	<span class="text-primary cursor-pointer" @click="handleAddSub(scope.$index,scope.row)">新增子级</span>
+          	<span class="text-primary cursor-pointer ml-3" @click="editRouter(scope.$index,scope.row)">编辑</span>
+            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
           </template>
         </el-table-column>
       </data-tables-server>
     </el-card>
+    <router-edit :routerData="routerData"></router-edit>
 	</div>
 </template>
 
 <script>
 	import GlobalTips from "@/components/GlobalTips";
+  import RouterEdit from "./RouterEdit";
 
 	export default {
 		name: 'Router',
@@ -68,9 +69,11 @@
     },
 		components: {
 			GlobalTips,
+      RouterEdit
 		},
 		data () {
 			return {
+        isShow:false,
 				tableProps: {
           'default-expand-all':false,
           'row-key':"id",
@@ -89,10 +92,12 @@
         total: 0, //总条数
         currentPage: 1, //当前页
         pageSize: 15, //每页显示条数
-        roleData:{
+        routerData:{
         	dialog:false,
         	title:"",
         	id:"",
+          pid:"",
+          isEdit:false,
         },
 			}
 		},
@@ -106,16 +111,62 @@
       },
       // 加载数据
       loadData(queryInfo) { 
-        this.$api.router({
+        this.$api.routerList({
         }).then(data =>{
         	if(data.code == 0){
-        		console.log(data,"aaa");
         		this.tableData = data.data;
         	}else{
-        		this.$message.error("接口失败");
+        		this.$message.error(data.msg);
         	}
 
         })
+      },
+      // 编辑
+      editRouter(index,row){
+        this.routerData.dialog = true;
+        this.routerData.title = '编辑路由';
+        this.routerData.pid = row.pid;
+        this.routerData.id = row.id;
+        this.routerData.isEdit = true;
+      },
+
+      // 新增顶级路由
+      handleAdd(){
+        this.routerData.dialog = true;
+        this.routerData.title = '新增顶级路由';
+        this.routerData.pid = 0;
+        this.routerData.isEdit = false;
+      },
+
+      // 新增子级路由
+      handleAddSub(index,row){
+        this.routerData.dialog = true;
+        this.routerData.title = '新增子级路由';
+        this.routerData.pid = row.id;
+        this.routerData.isEdit = false;
+      },
+
+      // 删除
+      handleDel(index,row){
+        this.$confirm("此操作将永久删除该路由, 是否继续?", "提示", {
+          type: 'warning'
+        }).then(() => {
+          // this.$api.routerEdit({// 接口不对
+
+          // }).then(data=>{ 
+          //    if(data.code == 0){
+          //       this.$message({
+          //         message: "删除路由成功!",
+          //         type: 'success'
+          //       });
+          //       this.loadData();
+          //    }else{
+          //      this.$message.error(data.msg);
+          //    }
+          // })
+        }).catch(() => {
+
+        });
       },
 		},
 	}

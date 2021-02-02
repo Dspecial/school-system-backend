@@ -3,7 +3,7 @@
     <template v-for="(menuData,index) in menuDatas">
       <!-- 不分组 -->
       <!-- 不分组只有一级菜单 -->
-      <el-menu-item v-if="menuData&&menuData.sub==undefined || menuData&&menuData.sub===null" :key="menuData.path" :index="menuData.path" :route="menuData.path">
+      <el-menu-item v-if="menuData&&menuData.sub==undefined || menuData&&menuData.sub===null || menuData&&menuData.sub.length===0" :key="menuData.path" :index="menuData.path" :route="menuData.path">
         <!--图标-->
         <i :class="[menuData.icon,'myMenuIcon']" v-if="menuData.icon"></i>
         <!--标题-->
@@ -11,7 +11,7 @@
       </el-menu-item>
 
       <!--不分组有多级菜单-->
-      <el-submenu v-if="menuData&&menuData.sub" :key="menuData.path" :index="menuData.path">
+      <el-submenu v-if="menuData&&menuData.sub&&menuData.sub.length!=0" :key="menuData.path" :index="menuData.path">
         <template slot="title">
           <i :class="menuData.icon"></i>
           <span> {{menuData.title}}</span>

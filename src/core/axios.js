@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-24 16:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-01-25 15:34:03
+* @Last Modified time: 2021-01-28 10:16:09
 */
 import Vue from 'vue';
 import axios from 'axios';
@@ -41,11 +41,11 @@ axios.interceptors.request.use(
     // config.headers.post['Resquest-Token'] = token;
     // config.headers['Authorization'] = 'Bearer ' + token
 
-    if (config.url.indexOf("?") == -1) {
-      config.url = config.url + "?_=" + new Date().getTime();
-    } else {
-      config.url = config.url + "&_=" + new Date().getTime();
-    }
+    // if (config.url.indexOf("?") == -1) {
+    //   config.url = config.url + "?_=" + new Date().getTime();
+    // } else {
+    //   config.url = config.url + "&_=" + new Date().getTime();
+    // }
 
     return config;
   },

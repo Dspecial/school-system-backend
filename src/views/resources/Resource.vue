@@ -21,77 +21,77 @@
 		</el-card>
     <!-- 资源列表 -->
     <el-card class="mt-3">
-      <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
+      <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [10,20,30,50], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
           <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">资源列表</h4>
           <div class="d-flex align-items-center">
           	<div class="mr-auto d-flex align-items-center">
-						  <el-select v-model="spValue" placeholder="请选择服务商">
-						    <el-option
-						      v-for="item in spOptions"
-						      :key="item.value"
-						      :label="item.label"
-						      :value="item.value">
-						    </el-option>
+						  <el-input
+                placeholder="请输入资源名称查询"
+                prefix-icon="el-icon-search"
+                v-model="filters[0].value">
+              </el-input>
+						  <el-select v-model="filters[1].value" placeholder="请选择是否使用" class="ml-3" @change="onChange">
+						    <el-option label="使用中" :value="1"></el-option>
+                <el-option label="已禁用" :value="2"></el-option>
 						  </el-select>
-						  <el-select v-model="duValue" placeholder="请选择分配使用" class="ml-3">
-						    <el-option
-						      v-for="item in duOptions"
-						      :key="item.value"
-						      :label="item.label"
-						      :value="item.value">
-						    </el-option>
-						  </el-select>
-						  <el-select v-model="deptValue" placeholder="请选择管理部门" class="ml-3">
-						    <el-option
-						      v-for="item in deptOptions"
-						      :key="item.value"
-						      :label="item.label"
-						      :value="item.value">
-						    </el-option>
-						  </el-select>
-						  
-              <el-button type="primary" class="ml-3">查询</el-button>
           	</div>
             <div class="ml-auto">
               <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增资源</el-button>
             </div>
           </div>
         </div>
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="id" label="类别编号"></el-table-column>
-        <el-table-column prop="categoryName" label="类别名称"></el-table-column>
-        <el-table-column prop="typeId" label="类容编号"></el-table-column>
-        <el-table-column prop="system" label="系统"></el-table-column>
-        <el-table-column prop="cpu" label="CPU"></el-table-column>
-        <el-table-column prop="ram" label="内存"></el-table-column>
-        <el-table-column prop="remark" label="备注" width="200"></el-table-column>
-        <el-table-column prop="distribution" label="分配使用" width="300"></el-table-column>
-        <el-table-column prop="dept" label="管理部门"></el-table-column>
-        <el-table-column prop="administrators" label="管理员"></el-table-column>
-        <el-table-column prop="serviceProvider" label="服务商"></el-table-column>
+        <el-table-column type="index" :index="indexMethod" label="序号" width="50" v-if="isShow"></el-table-column>
+        <el-table-column prop="id" label="ID" width="60"></el-table-column>
+        <el-table-column prop="name" label="资源名称" width="150"></el-table-column>
+        <el-table-column prop="sup_name" label="所属供应商" width="180"></el-table-column>
+        <el-table-column prop="number" label="数量"></el-table-column>
+        <el-table-column label="详细参数" width="150">
+          <template slot-scope="scope">
+            <el-popover
+              placement="top-start"
+              title="详细参数"
+              width="200"
+              trigger="hover"
+              :content="scope.row.detailjson">
+              <span class="text-truncate" slot="reference">{{scope.row.detailjson}}</span>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column prop="cate_name" label="所属分类" width="100"></el-table-column>
+        <el-table-column prop="free_end_date" label="免费维护期" width="120"></el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
+        <el-table-column prop="is_use" label="是否使用">
+          <template slot-scope="scope">
+            <span v-if="scope.row.is_use == 1"><i class="dot bg-success mr-1"></i>使用中</span>
+            <span v-else><i class="dot bg-danger mr-1"></i>已禁用</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="cpu" label="创建人" width="100"></el-table-column>
+        <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
+        <el-table-column prop="ename" label="最新编辑人" width="100"></el-table-column>
+        <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" width="150" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer">修改</span>
-            <span class="text-primary cursor-pointer ml-3">删除</span>
+            <span class="text-primary cursor-pointer" @click="editResource(scope.$index,scope.row)">编辑</span>
+            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
           </template>
         </el-table-column>
       </data-tables-server>
-      <resource-add :resourceData="resourceData"></resource-add>
+      <resource-edit :resourceData="resourceData"></resource-edit>
     </el-card>
   </div>
 </template>
 
 <script>
   import GlobalTips from "@/components/GlobalTips";
-  import ResourceAdd from "./ResourceAdd";
+  import ResourceEdit from "./ResourceEdit";
 
 	export default {
     name: 'Resource',
     components: {
       GlobalTips,
-      ResourceAdd,
+      ResourceEdit,
     },
     data() {
       return {
@@ -110,104 +110,30 @@
 						total:"20"
 					},
 				],
-				// 服务商
-				spValue:"",
-				spOptions:[
-					{
-						label:"常州公司",
-						value:"1",
-					},
-					{
-						label:"北京公司",
-						value:"2",
-					},
-					{
-						label:"上海公司",
-						value:"3",
-					},
-				],
-				// 分配使用
-				duValue:"",
-				duOptions:[
-					{
-						label:"信息管理项目1",
-						value:"1",
-					},
-					{
-						label:"食堂管理项目2",
-						value:"2",
-					},
-				],
-				// 管理部门
-				deptValue:"",
-				deptOptions:[
-					{
-						label:"教务处",
-						value:"1",
-					},
-					{
-						label:"学工办",
-						value:"2",
-					},
-				],
         tableProps: {
           'max-height': 670,
         },
-        tableData: [
-        	{
-            id:"10111",
-            categoryName:"服务器",
-            typeId:"10111102",
-        		system:"windows",
-        		cpu:"8",
-            ram:"16",
-            remark:"硬盘1T、带宽10M",
-            distribution:"信息管理项目1、食堂管理项目2",
-            dept:"教务处",
-            administrators:"小王",
-            serviceProvider:"常州xxx公司",
-        	},
-        	{
-            id:"10111",
-            categoryName:"服务器",
-            typeId:"10111102",
-        		system:"windows",
-        		cpu:"8",
-            ram:"16",
-            remark:"硬盘1T、带宽10M",
-            distribution:"信息管理项目1、食堂管理项目2",
-            dept:"教务处",
-            administrators:"小王",
-            serviceProvider:"常州xxx公司",
-        	},
-        	{
-            id:"10111",
-            categoryName:"服务器",
-            typeId:"10111102",
-        		system:"windows",
-        		cpu:"8",
-            ram:"16",
-            remark:"硬盘1T、带宽10M",
-            distribution:"信息管理项目1、食堂管理项目2",
-            dept:"教务处",
-            administrators:"小王",
-            serviceProvider:"常州xxx公司",
-        	},
-        ],
+        isShow:false,
+        tableData: [],
         filters: [
 	        {
 	          value: '',
 	          prop: 'name'
-	        }
+	        },
+          {
+            value: '',
+            prop: 'is_use'
+          }
         ],
         total: 0, //总条数
         currentPage: 1, //当前页
-        pageSize: 15, //每页显示条数
+        pageSize: 10, //每页显示条数
         // 新增资源
         resourceData:{
           dialog:false,
           title:"",
-          id:","
+          id:"",
+          isEdit:false,
         },
       }
     },
@@ -219,9 +145,12 @@
     computed: {
     },
     mounted(){
-      this.total = this.tableData.length;
+
     },
     methods: {
+      onChange(value){
+        // console.log(value,'select');
+      },
       // 自增序列
       indexMethod(index) { 
         return ++index;
@@ -233,27 +162,56 @@
           this.currentPage = queryInfo.page;
           this.pageSize = queryInfo.pageSize;
         }
-        this.total = this.tableData.length;
-        // this.MyAxios.post(this.globalUrl.baseURL + "/forklift/achievements/achievements_list", {
-        //   page: this.currentPage,
-        //   limit: this.pageSize,
-        //   name: this.filters[0].value
-        // }).then(data => {
-        //   if (data) {
-        //     if (data.code == 0) {
-        //       _this.total = data.count;
-        //       _this.tableData = data.data;
-        //     } else {
-        //       _this.$message.error("接口失败");
-        //     }
-        //   }
-        // })
+        this.$api.resourceList({
+          page:this.currentPage,
+          limit:this.pageSize,
+          keywords:this.filters[0].value,
+          is_use:this.filters[1].value,
+        }).then(data=>{
+          if(data.code == 0){
+            this.total = data.data.total;
+            this.tableData = data.data.data;
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
       },
-      // 申请项目
+      // 新增资源
       handleAdd(){
         this.resourceData.dialog = true;
         this.resourceData.title = "新增资源";
         this.resourceData.id = "";
+        this.resourceData.isEdit = false;
+      },
+      // 编辑资源
+      editResource(index,row){
+        this.resourceData.dialog = true;
+        this.resourceData.title = "编辑资源";
+        this.resourceData.id = row.id;
+        this.resourceData.isEdit = true;
+      },
+
+      // 删除
+      handleDel(index,row){
+        this.$confirm("此操作将永久删除该资源, 是否继续?", "提示", {
+          type: 'warning'
+        }).then(() => {
+          this.$api.resourceDel({
+            id:row.id
+          }).then(data=>{ 
+             if(data.code == 0){
+                this.$message({
+                  message: "删除资源成功!",
+                  type: 'success'
+                });
+                this.loadData();
+             }else{
+               this.$message.error(data.msg);
+             }
+          })
+        }).catch(() => {
+
+        });
       },
 
     },

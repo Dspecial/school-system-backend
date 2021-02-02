@@ -2,19 +2,19 @@
 	<div class="user-container">
 		<!-- 登录信息 -->
     <global-tips></global-tips>
-    <!-- 用户管理 -->
+    <!-- 供应商管理 -->
     <el-card class="mt-3">
       <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
-          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">用户管理</h4>
+          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">供应商管理</h4>
           <div class="d-flex align-items-center">
           	<div class="mr-auto d-flex align-items-center">
-          		<el-input
+              <el-input
                 class="w-40"
-    				    placeholder="请输入用户名/部门/工号/姓名"
-    				    prefix-icon="el-icon-search"
-    				    v-model="filters[0].value">
-    				  </el-input>
+                placeholder="公司名称/营业执照编码/负责人姓名/手机号"
+                prefix-icon="el-icon-search"
+                v-model="filters[0].value">
+              </el-input>
               <el-date-picker
                 class="ml-3 w-40"
                 v-model="filters[1].value"
@@ -25,35 +25,31 @@
                 end-placeholder="结束日期"
                 placeholder="选择上次登录时间">
               </el-date-picker>
-          	</div>
+            </div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增用户</el-button>
+              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增厂商</el-button>
             </div>
           </div>
         </div>
+        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="job_number" label="工号"></el-table-column>
-        <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="sex" label="性别">
-          <template slot-scope="scope">
-            <span v-if="scope.row.sex == 1">男</span>
-            <span v-if="scope.row.sex == 2">女</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="type" label="状态">
+        <el-table-column prop="companyName" label="公司名称"></el-table-column>
+        <el-table-column prop="blCode" label="营业执照编码"></el-table-column>
+        <el-table-column prop="name" label="负责人姓名"></el-table-column>
+        <el-table-column prop="sex" label="性别"></el-table-column>
+        <el-table-column prop="status" label="状态">
         	<template slot-scope="scope">
 	        	<el-switch
-						  v-model="scope.row.type"
+						  v-model="scope.row.status"
 						  active-value="1"
 						  inactive-value="0"
-						  active-color="#005DDA"
+						  active-color="#52C418"
 						  inactive-color="#969191">
 						</el-switch>
         	</template>
         </el-table-column>
-        <el-table-column prop="phone" label="电话"></el-table-column>
-        <el-table-column prop="depart_name" label="所在部门"></el-table-column>
-        <el-table-column prop="lastlogintime" label="上次登录时间"></el-table-column>
+        <el-table-column prop="tel" label="电话"></el-table-column>
+        <el-table-column prop="role" label="角色"></el-table-column>
         <el-table-column fixed="right" label="操作" width="250" align="center">
           <template slot-scope="scope">
             <span class="text-primary cursor-pointer">修改</span>
@@ -62,16 +58,16 @@
         </el-table-column>
       </data-tables-server>
     </el-card>
-    <user-edit :userData="userData"></user-edit>
+    <mfuser-edit :mfuserData="mfuserData"></mfuser-edit>
 	</div>
 </template>
 
 <script>
 	import GlobalTips from "@/components/GlobalTips";
-	import UserEdit from "./UserEdit";
+	import MfuserEdit from "./MfuserEdit";
 
 	export default {
-		name: 'User',
+		name: 'ManufacturerSupplier',
 		provide() {
       return {
         loadData: this.loadData
@@ -79,14 +75,42 @@
     },
 		components: {
 			GlobalTips,
-			UserEdit,
+			MfuserEdit,
 		},
 		data () {
 			return {
 				tableProps: {
           'max-height': 670,
         },
-        tableData: [],
+        tableData: [
+        	{
+        		companyName:'XX实业有限公司',
+        		blCode:"9NLDE1234555553221",
+        		name:"张三",
+        		sex:"男",
+        		status:"1",
+        		tel:"15196358795",
+        		role:"合作厂商",
+        	},
+        	{
+        		companyName:'XX实业有限公司',
+        		blCode:"9NLDE1234555553221",
+        		name:"张三",
+        		sex:"男",
+        		status:"1",
+        		tel:"15196358795",
+        		role:"合作厂商",
+        	},
+        	{
+        		companyName:'XX实业有限公司',
+        		blCode:"9NLDE1234555553221",
+        		name:"张三",
+        		sex:"男",
+        		status:"1",
+        		tel:"15196358795",
+        		role:"合作厂商",
+        	},
+        ],
         filters: [
 	        {
 	          value: '',
@@ -100,11 +124,10 @@
         total: 0, //总条数
         currentPage: 1, //当前页
         pageSize: 15, //每页显示条数
-        userData:{
+        mfuserData:{
         	dialog:false,
         	title:"",
         	id:"",
-          isEdit:false,
         },
 			}
 		},
@@ -129,13 +152,14 @@
         }else{
           lastlogintime = '';
         }
-        this.$api.userList({
+        this.$api.supplierList({
           page:this.currentPage,
           limit:this.pageSize,
           keywords:this.filters[0].value,
           lastlogintime:lastlogintime,
         }).then(data =>{
           if(data.code == 0){
+            console.log(data.data,'9*/87954622');
             this.total = data.count;
             this.tableData = data.data;
           }else{
@@ -145,10 +169,9 @@
       },
       // 新增顶级菜单
       handleAdd(){
-      	this.userData.dialog = true;
-      	this.userData.title = "新增用户";
-      	this.userData.id = '';
-        this.userData.isEdit = false;
+      	this.mfuserData.dialog = true;
+      	this.mfuserData.title = "新增厂商用户";
+      	this.mfuserData.id = '';
       },
 		},
 	}

@@ -177,6 +177,15 @@ const router = new Router({
 				  children: null
 				},
 				{
+				  path: '/manufacturer/supplier',
+				  component: resolve => require(['@/views/manufacturer/ManufacturerSupplier'], resolve),
+				  name: 'ManufacturerSupplier',
+				  meta: {
+				    title: '供应商管理'
+				  },
+				  children: null
+				},
+				{
 				  path: '/message',
 				  component: resolve => require(['@/views/message/Message'], resolve),
 				  name: 'Message',
@@ -230,7 +239,7 @@ const router = new Router({
 // 导航守卫
 // 使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
 router.beforeEach((to, from, next) => {
-  if (to.path === '/login') {
+  if (to.path === '/' || to.path === '/login') {
     next();
   } else {
     let token = VueCookies.get('token');

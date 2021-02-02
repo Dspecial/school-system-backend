@@ -1,227 +1,102 @@
 <template>
-  <div class="resources-container">
+  <div class="user-container">
     <!-- 登录信息 -->
     <global-tips></global-tips>
-    <!-- 资源概况 -->
-		<el-card class="mt-3">
-			<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">资源概况</h4>
-			<el-row :gutter="20">
-				<template v-for="item in resources">
-					<el-col :span="12" class="status-item">
-						<div class="d-flex align-items-center justify-content-center p-2">
-							<img :src="item.src" alt="" width="80" height="80">
-							<div class="ml-3 text-center">
-								<span class="mb-2 d-inline-block opacity-60">{{item.title}}</span>
-								<p class="m-0 fs_24 text-primary">{{item.num}}/{{item.total}}</p>
-							</div>
-						</div>
-					</el-col>
-				</template>
-			</el-row>	
-		</el-card>
-    <!-- 资源列表 -->
+    <!-- 类别管理 -->
     <el-card class="mt-3">
-      <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
+      <data-tables-server :data="tableData" layout="tool, table" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
-          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">资源列表</h4>
+          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">类别管理</h4>
           <div class="d-flex align-items-center">
-          	<div class="mr-auto d-flex align-items-center">
-						  <el-select v-model="spValue" placeholder="请选择服务商">
-						    <el-option
-						      v-for="item in spOptions"
-						      :key="item.value"
-						      :label="item.label"
-						      :value="item.value">
-						    </el-option>
-						  </el-select>
-						  <el-select v-model="duValue" placeholder="请选择分配使用" class="ml-3">
-						    <el-option
-						      v-for="item in duOptions"
-						      :key="item.value"
-						      :label="item.label"
-						      :value="item.value">
-						    </el-option>
-						  </el-select>
-						  <el-select v-model="deptValue" placeholder="请选择管理部门" class="ml-3">
-						    <el-option
-						      v-for="item in deptOptions"
-						      :key="item.value"
-						      :label="item.label"
-						      :value="item.value">
-						    </el-option>
-						  </el-select>
-						  
-              <el-button type="primary" class="ml-3">查询</el-button>
-          	</div>
+            <div class="mr-auto d-flex align-items-center">
+              <!-- <el-input
+                placeholder="分类名"
+                prefix-icon="el-icon-search"
+                v-model="filters[0].value">
+              </el-input> -->
+            </div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增资源</el-button>
+              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增类别</el-button>
             </div>
           </div>
         </div>
-        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="id" label="类别编号"></el-table-column>
-        <el-table-column prop="categoryName" label="类别名称"></el-table-column>
-        <el-table-column prop="typeId" label="类容编号"></el-table-column>
-        <el-table-column prop="system" label="系统"></el-table-column>
-        <el-table-column prop="cpu" label="CPU"></el-table-column>
-        <el-table-column prop="ram" label="内存"></el-table-column>
-        <el-table-column prop="remark" label="备注" width="200"></el-table-column>
-        <el-table-column prop="distribution" label="分配使用" width="300"></el-table-column>
-        <el-table-column prop="dept" label="管理部门"></el-table-column>
-        <el-table-column prop="administrators" label="管理员"></el-table-column>
-        <el-table-column prop="serviceProvider" label="服务商"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="150" align="center">
+        <el-table-column prop="cate_name" label="分类名"></el-table-column>
+        <el-table-column prop="form_text" label="参数信息"></el-table-column>
+        <el-table-column prop="level" label="层级" width="80"></el-table-column>
+        <el-table-column prop="cname" label="创建人"></el-table-column>
+        <el-table-column prop="ename" label="最新编辑人"></el-table-column>
+        <el-table-column prop="createtime" label="创建时间"></el-table-column>
+        <el-table-column prop="updatetime" label="更新时间"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="250">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer">修改</span>
-            <span class="text-primary cursor-pointer ml-3">删除</span>
+            <span class="text-primary cursor-pointer" @click="editCate(scope.$index,scope.row)">编辑</span>
+            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
+            <span class="text-primary cursor-pointer ml-3" @click="handleParams(scope.$index,scope.row)" v-if="scope.row.level > 2">分配参数</span>
           </template>
         </el-table-column>
       </data-tables-server>
-      <resource-add :resourceData="resourceData"></resource-add>
     </el-card>
+    <cate-edit :cateData="cateData"></cate-edit>
+    <cate-params :paramsData="paramsData"></cate-params>
   </div>
 </template>
 
 <script>
   import GlobalTips from "@/components/GlobalTips";
-  import ResourceAdd from "./ResourceAdd";
+  import CateEdit from "./CateEdit";
+  import CateParams from "./CateParams";
 
-	export default {
+  export default {
     name: 'Cate',
-    components: {
-      GlobalTips,
-      ResourceAdd,
-    },
-    data() {
-      return {
-      	// 资源概况
-				resources:[
-					{
-						src:require("@/assets/images/index-resource4.png"),
-						title:"服务器(台)",
-						num:"8",
-						total:"100"
-					},
-					{
-						src:require("@/assets/images/index-resource2.png"),
-						title:"IP分配(个)",
-						num:"5",
-						total:"20"
-					},
-				],
-				// 服务商
-				spValue:"",
-				spOptions:[
-					{
-						label:"常州公司",
-						value:"1",
-					},
-					{
-						label:"北京公司",
-						value:"2",
-					},
-					{
-						label:"上海公司",
-						value:"3",
-					},
-				],
-				// 分配使用
-				duValue:"",
-				duOptions:[
-					{
-						label:"信息管理项目1",
-						value:"1",
-					},
-					{
-						label:"食堂管理项目2",
-						value:"2",
-					},
-				],
-				// 管理部门
-				deptValue:"",
-				deptOptions:[
-					{
-						label:"教务处",
-						value:"1",
-					},
-					{
-						label:"学工办",
-						value:"2",
-					},
-				],
-        tableProps: {
-          'max-height': 670,
-        },
-        tableData: [
-        	{
-            id:"10111",
-            categoryName:"服务器",
-            typeId:"10111102",
-        		system:"windows",
-        		cpu:"8",
-            ram:"16",
-            remark:"硬盘1T、带宽10M",
-            distribution:"信息管理项目1、食堂管理项目2",
-            dept:"教务处",
-            administrators:"小王",
-            serviceProvider:"常州xxx公司",
-        	},
-        	{
-            id:"10111",
-            categoryName:"服务器",
-            typeId:"10111102",
-        		system:"windows",
-        		cpu:"8",
-            ram:"16",
-            remark:"硬盘1T、带宽10M",
-            distribution:"信息管理项目1、食堂管理项目2",
-            dept:"教务处",
-            administrators:"小王",
-            serviceProvider:"常州xxx公司",
-        	},
-        	{
-            id:"10111",
-            categoryName:"服务器",
-            typeId:"10111102",
-        		system:"windows",
-        		cpu:"8",
-            ram:"16",
-            remark:"硬盘1T、带宽10M",
-            distribution:"信息管理项目1、食堂管理项目2",
-            dept:"教务处",
-            administrators:"小王",
-            serviceProvider:"常州xxx公司",
-        	},
-        ],
-        filters: [
-	        {
-	          value: '',
-	          prop: 'name'
-	        }
-        ],
-        total: 0, //总条数
-        currentPage: 1, //当前页
-        pageSize: 15, //每页显示条数
-        // 新增资源
-        resourceData:{
-          dialog:false,
-          title:"",
-          id:","
-        },
-      }
-    },
     provide() {
       return {
         loadData: this.loadData
       }
     },
-    computed: {
+    components: {
+      GlobalTips,
+      CateEdit,
+      CateParams
+    },
+    data () {
+      return {
+        isShow:false,
+        tableProps: {
+          'default-expand-all':true,
+          'row-key':"id",
+          'tree-props':{
+            'children': 'children', 
+            'hasChildren': 'hasChildren'
+          }
+        },
+        tableData: [],
+        filters: [
+          {
+            value: '',
+            prop: 'name'
+          }
+        ],
+        total: 0, //总条数
+        currentPage: 1, //当前页
+        pageSize: 15, //每页显示条数
+        cateData:{
+          dialog:false,
+          title:"",
+          id:"",
+          isEdit:false,
+        },
+        paramsData:{
+          dialog:false,
+          title:"",
+          id:"",
+        },
+      }
     },
     mounted(){
-      this.total = this.tableData.length;
+
     },
-    methods: {
+    methods:{
       // 自增序列
       indexMethod(index) { 
         return ++index;
@@ -229,31 +104,59 @@
       // 加载数据
       loadData(queryInfo) { 
         let _this = this;
-        if (queryInfo != null) {
-          this.currentPage = queryInfo.page;
-          this.pageSize = queryInfo.pageSize;
-        }
-        this.total = this.tableData.length;
-        // this.MyAxios.post(this.globalUrl.baseURL + "/forklift/achievements/achievements_list", {
-        //   page: this.currentPage,
-        //   limit: this.pageSize,
-        //   name: this.filters[0].value
-        // }).then(data => {
-        //   if (data) {
-        //     if (data.code == 0) {
-        //       _this.total = data.count;
-        //       _this.tableData = data.data;
-        //     } else {
-        //       _this.$message.error("接口失败");
-        //     }
-        //   }
-        // })
+        this.$api.cateList({
+        }).then(data=>{
+          if(data.code == 0){
+            this.tableData = data.data;
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
       },
-      // 申请项目
+
+      // 新增类别
       handleAdd(){
-        this.resourceData.dialog = true;
-        this.resourceData.title = "新增资源";
-        this.resourceData.id = "";
+        this.cateData.dialog = true;
+        this.cateData.title = '新增类别';
+        this.cateData.isEdit = false;
+      },
+
+      // 分配参数
+      handleParams(index,row){
+        this.paramsData.dialog = true;
+        this.paramsData.title = '分配参数';
+        this.paramsData.id = row.id;
+      },
+
+      // 编辑
+      editCate(index,row){
+        this.cateData.dialog = true;
+        this.cateData.title = '编辑类别';
+        this.cateData.id = row.id;
+        this.cateData.isEdit = true;
+      },
+
+      // 删除
+      handleDel(index,row){
+        this.$confirm("此操作将永久删除该分类, 是否继续?", "提示", {
+          type: 'warning'
+        }).then(() => {
+          this.$api.cateDel({
+            id:row.id
+          }).then(data=>{ 
+             if(data.code == 0){
+                this.$message({
+                  message: "删除分类成功!",
+                  type: 'success'
+                });
+                this.loadData();
+             }else{
+               this.$message.error(data.msg);
+             }
+          })
+        }).catch(() => {
+
+        });
       },
 
     },

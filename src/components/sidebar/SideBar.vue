@@ -13,12 +13,19 @@
 <script>
   import Menu from './Menu.vue'
   import { sideBarData } from './sideBarData.js'
+  import { fixedData } from './fixedMenu.js'
   import { globalBus } from '@/core/globalBus';
 
   export default {
+    provide() {// 向兄弟组件传递重载菜单的方法
+      return{
+        reloadMenu: this.loadMenu
+      }
+    },
+    name:"SideBar",
 		data () {
 			return {
-        currentMenu: 'personnelList', // SideBar里面当前高亮菜单的默认值
+        currentMenu: 'index', // SideBar里面当前高亮菜单的默认值
 				menuDatas: sideBarData.menu,
         isCollapse:false,
 			}
@@ -32,6 +39,11 @@
 		created () {
 			this.setCurrentMenu(); // 刷新时，高亮菜单
       this.mediaCollapse();
+      
+      // 修改了路由之后刷新菜单
+      globalBus.$on('reMenu', () => {
+        this.loadMenu()
+      });
 		},
     inject: ['reload'], // 注入重载的功能（注入依赖
 		watch: {
@@ -57,7 +69,8 @@
         this.$api.menu({
         }).then(data =>{
           if(data.code == 0){
-            this.menuDatas = data.data
+            var fixedMenu = fixedData.menu;// 写死的菜单
+            this.menuDatas = [...fixedMenu,...data.data];
           }else{
             const h = this.$createElement;
             this.$notify({

@@ -7,53 +7,41 @@
 	  @closed="closedEdit('userForm')"
 	  :before-close="handleClose">
 	  <el-form :model="userForm" :rules="rules" ref="userForm" label-width="120px">
-	  	<el-form-item label="工号" prop="employeeNumber">
-		    <el-input v-model="userForm.employeeNumber" placeholder="请输入学工号"></el-input>
+	  	<el-form-item label="工号" prop="job_number">
+		    <el-input v-model="userForm.job_number" placeholder="请输入工号"></el-input>
 		  </el-form-item>
-		  <el-form-item label="所属部门" prop="dept">
-		    <el-select v-model="userForm.dept" filterable placeholder="下拉选择或搜索输入" class="w-100">
-			    <el-option label="学工部" value="1"></el-option>
-			    <el-option label="教务处" value="2"></el-option>
-			  </el-select>
-		  </el-form-item>
+
 		  <el-form-item label="真实姓名" prop="name">
 		    <el-input v-model="userForm.name" placeholder="请输入姓名"></el-input>
 		  </el-form-item>
-		  <el-form-item label="性别" prop="sex">
+
+		  <el-form-item label="所属角色" prop="pid">
+			  <el-cascader class="w-100" v-model="userForm.pid" placeholder="请选择所属角色" :show-all-levels="false" clearable :options="roleParentOptions" :props="{value:'id',label:'name',children:'children',checkStrictly: true}" @change="handleChange">
+			  </el-cascader>
+		  </el-form-item>
+
+		  <el-form-item label="性别">
 		    <el-radio-group v-model="userForm.sex">
-			    <el-radio :label="3">男</el-radio>
-			    <el-radio :label="6">女</el-radio>
+			    <el-radio :label="1">男</el-radio>
+			    <el-radio :label="2">女</el-radio>
 			  </el-radio-group>
 		  </el-form-item>
-		  <el-form-item label="用户角色" prop="role">
-		    <el-select v-model="userForm.role" filterable placeholder="下拉选择或搜索输入" class="w-100">
-			    <el-option label="超级管理员" value="1"></el-option>
-			    <el-option label="厂商用户" value="2"></el-option>
-			    <el-option label="部门负责人" value="3"></el-option>
-			  </el-select>
+
+		  <el-form-item label="设置密码" prop="password">
+		    <el-input v-model="userForm.password" placeholder="请输入密码,默认123456"></el-input>
 		  </el-form-item>
-		  <el-form-item label="数据权限" prop="auth">
-		    <el-radio-group v-model="userForm.auth">
-			    <el-radio :label="3">全校</el-radio>
-			    <el-radio :label="6">部门权限</el-radio>
-			    <el-radio :label="9">个人</el-radio>
-			  </el-radio-group>
-		  </el-form-item>
-		  <el-form-item label="已选权限部门" prop="selectedDept" class="auth_dept_select">
-		    <el-select v-model="userForm.selectedDept" multiple placeholder="请选择已选权限部门" class="w-100">
-			    <el-option label="科技处" value="1"></el-option>
-			    <el-option label="教育处" value="2"></el-option>
-			    <el-option label="信息中心" value="3"></el-option>
-			  </el-select>
-		  </el-form-item>
-		  <el-form-item label="设置密码" prop="passWord">
-		    <el-input v-model="userForm.passWord" placeholder="请输入密码"></el-input>
-		  </el-form-item>
-		  <el-form-item label="手机号码" prop="tel">
-		    <el-input v-model="userForm.tel" placeholder="请输入手机号码"></el-input>
+
+		  <el-form-item label="手机号码" prop="phone">
+		    <el-input v-model="userForm.phone" placeholder="请输入手机号码"></el-input>
 		  </el-form-item>
 		  <el-form-item label="电子邮箱" prop="email">
 		    <el-input v-model="userForm.email" placeholder="请输入电子邮箱"></el-input>
+		  </el-form-item>
+		  <el-form-item label="是否禁用">
+		    <el-radio-group v-model="userForm.is_normal">
+			    <el-radio :label="0">正常</el-radio>
+			    <el-radio :label="6">禁用</el-radio>
+			  </el-radio-group>
 		  </el-form-item>
 	  </el-form>
 	  <span slot="footer" class="dialog-footer">
@@ -78,39 +66,26 @@
 	    };
 			return {
 				userForm:{
-					employeeNumber:"",
-					dept:"",
+					job_number:"",
 					name:"",
+					pid:"",
+					is_normal:"",
 					sex:"",
-					role:"",
-					auth:"",
-					selectedDept:[],
-					passWord:"",
-					tel:"",
+					password:"",
+					phone:"",
 					email:"",
 				},
-				isEdit:false,
+				roleParentOptions:[
+				],
 				rules: {
-          employeeNumber: [
-            { required: true, message: '请输入学工号', trigger: 'blur' }
-          ],
-          dept: [
-            { required: true, message: '请下拉选择或搜索输入所属部门', trigger: 'change' }
+          job_number: [
+            { required: true, message: '请输入职工号', trigger: 'blur' }
           ],
           name: [
             { required: true, message: '请输入姓名', trigger: 'blur' },
           ],
-          sex: [
-            { required: true, message: '请选择性别', trigger: 'change' }
-          ],
-          role: [
+          pid: [
             { required: true, message: '请下拉选择或搜索输入角色', trigger: 'change' }
-          ],
-          auth: [
-            { required: true, message: '请选择权限', trigger: 'change' }
-          ],
-          selectedDept: [
-            { required: true, message: '请选择已选权限部门', trigger: 'change' }
           ],
           passWord: [
             { required: true, message: '请输入密码', trigger: 'blur' },
@@ -126,23 +101,40 @@
 		        	}
       			}
           ],
-          tel: [
-            { required: true, validator: this.commonJs.checkPhone, trigger: 'blur' },
-          ],
-          email: [
-          	{ required: true, validator: this.commonJs.checkEmail, trigger: 'blur' },
-          ],
+          // phone: [
+          //   { validator: this.commonJs.checkPhone, trigger: 'blur' },
+          // ],
+          // email: [
+          // 	{ validator: this.commonJs.checkEmail, trigger: 'blur' },
+          // ],
         }
 			}
 		},
 		components: {},
 		mounted(){
-			console.log(this.commonJs);
+
 		},
 		methods:{
+			handleChange(value) {
+        // console.log(value,'99999');
+      },
+
+			// 获取上级角色
+			initRoleParent(){
+				this.$api.roleParent({
+        }).then(data=>{
+          if(data.code == 0){
+          	this.roleParentOptions = data.data;
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
+			},
+
 			// dialog初始化
 			openEdit(){
-				
+				var _this = this;
+				this.initRoleParent();
 			},
 			// dialog关闭
 			closedEdit(formName){
@@ -158,9 +150,27 @@
 				var _this = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-          	_this.handleClose();
-						_this.resetForm(formName);
-            alert('submit!');
+          	var psw;
+          	if(this.userForm.password){
+          		psw = this.userForm.password;
+          	}else{
+          		psw = '123456';
+          	}
+          	this.$api.userAdd({ // 保存失败
+          		name:this.userForm.name,
+          		job_number:this.userForm.job_number,
+          		password:psw,
+          		group_ids:this.userForm.pid[this.userForm.pid.length - 1],
+          		phone:this.userForm.phone,
+          		email:this.userForm.email,
+          		is_normal:this.userForm.is_normal,
+          	}).then(data =>{
+          		if(data.code == 0){
+								_this.handleClose();
+								_this.resetForm(formName);
+								_this.loadData();
+          		}
+          	});
           } else {
             console.log('error submit!!');
             return false;

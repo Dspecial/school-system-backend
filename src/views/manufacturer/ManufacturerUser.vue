@@ -2,22 +2,32 @@
 	<div class="user-container">
 		<!-- 登录信息 -->
     <global-tips></global-tips>
-    <!-- 厂商用户管理 -->
+    <!-- 厂商管理 -->
     <el-card class="mt-3">
       <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
-          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">厂商用户管理</h4>
+          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">厂商管理</h4>
           <div class="d-flex align-items-center">
           	<div class="mr-auto d-flex align-items-center">
-          		<el-input
-    				    placeholder="公司名称/营业执照编码/负责人姓名/手机号"
-    				    prefix-icon="el-icon-search"
-    				    v-model="filters[0].value">
-    				  </el-input>
-              <el-button type="primary" class="ml-3">查询</el-button>
-          	</div>
+              <el-input
+                class="w-40"
+                placeholder="公司名称/营业执照编码/负责人姓名/手机号"
+                prefix-icon="el-icon-search"
+                v-model="filters[0].value">
+              </el-input>
+              <el-date-picker
+                class="ml-3 w-40"
+                v-model="filters[1].value"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                type="daterange"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                placeholder="选择上次登录时间">
+              </el-date-picker>
+            </div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增用户</el-button>
+              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增厂商</el-button>
             </div>
           </div>
         </div>
@@ -105,7 +115,11 @@
 	        {
 	          value: '',
 	          prop: 'name'
-	        }
+	        },
+          {
+            value: '',
+            prop: 'date'
+          }
         ],
         total: 0, //总条数
         currentPage: 1, //当前页
@@ -132,21 +146,26 @@
           this.currentPage = queryInfo.page;
           this.pageSize = queryInfo.pageSize;
         }
-        this.total = this.tableData.length;
-        // this.MyAxios.post(this.globalUrl.baseURL + "/forklift/achievements/achievements_list", {
-        //   page: this.currentPage,
-        //   limit: this.pageSize,
-        //   name: this.filters[0].value
-        // }).then(data => {
-        //   if (data) {
-        //     if (data.code == 0) {
-        //       _this.total = data.count;
-        //       _this.tableData = data.data;
-        //     } else {
-        //       _this.$message.error("接口失败");
-        //     }
-        //   }
-        // })
+        var timeRange = this.filters[1].value;
+        if(timeRange){
+          var lastlogintime = timeRange.join("~");
+        }else{
+          lastlogintime = '';
+        }
+        this.$api.companyList({
+          page:this.currentPage,
+          limit:this.pageSize,
+          keywords:this.filters[0].value,
+          lastlogintime:lastlogintime,
+        }).then(data =>{
+          if(data.code == 0){
+            console.log(data.data,'9*/87954622');
+            this.total = data.count;
+            this.tableData = data.data;
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
       },
       // 新增顶级菜单
       handleAdd(){

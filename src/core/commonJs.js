@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-31 10:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2020-12-31 11:11:46
+* @Last Modified time: 2021-02-02 19:05:42
 */
 let commonJs = {
 	// 验证密码不含特殊字符
@@ -33,29 +33,41 @@ let commonJs = {
 
 	// 验证手机号
 	checkPhone(rule, value, callback){
-    if (!value) {
-      return callback(new Error('手机号不能为空'));
+    // if (!value) {
+    //   return callback(new Error('手机号不能为空'));
+    // } else {
+    //   const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+    //   if (reg.test(value)) {
+    //     callback();
+    //   } else {
+    //     return callback(new Error('请输入正确的手机号'));
+    //   }
+    // }
+    const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+    if (reg.test(value)) {
+      callback();
     } else {
-      const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
-      if (reg.test(value)) {
-        callback();
-      } else {
-        return callback(new Error('请输入正确的手机号'));
-      }
+      return callback(new Error('请输入正确的手机号'));
     }
   },
 
   // 验证邮箱
 	checkEmail(rule, value, callback){
-    if (!value) {
-      return callback(new Error('邮箱不能为空'));
+    // if (!value) {
+    //   return callback(new Error('邮箱不能为空'));
+    // } else {
+    //   const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+    //   if (reg.test(value)) {
+    //     callback();
+    //   } else {
+    //     return callback(new Error('请输入正确的邮箱格式'));
+    //   }
+    // }
+    const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+    if (reg.test(value)) {
+      callback();
     } else {
-      const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
-      if (reg.test(value)) {
-        callback();
-      } else {
-        return callback(new Error('请输入正确的邮箱格式'));
-      }
+      return callback(new Error('请输入正确的邮箱格式'));
     }
   },
 

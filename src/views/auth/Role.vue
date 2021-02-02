@@ -4,7 +4,7 @@
     <global-tips></global-tips>
     <!-- 角色管理 -->
     <el-card class="mt-3">
-      <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
+      <data-tables-server :data="tableData" layout="tool, table" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
           <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">角色管理</h4>
           <div class="d-flex align-items-center">
@@ -21,9 +21,8 @@
             </div>
           </div>
         </div>
-        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="roleName" label="角色名称"></el-table-column>
+        <el-table-column prop="name" label="角色名称"></el-table-column>
         <el-table-column prop="status" label="状态">
         	<template slot-scope="scope">
 	        	<el-switch
@@ -35,23 +34,26 @@
 						</el-switch>
         	</template>
         </el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
           	<span class="text-primary cursor-pointer" @click="authSetting()">权限配置</span>
             <span class="text-primary cursor-pointer ml-3" @click="authPerson()">人员配置</span>
-            <span class="text-primary cursor-pointer ml-3">修改</span>
+            <span class="text-primary cursor-pointer ml-3" @click="editRole(scope.$index,scope.row)">编辑</span>
             <span class="text-primary cursor-pointer ml-3">删除</span>
           </template>
         </el-table-column>
       </data-tables-server>
     </el-card>
-    <role-authsetting :roleData="roleData"></role-authsetting>
+    <role-edit :roleData="roleData"></role-edit>
+    <role-authsetting :roleSettingData="roleSettingData"></role-authsetting>
     <role-authperson :rolePersonData="rolePersonData"></role-authperson>
 	</div>
 </template>
 
 <script>
 	import GlobalTips from "@/components/GlobalTips";
+  import RoleEdit from "./RoleEdit";
 	import RoleAuthsetting from "./RoleAuthsetting";
   import RoleAuthperson from "./RoleAuthperson";
 
@@ -64,6 +66,7 @@
     },
 		components: {
 			GlobalTips,
+      RoleEdit,
 			RoleAuthsetting,
       RoleAuthperson,
 		},
@@ -72,24 +75,7 @@
 				tableProps: {
           'max-height': 670,
         },
-        tableData: [
-        	{
-        		roleName:"超级管理员",
-        		status:"1",
-        	},
-        	{
-        		roleName:"厂商用户",
-        		status:"1",
-        	},
-        	{
-        		roleName:"部门负责人",
-        		status:"0",
-        	},
-        	{
-        		roleName:"部门人员",
-        		status:"0",
-        	}
-        ],
+        tableData: [],
         filters: [
 	        {
 	          value: '',
@@ -103,6 +89,12 @@
         	dialog:false,
         	title:"",
         	id:"",
+          isEdit:false,
+        },
+        roleSettingData:{
+          dialog:false,
+          title:"",
+          id:"",
         },
         rolePersonData:{
           dialog:false,
@@ -126,33 +118,34 @@
           this.currentPage = queryInfo.page;
           this.pageSize = queryInfo.pageSize;
         }
-        this.total = this.tableData.length;
-        // this.MyAxios.post(this.globalUrl.baseURL + "/forklift/achievements/achievements_list", {
-        //   page: this.currentPage,
-        //   limit: this.pageSize,
-        //   name: this.filters[0].value
-        // }).then(data => {
-        //   if (data) {
-        //     if (data.code == 0) {
-        //       _this.total = data.count;
-        //       _this.tableData = data.data;
-        //     } else {
-        //       _this.$message.error("接口失败");
-        //     }
-        //   }
-        // })
+        this.$api.roleList({
+        }).then(data =>{
+          if(data.code == 0){
+            this.tableData = data.data;
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
       },
-      // 新增顶级菜单
+      // 新增角色
       handleAdd(){
       	this.roleData.dialog = true;
-      	this.roleData.title = "新增用户";
+      	this.roleData.title = "新增角色";
       	this.roleData.id = '';
+        this.roleData.isEdit = false;
+      },
+      // 编辑角色
+      editRole(index,row){
+        this.roleData.dialog = true;
+        this.roleData.title = "编辑角色";
+        this.roleData.id = row.id;
+        this.roleData.isEdit = true;
       },
       // 权限配置
       authSetting(){
-      	this.roleData.dialog = true;
-      	this.roleData.title = "权限配置";
-      	this.roleData.id = '';
+      	this.roleSettingData.dialog = true;
+      	this.roleSettingData.title = "权限配置";
+      	this.roleSettingData.id = '';
       },
       // 人员配置
       authPerson(){
