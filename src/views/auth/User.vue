@@ -34,30 +34,31 @@
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
         <el-table-column prop="job_number" label="工号"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="rulename" label="所属角色"></el-table-column>
         <el-table-column prop="sex" label="性别">
           <template slot-scope="scope">
             <span v-if="scope.row.sex == 1">男</span>
             <span v-if="scope.row.sex == 2">女</span>
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="状态">
-        	<template slot-scope="scope">
-	        	<el-switch
-						  v-model="scope.row.type"
-						  active-value="1"
-						  inactive-value="0"
-						  active-color="#005DDA"
-						  inactive-color="#969191">
-						</el-switch>
-        	</template>
-        </el-table-column>
+        <!-- <el-table-column prop="type" label="状态">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.type"
+              active-value="1"
+              inactive-value="0"
+              active-color="#005DDA"
+              inactive-color="#969191">
+            </el-switch>
+          </template>
+        </el-table-column> -->
         <el-table-column prop="phone" label="电话"></el-table-column>
-        <el-table-column prop="depart_name" label="所在部门"></el-table-column>
+        <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="lastlogintime" label="上次登录时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="250" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer">修改</span>
-            <span class="text-primary cursor-pointer ml-3">删除</span>
+            <span class="text-primary cursor-pointer" @click="editUser(scope.$index,scope.row)" v-if="scope.row.id != 1">编辑</span>
+            <span class="text-primary cursor-pointer ml-3" v-if="scope.row.id != 1">删除</span>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -143,12 +144,20 @@
           }
         });
       },
-      // 新增顶级菜单
+      // 新增用户
       handleAdd(){
       	this.userData.dialog = true;
       	this.userData.title = "新增用户";
       	this.userData.id = '';
         this.userData.isEdit = false;
+      },
+
+      // 编辑用户
+      editUser(index,row){
+        this.userData.dialog = true;
+        this.userData.title = "编辑用户";
+        this.userData.id = row.id;
+        this.userData.isEdit = true;
       },
 		},
 	}

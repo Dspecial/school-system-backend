@@ -14,7 +14,6 @@
     				    prefix-icon="el-icon-search"
     				    v-model="filters[0].value">
     				  </el-input>
-              <el-button type="primary" class="ml-3">查询</el-button>
           	</div>
             <div class="ml-auto">
               <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增角色</el-button>
@@ -37,10 +36,9 @@
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-          	<span class="text-primary cursor-pointer" @click="authSetting()">权限配置</span>
-            <span class="text-primary cursor-pointer ml-3" @click="authPerson()">人员配置</span>
-            <span class="text-primary cursor-pointer ml-3" @click="editRole(scope.$index,scope.row)">编辑</span>
-            <span class="text-primary cursor-pointer ml-3">删除</span>
+            <span class="text-primary cursor-pointer" @click="authPerson()" v-if="scope.row.id != 1">人员配置</span>
+            <span class="text-primary cursor-pointer ml-3" @click="editRole(scope.$index,scope.row)" v-if="scope.row.id != 1">编辑</span>
+            <span class="text-primary cursor-pointer ml-3" v-if="scope.row.id != 1">删除</span>
           </template>
         </el-table-column>
       </data-tables-server>

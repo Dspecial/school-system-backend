@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2021-01-15 16:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-02-02 17:16:02
+* @Last Modified time: 2021-02-03 19:13:42
 */
 
 import {post,postJson} from '@/core/axios.js';
@@ -53,16 +53,16 @@ export default {
 	/*
 		***后台权限管理
 	 */
-	// 管理员列表(没对完)
+	// 人员列表
 	userList: p => post('/backstage/adminauth.admin/index', p),
-	// 编辑管理员（无接口）
-	userEdit: p => post('/backstage/adminauth.admin/index', p),
-	// 新增管理员
+	// 编辑人员列表
+	userEdit: p => post('/backstage/adminauth.admin/edit', p),
+	// 新增人员列表
 	userAdd: p => post('/backstage/adminauth.admin/add', p),
 
-	// 角色列表(没对完)
+	// 角色列表
 	roleList: p => post('/backstage/adminauth.group/index', p),
-	// 编辑角色
+	// 编辑角色（没对完）
 	roleEdit: p => post('/backstage/adminauth.group/edit', p),
 	// 新增角色
 	roleAdd: p => post('/backstage/adminauth.group/add', p),

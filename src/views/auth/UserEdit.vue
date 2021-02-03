@@ -15,9 +15,16 @@
 		    <el-input v-model="userForm.name" placeholder="请输入姓名"></el-input>
 		  </el-form-item>
 
-		  <el-form-item label="所属角色" prop="pid">
-			  <el-cascader class="w-100" v-model="userForm.pid" placeholder="请选择所属角色" :show-all-levels="false" clearable :options="roleParentOptions" :props="{value:'id',label:'name',children:'children',checkStrictly: true}" @change="handleChange">
-			  </el-cascader>
+		  <el-form-item label="所属角色" prop="group_ids">
+				<el-select v-model="userForm.group_ids" multiple placeholder="请选择所属角色" class="w-100">
+			    <el-option
+			      v-for="item in roleParentOptions"
+			      :key="item.id"
+			      :label="item.name"
+			      :value="item.id">
+			      {{item.cate_name?item.cate_name+item.name:item.name}}
+			    </el-option>
+			  </el-select>
 		  </el-form-item>
 
 		  <el-form-item label="性别">
@@ -27,8 +34,12 @@
 			  </el-radio-group>
 		  </el-form-item>
 
-		  <el-form-item label="设置密码" prop="password">
+		  <el-form-item label="设置密码" prop="password" v-if="!userData.isEdit">
 		    <el-input v-model="userForm.password" placeholder="请输入密码,默认123456"></el-input>
+		  </el-form-item>
+
+		  <el-form-item label="修改密码" prop="password2" v-else>
+		    <el-input v-model="userForm.password2" placeholder="请修改密码,不填写默认不修改"></el-input>
 		  </el-form-item>
 
 		  <el-form-item label="手机号码" prop="phone">
@@ -68,10 +79,11 @@
 				userForm:{
 					job_number:"",
 					name:"",
-					pid:"",
+					group_ids:[],
 					is_normal:"",
 					sex:"",
 					password:"",
+					password2:"",
 					phone:"",
 					email:"",
 				},
@@ -84,7 +96,7 @@
           name: [
             { required: true, message: '请输入姓名', trigger: 'blur' },
           ],
-          pid: [
+          group_ids: [
             { required: true, message: '请下拉选择或搜索输入角色', trigger: 'change' }
           ],
           passWord: [
@@ -135,6 +147,27 @@
 			openEdit(){
 				var _this = this;
 				this.initRoleParent();
+				if(this.userData.isEdit){ // 编辑
+					this.$api.userEdit({
+						id:this.userData.id,
+						function_type:2,
+					}).then(data => {
+						if(data.code == 0){
+								this.userForm.id = data.data.id;
+								this.userForm.job_number = data.data.job_number;
+								this.userForm.name = data.data.name;
+								this.userForm.group_ids = data.data.group_arr;
+								this.userForm.sex = data.data.sex;
+								this.userForm.phone = data.data.phone;
+								this.userForm.email = data.data.email;
+								this.userForm.is_normal = data.data.is_normal;
+						}else{
+							this.$message.error(data.msg);
+						}
+					})
+				}else{ // 新增
+					
+				}
 			},
 			// dialog关闭
 			closedEdit(formName){
@@ -150,27 +183,51 @@
 				var _this = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-          	var psw;
-          	if(this.userForm.password){
-          		psw = this.userForm.password;
-          	}else{
-          		psw = '123456';
+          	if(this.userData.isEdit){ // 编辑后提交
+          		this.$api.userEdit({
+          			id:this.userData.id,
+	          		name:this.userForm.name,
+	          		job_number:this.userForm.job_number,
+	          		password:this.userForm.password2,
+	          		group_ids:this.userForm.group_ids.join(","),
+	          		phone:this.userForm.phone,
+	          		email:this.userForm.email,
+	          		is_normal:this.userForm.is_normal,
+	          		function_type:1,
+	          	}).then(data =>{
+	          		if(data.code == 0){
+									_this.handleClose();
+									_this.resetForm(formName);
+									_this.loadData();
+	          		}else{
+	          			this.$message.error(data.msg);
+	          		}
+	          	});
+          	}else{ // 新增后提交
+          		var psw;
+          		if(this.userForm.password){
+	          		psw = this.userForm.password;
+	          	}else{
+	          		psw = '123456';
+	          	}
+          		this.$api.userAdd({
+	          		name:this.userForm.name,
+	          		job_number:this.userForm.job_number,
+	          		password:psw,
+	          		group_ids:this.userForm.group_ids.join(","),
+	          		phone:this.userForm.phone,
+	          		email:this.userForm.email,
+	          		is_normal:this.userForm.is_normal,
+	          	}).then(data =>{
+	          		if(data.code == 0){
+									_this.handleClose();
+									_this.resetForm(formName);
+									_this.loadData();
+	          		}else{
+	          			this.$message.error(data.msg);
+	          		}
+	          	});
           	}
-          	this.$api.userAdd({ // 保存失败
-          		name:this.userForm.name,
-          		job_number:this.userForm.job_number,
-          		password:psw,
-          		group_ids:this.userForm.pid[this.userForm.pid.length - 1],
-          		phone:this.userForm.phone,
-          		email:this.userForm.email,
-          		is_normal:this.userForm.is_normal,
-          	}).then(data =>{
-          		if(data.code == 0){
-								_this.handleClose();
-								_this.resetForm(formName);
-								_this.loadData();
-          		}
-          	});
           } else {
             console.log('error submit!!');
             return false;

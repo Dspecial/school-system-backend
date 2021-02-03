@@ -10,9 +10,16 @@
 	  	<el-form-item label="角色名称" prop="name">
 		    <el-input v-model="roleForm.name" placeholder="请输入角色名称"></el-input>
 		  </el-form-item>
-		  <el-form-item label="上级角色" prop="pid_all">
-		    <el-cascader class="w-100" v-model="roleForm.pid_all" placeholder="请选择所属上级" :show-all-levels="false" clearable :options="roleParentOptions" :props="{value:'id',label:'name',children:'children',checkStrictly: true}" @change="handleChange">
-		    </el-cascader>
+		  <el-form-item label="上级角色" prop="pid">
+		    <el-select v-model="roleForm.pid" placeholder="请选择上级角色" class="w-100" @change="handleChange">
+			    <el-option
+			      v-for="item in roleParentOptions"
+			      :key="item.id"
+			      :label="item.name"
+			      :value="item.id">
+			      {{item.cate_name?item.cate_name+item.name:item.name}}
+			    </el-option>
+			  </el-select>
 		  </el-form-item>
 		  <el-form-item label="权限配置" v-if="isAuth">
 			  <el-tree
@@ -48,8 +55,8 @@
 				roleForm:{
 					id:"",
 					name:"",
-					pid_all:"",
-					auth:"",
+					pid:"",
+					auth:[],
 					remark:"",
 				},
 				roleParentOptions:[
@@ -64,7 +71,7 @@
           name: [
             { required: true, message: '请输入角色名称', trigger: 'blur' }
           ],
-          pid_all: [
+          pid: [
             { required: true, message: '请选择上级角色', trigger: 'change' }
           ],
           auth: [
@@ -79,12 +86,8 @@
 		},
 		methods:{
 			handleChange(value) {
-        // console.log(value,'99999');
-        if(value.length > 0){
-					this.isAuth = true;
-        	var id = value[value.length -1];
-        	this.initRoleAuth(id);
-				}
+        this.isAuth = true;
+        this.initRoleAuth(value);
       },
 			// 获取上级角色
 			initRoleParent(){
@@ -129,17 +132,13 @@
 							this.roleForm.id = data.data.id;
 							this.roleForm.name = data.data.name;
 							this.roleForm.pid = data.data.pid;
-							
-							// var all_parent = data.data.all_parent.reverse(); // 需要返回一个数组all_parent
-							var all_parent =  [1].reverse();
-							this.roleForm.pid_all = all_parent;
-
 							this.isAuth = true;
 							this.initRoleAuth(data.data.pid);
 
+							// dxx:mark // 返回的时候只要返回本身的id,不需要父级
 							var rules = data.data.rules.split(',').map(Number);
 							console.log(rules,'rules');
-							this.roleForm.auth = [3, 4, 5, 39]; // 返回的时候只要返回本身的id,不需要父级
+							this.roleForm.auth = [3, 4, 5, 39]; 
 							
 						}else{
 							this.$message.error(data.msg);
@@ -162,19 +161,17 @@
 			submitForm(formName) {
 				console.log(this.roleForm.auth,'roleForm.auth');
 				var _this = this;
-				var all = this.roleForm.pid_all;
-				if(all.length>0){
-					var halfNode = this.$refs.authTree.getHalfCheckedKeys();
-	        var checkedNode = this.$refs.authTree.getCheckedKeys();
-	        var allTreeNode = [...halfNode,...checkedNode].join(',');
-				}
+				var halfNode = this.$refs.authTree.getHalfCheckedKeys();
+        var checkedNode = this.$refs.authTree.getCheckedKeys();
+        var allTreeNode = [...halfNode,...checkedNode].join(',');
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.roleData.isEdit){ // 编辑后提交
           		this.$api.roleEdit({
           			id:this.roleForm.id,
 								name:this.roleForm.name,
-								pid:all[all.length-1],
+								pid:this.roleForm.pid,
 								rules:allTreeNode,
 								func_type:1,
 							}).then(data => {
@@ -190,7 +187,7 @@
           	}else{ // 新增后提交
           		this.$api.roleAdd({
 								name:this.roleForm.name,
-								pid:all[all.length-1],
+								pid:this.roleForm.pid,
 								rules:allTreeNode,
 							}).then(data => {
 								if(data.code == 0){
