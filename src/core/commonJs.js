@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-31 10:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-02-02 19:05:42
+* @Last Modified time: 2021-02-04 15:05:33
 */
 let commonJs = {
 	// 验证密码不含特殊字符
@@ -98,6 +98,16 @@ let commonJs = {
       }
     }
   },
+
+  // 验证密码
+  checkPassword(rule, value, callback){
+    var passwordreg = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,16}/
+    if (!passwordreg.test(value)) {
+      callback(new Error('密码必须由数字、字母、特殊字符组合,请输入6-16位'))
+    }else{
+      callback()
+    }
+  }
 
 };
 export default commonJs;

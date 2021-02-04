@@ -345,9 +345,7 @@
 									this.$message.error(data.msg);
 								}
 							});
-
           	}
-          	
           } else {
             console.log('error submit!!');
             return false;

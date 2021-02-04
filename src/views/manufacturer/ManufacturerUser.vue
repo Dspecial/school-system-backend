@@ -11,7 +11,7 @@
           	<div class="mr-auto d-flex align-items-center">
               <el-input
                 class="w-40"
-                placeholder="公司名称/营业执照编码/负责人姓名/手机号"
+                placeholder="公司名称/负责人姓名"
                 prefix-icon="el-icon-search"
                 v-model="filters[0].value">
               </el-input>
@@ -31,29 +31,33 @@
             </div>
           </div>
         </div>
-        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="companyName" label="公司名称"></el-table-column>
-        <el-table-column prop="blCode" label="营业执照编码"></el-table-column>
+        <el-table-column prop="job_number" label="公司名称"></el-table-column>
+        <el-table-column prop="sys_id" label="营业执照编码"></el-table-column>
         <el-table-column prop="name" label="负责人姓名"></el-table-column>
-        <el-table-column prop="sex" label="性别"></el-table-column>
-        <el-table-column prop="status" label="状态">
+        <el-table-column prop="sex" label="性别">
+          <template slot-scope="scope">
+            <span v-if="scope.row.sex == 1">男</span>
+            <span v-if="scope.row.sex == 2">女</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="is_normal" label="状态">
         	<template slot-scope="scope">
 	        	<el-switch
-						  v-model="scope.row.status"
-						  active-value="1"
-						  inactive-value="0"
+						  v-model="scope.row.is_normal"
+						  active-value="0"
+						  inactive-value="1"
 						  active-color="#52C418"
 						  inactive-color="#969191">
 						</el-switch>
         	</template>
         </el-table-column>
-        <el-table-column prop="tel" label="电话"></el-table-column>
-        <el-table-column prop="role" label="角色"></el-table-column>
+        <el-table-column prop="phone" label="电话"></el-table-column>
+        <el-table-column prop="rulename" label="角色"></el-table-column>
         <el-table-column fixed="right" label="操作" width="250" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer">修改</span>
-            <span class="text-primary cursor-pointer ml-3">删除</span>
+            <span class="text-primary cursor-pointer" @click="editUser(scope.$index,scope.row)">编辑</span>
+            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -82,35 +86,7 @@
 				tableProps: {
           'max-height': 670,
         },
-        tableData: [
-        	{
-        		companyName:'XX实业有限公司',
-        		blCode:"9NLDE1234555553221",
-        		name:"张三",
-        		sex:"男",
-        		status:"1",
-        		tel:"15196358795",
-        		role:"合作厂商",
-        	},
-        	{
-        		companyName:'XX实业有限公司',
-        		blCode:"9NLDE1234555553221",
-        		name:"张三",
-        		sex:"男",
-        		status:"1",
-        		tel:"15196358795",
-        		role:"合作厂商",
-        	},
-        	{
-        		companyName:'XX实业有限公司',
-        		blCode:"9NLDE1234555553221",
-        		name:"张三",
-        		sex:"男",
-        		status:"1",
-        		tel:"15196358795",
-        		role:"合作厂商",
-        	},
-        ],
+        tableData: [],
         filters: [
 	        {
 	          value: '',
@@ -128,6 +104,7 @@
         	dialog:false,
         	title:"",
         	id:"",
+          isEdit:false,
         },
 			}
 		},
@@ -159,7 +136,6 @@
           lastlogintime:lastlogintime,
         }).then(data =>{
           if(data.code == 0){
-            console.log(data.data,'9*/87954622');
             this.total = data.count;
             this.tableData = data.data;
           }else{
@@ -167,11 +143,43 @@
           }
         });
       },
-      // 新增顶级菜单
+      // 新增厂商用户
       handleAdd(){
-      	this.mfuserData.dialog = true;
-      	this.mfuserData.title = "新增厂商用户";
-      	this.mfuserData.id = '';
+        this.mfuserData.dialog = true;
+        this.mfuserData.title = "新增厂商用户";
+        this.mfuserData.id = '';
+        this.mfuserData.isEdit = false;
+      },
+
+      // 编辑厂商用户
+      editUser(index,row){
+        this.mfuserData.dialog = true;
+        this.mfuserData.title = "编辑厂商用户";
+        this.mfuserData.id = row.id;
+        this.mfuserData.isEdit = true;
+      },
+
+      // 删除
+      handleDel(index,row){
+        this.$confirm("此操作将永久删除该厂商用户, 是否继续?", "提示", {
+          type: 'warning'
+        }).then(() => {
+          this.$api.companyDel({// 接口不对
+            id:row.id,
+          }).then(data=>{ 
+             if(data.code == 0){
+                this.$message({
+                  message: "删除厂商用户成功!",
+                  type: 'success'
+                });
+                this.loadData();
+             }else{
+               this.$message.error(data.msg);
+             }
+          })
+        }).catch(() => {
+
+        });
       },
 		},
 	}

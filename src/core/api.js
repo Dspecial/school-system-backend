@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2021-01-15 16:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-02-03 19:13:42
+* @Last Modified time: 2021-02-04 18:12:11
 */
 
 import {post,postJson} from '@/core/axios.js';
@@ -62,7 +62,7 @@ export default {
 
 	// 角色列表
 	roleList: p => post('/backstage/adminauth.group/index', p),
-	// 编辑角色（没对完）
+	// 编辑角色
 	roleEdit: p => post('/backstage/adminauth.group/edit', p),
 	// 新增角色
 	roleAdd: p => post('/backstage/adminauth.group/add', p),
@@ -71,7 +71,6 @@ export default {
 	// 获取对应角色的权限列表
 	roleAuth: p => post('/backstage/ajax/get_admin_auth_group_rule', p),
 
-
 	// 路由管理列表
 	routerList: p => post('/backstage/adminauth.rule/index', p),
 	// 编辑路由
@@ -79,25 +78,58 @@ export default {
 	// 新增路由
 	routerAdd: p => post('/backstage/adminauth.rule/add', p),
 
+
+	/*
+		***客户端权限管理
+	 */
+	// 人员列表(没对完)
+	c_userList: p => post('/backstage/auth.admin/index', p),
+	// 编辑人员列表
+	c_userEdit: p => post('/backstage/auth.admin/edit', p),
+	// 新增人员列表
+	c_userAdd: p => post('/backstage/auth.admin/add', p),
+
+	// 角色列表(没对呢)
+	c_roleList: p => post('/backstage/auth.group/index', p),
+	// 编辑角色
+	c_roleEdit: p => post('/backstage/auth.group/edit', p),
+	// 新增角色
+	c_roleAdd: p => post('/backstage/auth.group/add', p),
+	// 上级角色列表
+	c_roleParent: p => post('/backstage/ajax/get_auth_group_list', p),
+	// 获取对应角色的权限列表
+	c_roleAuth: p => post('/backstage/ajax/get_auth_group_rule', p),
+
 	/*
 		***厂商管理
 	 */
-	// 厂商列表(没对完)
-	companyList: p => post('/backstage/auth.company/index', p),
+	// 厂商列表
+	companyList: p => post('/backstage/company.company/index', p),
 	// 编辑厂商
-	companyEdit: p => post('/backstage/auth.company/edit', p),
+	companyEdit: p => post('/backstage/company.company/edit', p),
 	// 新增厂商
-	companyAdd: p => post('/backstage/auth.company/add', p),
+	companyAdd: p => post('/backstage/company.company/add', p),
 	// 删除厂商
-	companyDel: p => post('/backstage/auth.company/del', p),
+	companyDel: p => post('/backstage/company.company/del', p),
+	// 厂商角色列表
+	companyRole: p => post('/backstage/ajax/get_auth_group_list', p),
 
-	// 供应商列表(没对完)
-	supplierList: p => post('/backstage/auth.supplier/index', p),
+	// 供应商列表
+	supplierList: p => post('/backstage/company.supplier/index', p),
 	// 编辑供应商
-	supplierEdit: p => post('/backstage/auth.supplier/edit', p),
+	supplierEdit: p => post('/backstage/company.supplier/edit', p),
 	// 新增供应商
-	supplierAdd: p => post('/backstage/auth.supplier/add', p),
+	supplierAdd: p => post('/backstage/company.supplier/add', p),
 	// 删除供应商
-	supplierDel: p => post('/backstage/auth.supplier/del', p),
-
+	supplierDel: p => post('/backstage/company.supplier/del', p),
+	// 供应商可用列表
+	// supplierRole: p => post('/backstage/ajax/get_company_supplier', p),
+	
+	/*
+		***知识库管理
+	 */
+	// 分类管理列表(没对完)
+	kl_categoryList: p => post('/backstage/knowledge.category/index', p),
+	// 获取知识库可用列表
+	kl_categoryUseList: p => post('/backstage/ajax/get_use_knowledge_category', p),
 }

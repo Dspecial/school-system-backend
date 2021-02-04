@@ -148,7 +148,7 @@
 				var _this = this;
 				this.initRoleParent();
 				if(this.userData.isEdit){ // 编辑
-					this.$api.userEdit({
+					this.$api.c_userEdit({
 						id:this.userData.id,
 						function_type:2,
 					}).then(data => {
@@ -184,7 +184,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.userData.isEdit){ // 编辑后提交
-          		this.$api.userEdit({
+          		this.$api.c_userEdit({
           			id:this.userData.id,
 	          		name:this.userForm.name,
 	          		job_number:this.userForm.job_number,
@@ -210,7 +210,7 @@
 	          	}else{
 	          		psw = '123456';
 	          	}
-          		this.$api.userAdd({
+          		this.$api.c_userAdd({
 	          		name:this.userForm.name,
 	          		job_number:this.userForm.job_number,
 	          		password:psw,

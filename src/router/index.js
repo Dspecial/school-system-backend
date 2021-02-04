@@ -50,15 +50,23 @@ const router = new Router({
 				  },
 				  children: null
 				},
+
+				/*
+				**客户端权限管理
+				 */
 				{
-				  path: '/system',
-				  component: resolve => require(['@/views/system/System'], resolve),
-				  name: 'System',
+				  path: '/authClient/user',
+				  component: resolve => require(['@/views/authClient/User'], resolve),
+				  name: 'ClientUser',
 				  meta: {
-				    title: '系统配置'
+				    title: '客户端管理员用户'
 				  },
 				  children: null
 				},
+
+				/*
+				**资源管理
+				 */
 				{
 				  path: '/resources/cate',
 				  component: resolve => require(['@/views/resources/Cate'], resolve),
@@ -86,6 +94,10 @@ const router = new Router({
 				  },
 				  children: null
 				},
+
+				/*
+				**后台权限管理
+				 */
 				{
 				  path: '/auth/dept',
 				  component: resolve => require(['@/views/auth/Dept'], resolve),
@@ -122,6 +134,10 @@ const router = new Router({
 				  },
 				  children: null
 				},
+
+				/*
+				**项目管理
+				 */
 				{
 				  path: '/project/category',
 				  component: resolve => require(['@/views/project/Category'], resolve),
@@ -149,6 +165,10 @@ const router = new Router({
 				  },
 				  children: null
 				},
+
+				/*
+				**流程管理
+				 */
 				{
 				  path: '/auditProcess',
 				  component: resolve => require(['@/views/auditProcess/AuditProcess'], resolve),
@@ -158,6 +178,10 @@ const router = new Router({
 				  },
 				  children: null
 				},
+
+				/*
+				**厂商管理
+				 */
 				{
 				  path: '/manufacturer/user',
 				  component: resolve => require(['@/views/manufacturer/ManufacturerUser'], resolve),
@@ -185,6 +209,32 @@ const router = new Router({
 				  },
 				  children: null
 				},
+
+				/*
+				**知识库管理
+				 */
+				{
+				  path: '/knowledge/category',
+				  component: resolve => require(['@/views/knowledge/Category'], resolve),
+				  name: 'KnowledgeCategory',
+				  meta: {
+				    title: '知识库分类管理'
+				  },
+				  children: null
+				},
+				// {
+				//   path: '/knowledge/content',
+				//   component: resolve => require(['@/views/knowledge/Content'], resolve),
+				//   name: 'KnowledgeContent',
+				//   meta: {
+				//     title: '知识库内容管理'
+				//   },
+				//   children: null
+				// },
+
+				/*
+				**信息管理
+				 */
 				{
 				  path: '/message',
 				  component: resolve => require(['@/views/message/Message'], resolve),
@@ -194,6 +244,10 @@ const router = new Router({
 				  },
 				  children: null
 				},
+
+				/*
+				**文档管理
+				 */
 				{
 				  path: '/document',
 				  component: resolve => require(['@/views/document/Document'], resolve),
@@ -203,6 +257,10 @@ const router = new Router({
 				  },
 				  children: null
 				},
+
+				/*
+				**经费管理
+				 */
 				{
 				  path: '/funds',
 				  component: resolve => require(['@/views/funds/Funds'], resolve),
@@ -212,6 +270,10 @@ const router = new Router({
 				  },
 				  children: null
 				},
+
+				/*
+				**日志管理
+				 */
 				{
 				  path: '/log',
 				  component: resolve => require(['@/views/log/Log'], resolve),
@@ -221,6 +283,10 @@ const router = new Router({
 				  },
 				  children: null
 				},
+
+				/*
+				**版本管理
+				 */
 				{
 				  path: '/version',
 				  component: resolve => require(['@/views/version/Version'], resolve),

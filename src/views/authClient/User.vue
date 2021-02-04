@@ -1,20 +1,20 @@
 <template>
-  <div class="user-container">
-    <!-- 登录信息 -->
+	<div class="user-container">
+		<!-- 登录信息 -->
     <global-tips></global-tips>
-    <!-- 供应商管理 -->
+    <!-- 用户管理 -->
     <el-card class="mt-3">
       <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
-          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">供应商管理</h4>
+          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">用户管理</h4>
           <div class="d-flex align-items-center">
-            <div class="mr-auto d-flex align-items-center">
-              <el-input
+          	<div class="mr-auto d-flex align-items-center">
+          		<el-input
                 class="w-40"
-                placeholder="公司名称/负责人姓名"
-                prefix-icon="el-icon-search"
-                v-model="filters[0].value">
-              </el-input>
+    				    placeholder="请输入用户名/部门/工号/姓名"
+    				    prefix-icon="el-icon-search"
+    				    v-model="filters[0].value">
+    				  </el-input>
               <el-date-picker
                 class="ml-3 w-40"
                 v-model="filters[1].value"
@@ -25,73 +25,74 @@
                 end-placeholder="结束日期"
                 placeholder="选择上次登录时间">
               </el-date-picker>
-            </div>
+          	</div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增供应商</el-button>
+              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增用户</el-button>
             </div>
           </div>
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="job_number" label="公司名称"></el-table-column>
-        <el-table-column prop="sys_id" label="营业执照编码"></el-table-column>
-        <el-table-column prop="name" label="负责人姓名"></el-table-column>
+        <el-table-column prop="job_number" label="工号"></el-table-column>
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="rulename" label="所属角色"></el-table-column>
         <el-table-column prop="sex" label="性别">
           <template slot-scope="scope">
             <span v-if="scope.row.sex == 1">男</span>
             <span v-if="scope.row.sex == 2">女</span>
           </template>
         </el-table-column>
-        <el-table-column prop="is_normal" label="状态">
+        <!-- <el-table-column prop="type" label="状态">
           <template slot-scope="scope">
             <el-switch
-              v-model="scope.row.is_normal"
-              active-value="0"
-              inactive-value="1"
-              active-color="#52C418"
+              v-model="scope.row.type"
+              active-value="1"
+              inactive-value="0"
+              active-color="#005DDA"
               inactive-color="#969191">
             </el-switch>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="phone" label="电话"></el-table-column>
-        <el-table-column prop="rulename" label="角色"></el-table-column>
+        <el-table-column prop="email" label="邮箱"></el-table-column>
+        <el-table-column prop="lastlogintime" label="上次登录时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="250" align="center">
           <template slot-scope="scope">
             <span class="text-primary cursor-pointer" @click="editUser(scope.$index,scope.row)">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
+            <span class="text-primary cursor-pointer ml-3">删除</span>
           </template>
         </el-table-column>
       </data-tables-server>
     </el-card>
-    <mfsupplier-edit :mfsupplierData="mfsupplierData"></mfsupplier-edit>
-  </div>
+    <user-edit :userData="userData"></user-edit>
+	</div>
 </template>
 
 <script>
-  import GlobalTips from "@/components/GlobalTips";
-  import MfsupplierEdit from "./MfsupplierEdit";
+	import GlobalTips from "@/components/GlobalTips";
+	import UserEdit from "./UserEdit";
 
-  export default {
-    name: 'ManufacturerSupplier',
-    provide() {
+	export default {
+		name: 'User',
+		provide() {
       return {
         loadData: this.loadData
       }
     },
-    components: {
-      GlobalTips,
-      MfsupplierEdit,
-    },
-    data () {
-      return {
-        tableProps: {
+		components: {
+			GlobalTips,
+			UserEdit,
+		},
+		data () {
+			return {
+				tableProps: {
           'max-height': 670,
         },
         tableData: [],
         filters: [
-          {
-            value: '',
-            prop: 'name'
-          },
+	        {
+	          value: '',
+	          prop: 'name'
+	        },
           {
             value: '',
             prop: 'date'
@@ -100,19 +101,19 @@
         total: 0, //总条数
         currentPage: 1, //当前页
         pageSize: 15, //每页显示条数
-        mfsupplierData:{
-          dialog:false,
-          title:"",
-          id:"",
+        userData:{
+        	dialog:false,
+        	title:"",
+        	id:"",
           isEdit:false,
         },
-      }
-    },
+			}
+		},
     mounted(){
 
     },
-    methods:{
-      // 自增序列
+		methods:{
+			// 自增序列
       indexMethod(index) { 
         return ++index;
       },
@@ -129,7 +130,7 @@
         }else{
           lastlogintime = '';
         }
-        this.$api.supplierList({
+        this.$api.c_userList({
           page:this.currentPage,
           limit:this.pageSize,
           keywords:this.filters[0].value,
@@ -143,46 +144,23 @@
           }
         });
       },
-      // 新增供应商用户
+      // 新增用户
       handleAdd(){
-        this.mfsupplierData.dialog = true;
-        this.mfsupplierData.title = "新增供应商用户";
-        this.mfsupplierData.id = '';
-        this.mfsupplierData.isEdit = false;
+      	this.userData.dialog = true;
+      	this.userData.title = "新增用户";
+      	this.userData.id = '';
+        this.userData.isEdit = false;
       },
 
-      // 编辑供应商用户
+      // 编辑用户
       editUser(index,row){
-        this.mfsupplierData.dialog = true;
-        this.mfsupplierData.title = "编辑供应商用户";
-        this.mfsupplierData.id = row.id;
-        this.mfsupplierData.isEdit = true;
+        this.userData.dialog = true;
+        this.userData.title = "编辑用户";
+        this.userData.id = row.id;
+        this.userData.isEdit = true;
       },
-
-      // 删除
-      handleDel(index,row){
-        this.$confirm("此操作将永久删除该供应商用户, 是否继续?", "提示", {
-          type: 'warning'
-        }).then(() => {
-          this.$api.supplierDel({// 接口不对
-            id:row.id,
-          }).then(data=>{ 
-             if(data.code == 0){
-                this.$message({
-                  message: "删除供应商用户成功!",
-                  type: 'success'
-                });
-                this.loadData();
-             }else{
-               this.$message.error(data.msg);
-             }
-          })
-        }).catch(() => {
-
-        });
-      },
-    },
-  }
+		},
+	}
 </script>
 
 <style>
