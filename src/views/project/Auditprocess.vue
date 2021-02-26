@@ -10,7 +10,7 @@
           <div class="d-flex align-items-center">
           	<div class="mr-auto d-flex align-items-center">
           		<el-input
-    				    placeholder="类别名称、创建人、编辑人"
+    				    placeholder="流程名称、创建人、编辑人"
     				    prefix-icon="el-icon-search"
     				    v-model="filters[0].value">
     				  </el-input>
@@ -21,12 +21,13 @@
           </div>
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="type_sn" label="项目类别编号"></el-table-column>
-        <el-table-column prop="name" label="类别名称"></el-table-column>
-        <el-table-column prop="is_show" label="使用状态" width="100">
+        <el-table-column prop="name" label="流程名称"></el-table-column>
+        <el-table-column prop="brief" label="简介"></el-table-column>
+        <el-table-column prop="caname" label="类别名称"></el-table-column>
+        <el-table-column prop="is_use" label="使用状态">
           <template slot-scope="scope">
-            <span v-if="scope.row.is_show == 1"><i class="dot bg-success mr-1"></i>正常</span>
-            <span v-else><i class="dot bg-danger mr-1"></i>禁用</span>
+            <span v-if="scope.row.is_use == 1"><i class="dot bg-warning mr-1"></i>待使用</span>
+            <span v-else><i class="dot bg-primary mr-1"></i>使用中</span>
           </template>
         </el-table-column>
         <el-table-column prop="aname" label="创建人"></el-table-column>
@@ -41,13 +42,13 @@
         </el-table-column>
       </data-tables-server>
     </el-card>
-    <category-edit :categoryData="categoryData"></category-edit>
+    <auditprocess-edit :processData="processData"></auditprocess-edit>
 	</div>
 </template>
 
 <script>
 	import GlobalTips from "@/components/GlobalTips";
-	import CategoryEdit from "./CategoryEdit";
+	import AuditprocessEdit from "./AuditprocessEdit";
 
 	export default {
 		name: 'Category',
@@ -58,7 +59,7 @@
     },
 		components: {
 			GlobalTips,
-			CategoryEdit
+			AuditprocessEdit
 		},
 		data () {
 			return {
@@ -75,7 +76,7 @@
         total: 0, //总条数
         currentPage: 1, //当前页
         pageSize: 15, //每页显示条数
-        categoryData:{
+        processData:{
         	dialog:false,
         	title:"",
         	id:"",
@@ -98,7 +99,7 @@
           this.currentPage = queryInfo.page;
           this.pageSize = queryInfo.pageSize;
         }
-        this.$api.p_categoryList({
+        this.$api.p_flowList({
           page:this.currentPage,
           limit:this.pageSize,
           keywords:this.filters[0].value,
@@ -112,25 +113,25 @@
         });
       },
 
-      // 新增项目类别
+      // 新增审核流程
       handleAdd(){
-      	this.categoryData.dialog = true;
-      	this.categoryData.title = "新增项目类别";
-      	this.categoryData.id = '';
-        this.categoryData.isEdit = false;
+      	this.processData.dialog = true;
+      	this.processData.title = "新增审核流程";
+      	this.processData.id = '';
+        this.processData.isEdit = false;
       },
 
-      // 编辑项目类别
+      // 编辑审核流程
       editCate(index,row){
-        this.categoryData.dialog = true;
-        this.categoryData.title = '编辑项目类别';
-        this.categoryData.id = row.id;
-        this.categoryData.isEdit = true;
+        this.processData.dialog = true;
+        this.processData.title = '编辑审核流程';
+        this.processData.id = row.id;
+        this.processData.isEdit = true;
       },
 
       // 删除
       handleDel(index,row){
-        this.$confirm("此操作将永久删除该项目类别, 是否继续?", "提示", {
+        this.$confirm("此操作将永久删除该审核流程, 是否继续?", "提示", {
           type: 'warning'
         }).then(() => {
           this.$api.p_categoryDel({
@@ -138,7 +139,7 @@
           }).then(data=>{ 
              if(data.code == 0){
                 this.$message({
-                  message: "删除项目类别成功!",
+                  message: "删除审核流程成功!",
                   type: 'success'
                 });
                 this.loadData();

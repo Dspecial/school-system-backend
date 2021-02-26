@@ -10,15 +10,6 @@
 		  <el-form-item label="所属上级" prop="pid_all">
 		    <el-cascader class="w-100" v-model="categoryForm.pid_all" placeholder="请选择所属上级" :show-all-levels="false" clearable :options="pidOptions" :props="{value:'id',label:'cate_name',children:'children',checkStrictly: true}" @change="handleChange">
 		    </el-cascader>
-<!-- 			  <el-select v-model="categoryForm.pid" filterable placeholder="请选择所属上级" class="w-100">
-			    <el-option
-			      v-for="item in pidOptions"
-			      :key="item.id"
-			      :label="item.cate_name"
-			      :value="item.id">
-			      
-			    </el-option>
-			  </el-select> -->
 		  </el-form-item>
 		  <el-form-item label="类别名称" prop="cate_name">
 		  	<el-input v-model="categoryForm.cate_name" placeholder="请输入类别名称"></el-input>
@@ -44,7 +35,7 @@
 	export default {
 		props:['categoryData'],
 		inject: ['loadData'],
-		name: 'CateEdit',
+		name: 'CategoryEdit',
 		data () {
 			return {
 				pidOptions:[],
@@ -82,7 +73,13 @@
 				this.$api.kl_categoryUseList({
         }).then(data=>{
           if(data.code == 0){
-            this.pidOptions = data.data;
+            var topOptions = [
+          		{
+          			cate_name:"顶级分类",
+          			id:0,
+          		},
+          	];
+            this.pidOptions = [...topOptions,...data.data];
           }else{
             this.$message.error(data.msg);
           }
@@ -93,7 +90,7 @@
 			openEdit(){
 				this.initPid();
 				if(this.categoryData.isEdit){ // 编辑
-					this.$api.cateEdit({
+					this.$api.kl_categoryEdit({
 						id:this.categoryData.id,
 						function_type:2,
 					}).then(data => {
@@ -128,11 +125,12 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.categoryData.isEdit){ // 编辑后提交
-          		this.$api.cateEdit({
+          		this.$api.kl_categoryEdit({
           			id:this.categoryForm.id,
 								pid:all[all.length-1],
 								cate_name:this.categoryForm.cate_name,
 								is_show:this.categoryForm.is_show,
+								sort:this.categoryForm.sort,
 								function_type:1,
 							}).then(data => {
 								if(data.code == 0){
@@ -144,10 +142,11 @@
 								}
 							})
           	}else{ // 新增后提交
-          		this.$api.cateAdd({
+          		this.$api.kl_categoryAdd({
 								pid:all[all.length-1],
 								cate_name:this.categoryForm.cate_name,
 								is_show:this.categoryForm.is_show,
+								sort:this.categoryForm.sort,
 							}).then(data => {
 								if(data.code == 0){
 									_this.handleClose();

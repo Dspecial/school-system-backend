@@ -28,13 +28,8 @@
         <el-table-column prop="ename" label="最新编辑人"></el-table-column>
         <el-table-column label="是否必填">
           <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.is_required"
-              active-value="2"
-              inactive-value="1"
-              active-color="#005DDA"
-              inactive-color="#969191">
-            </el-switch>
+            <span v-if="scope.row.is_show == 2"><i class="dot bg-success mr-1"></i>是</span>
+            <span v-else><i class="dot bg-danger mr-1"></i>否</span>
           </template>
         </el-table-column>
         <el-table-column prop="placeholder" label="提示语"></el-table-column>

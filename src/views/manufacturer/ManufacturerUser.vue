@@ -42,15 +42,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="is_normal" label="状态">
-        	<template slot-scope="scope">
-	        	<el-switch
-						  v-model="scope.row.is_normal"
-						  active-value="0"
-						  inactive-value="1"
-						  active-color="#52C418"
-						  inactive-color="#969191">
-						</el-switch>
-        	</template>
+          <template slot-scope="scope">
+            <span v-if="scope.row.is_normal == 0"><i class="dot bg-success mr-1"></i>正常</span>
+            <span v-else><i class="dot bg-danger mr-1"></i>禁用</span>
+          </template>
         </el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="rulename" label="角色"></el-table-column>

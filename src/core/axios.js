@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-24 16:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-01-28 10:16:09
+* @Last Modified time: 2021-02-25 16:18:31
 */
 import Vue from 'vue';
 import axios from 'axios';
@@ -215,41 +215,58 @@ export function post (url, params) {  // eslint-disable-line no-unused-vars
 
 // postJson 请求
 export function postJson (url, params) { 
-    let opt = setParams(url, params);
-    // 设置公共的user_token
-    opt.params.user_token = VueCookies.get("token");
-    return new Promise((resolve, reject) => {
-        axios.post(opt.url, opt.params, { 
-          headers: { 'Content-Type': 'application/json;charset=UTF-8' } 
-        })
-        .then(res => { 
-          resolve(res.data); 
-        })
-        .catch(err => { 
-          reject(err.data) 
-        });
+  let opt = setParams(url, params);
+  // 设置公共的user_token
+  opt.params.user_token = VueCookies.get("token");
+  return new Promise((resolve, reject) => {
+    axios.post(opt.url, opt.params, { 
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' } 
+    })
+    .then(res => { 
+      resolve(res.data); 
+    })
+    .catch(err => { 
+      reject(err.data) 
     });
+  });
 };
-// 
 
 //返回一个Promise(发送get请求)
 export function get(url, params) {   
-    let opt = setParams(url, params);
-    // 设置公共的user_token
-    opt.params.user_token = VueCookies.get("token");
-    return new Promise((resolve, reject) => {
-        axios.get(opt.url, { params: opt.params })
-        .then(res => { 
-          resolve(res.data); 
-        })
-        .catch(err => { 
-          reject(err.data) 
-        })
+  let opt = setParams(url, params);
+  // 设置公共的user_token
+  opt.params.user_token = VueCookies.get("token");
+  return new Promise((resolve, reject) => {
+    axios.get(opt.url, { params: opt.params })
+    .then(res => { 
+      resolve(res.data); 
+    })
+    .catch(err => { 
+      reject(err.data) 
+    })
+  });
+};
+
+
+// postUpload 请求
+export function postUpload (url, params) { 
+  let opt = setParams(url, params);
+  return new Promise((resolve, reject) => {
+    axios.post(opt.url, opt.params, { 
+      headers: {"Content-Type": "multipart/form-data"},
+    })
+    .then(res => { 
+      resolve(res.data); 
+    })
+    .catch(err => { 
+      reject(err.data) 
     });
+  });
 };
 
 export default {
   post,
   get,
   postJson,
+  postUpload
 }

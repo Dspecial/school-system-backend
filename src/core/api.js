@@ -3,16 +3,37 @@
 * @Email: dxxtalking@163.com
 * @Date:   2021-01-15 16:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-02-04 18:12:11
+* @Last Modified time: 2021-02-26 14:55:28
 */
 
-import {post,postJson} from '@/core/axios.js';
+import {post,postJson,postUpload} from '@/core/axios.js';
 
 export default {
 	// 登录
 	login: p => post('/backstage/login/login', p),
 	// 菜单
 	menu: p => post('/backstage/menu/index', p),
+
+	/*
+		***客户端权限管理
+	 */
+	// 人员列表(没对完)
+	c_userList: p => post('/backstage/auth.admin/index', p),
+	// 编辑人员列表
+	c_userEdit: p => post('/backstage/auth.admin/edit', p),
+	// 新增人员列表
+	c_userAdd: p => post('/backstage/auth.admin/add', p),
+
+	// 角色列表(没对呢)
+	c_roleList: p => post('/backstage/auth.group/index', p),
+	// 编辑角色
+	c_roleEdit: p => post('/backstage/auth.group/edit', p),
+	// 新增角色
+	c_roleAdd: p => post('/backstage/auth.group/add', p),
+	// 上级角色列表
+	c_roleParent: p => post('/backstage/ajax/get_auth_group_list', p),
+	// 获取对应角色的权限列表
+	c_roleAuth: p => post('/backstage/ajax/get_auth_group_rule', p),
 
 	/*
 		***资源管理
@@ -78,27 +99,30 @@ export default {
 	// 新增路由
 	routerAdd: p => post('/backstage/adminauth.rule/add', p),
 
-
 	/*
-		***客户端权限管理
+		***项目配置
 	 */
-	// 人员列表(没对完)
-	c_userList: p => post('/backstage/auth.admin/index', p),
-	// 编辑人员列表
-	c_userEdit: p => post('/backstage/auth.admin/edit', p),
-	// 新增人员列表
-	c_userAdd: p => post('/backstage/auth.admin/add', p),
+	// 项目类别列表
+	p_categoryList: p => post('/backstage/project.category/index', p),
+	// 编辑项目类别
+	p_categoryEdit: p => post('/backstage/project.category/edit', p),
+	// 新增项目类别
+	p_categoryAdd: p => post('/backstage/project.category/add', p),
+	// 删除项目类别
+	p_categoryDel: p => post('/backstage/project.category/del', p),
 
-	// 角色列表(没对呢)
-	c_roleList: p => post('/backstage/auth.group/index', p),
-	// 编辑角色
-	c_roleEdit: p => post('/backstage/auth.group/edit', p),
-	// 新增角色
-	c_roleAdd: p => post('/backstage/auth.group/add', p),
-	// 上级角色列表
-	c_roleParent: p => post('/backstage/ajax/get_auth_group_list', p),
-	// 获取对应角色的权限列表
-	c_roleAuth: p => post('/backstage/ajax/get_auth_group_rule', p),
+	// 项目审核流程列表
+	p_flowList: p => post('/backstage/project.flow/index', p),
+	// 编辑项目审核流程
+	p_flowEdit: p => post('/backstage/project.flow/edit', p),
+	// 新增项目审核流程
+	p_flowAdd: p => post('/backstage/project.flow/add', p),
+	// 删除项目审核流程
+	p_flowDel: p => post('/backstage/project.flow/del', p),
+	// 节点列表
+	p_nodeList: p => post('/backstage/project.node/index', p),
+
+
 
 	/*
 		***厂商管理
@@ -128,8 +152,28 @@ export default {
 	/*
 		***知识库管理
 	 */
-	// 分类管理列表(没对完)
+	// 分类管理列表
 	kl_categoryList: p => post('/backstage/knowledge.category/index', p),
 	// 获取知识库可用列表
 	kl_categoryUseList: p => post('/backstage/ajax/get_use_knowledge_category', p),
+	// 编辑分类
+	kl_categoryEdit: p => post('/backstage/knowledge.category/edit', p),
+	// 新增分类
+	kl_categoryAdd: p => post('/backstage/knowledge.category/add', p),
+	// 删除分类
+	kl_categoryDel: p => post('/backstage/knowledge.category/del', p),
+
+	// 内容管理列表
+	kl_contentList: p => post('/backstage/knowledge.knowledge/index', p),
+	// 编辑内容
+	kl_contentEdit: p => post('/backstage/knowledge.knowledge/edit', p),
+	// 新增内容
+	kl_contentAdd: p => post('/backstage/knowledge.knowledge/add', p),
+	// 删除内容
+	kl_contentDel: p => post('/backstage/knowledge.knowledge/del', p),
+	// 内容上传
+	kl_contentUpload: p => postUpload('/backstage/upload/upload_knowledge', p),
+	// 内容文件删除
+	kl_contentUploadDel: p => post('/backstage/upload/del_upload', p),
+
 }

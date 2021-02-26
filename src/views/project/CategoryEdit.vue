@@ -7,38 +7,17 @@
 	  @closed="closedEdit('categoryForm')"
 	  :before-close="handleClose">
 	  <el-form :model="categoryForm" :rules="rules" ref="categoryForm" label-width="110px">
-	  	<el-form-item label="项目类别" prop="category">
-		    <el-input v-model="categoryForm.category" placeholder="项目类别" class="w-90"></el-input>
+	  	<el-form-item label="项目类别" prop="name">
+		    <el-input v-model="categoryForm.name" placeholder="项目类别"></el-input>
 		  </el-form-item>
-		  <el-form-item label="项目类别编号" prop="categoryNum">
-		    <el-select v-model="categoryForm.categoryNum" filterable placeholder="下拉选择或搜索输入" class="w-90">
-			    <el-option label="v1" value="1"></el-option>
-			    <el-option label="v2" value="2"></el-option>
-			  </el-select>
+		  <el-form-item label="状态" prop="is_show">
+		    <el-radio-group v-model="categoryForm.is_show">
+			    <el-radio label="1">正常</el-radio>
+			    <el-radio label="2">禁用</el-radio>
+			  </el-radio-group>
 		  </el-form-item>
-		  <el-form-item label="设置人" prop="person">
-		    <el-input v-model="categoryForm.person" placeholder="请输入设置人" class="w-90"></el-input>
-		  </el-form-item>
-		  <el-form-item label="类型备注" prop="remark">
-		    <el-input type="textarea" v-model="categoryForm.remark" placeholder="请输入类型备注" :autosize="{ minRows: 5, maxRows: 10}" maxlength="30" show-word-limit class="w-90"></el-input>
-		  </el-form-item>
-		  <template v-for="(field, index) in categoryForm.fieldArray">
-			  <el-form-item :label="'流程'+ (index+1)">
-			  	<div class="d-flex justify-content-between">
-				    <el-select v-model="field.value" placeholder="请选择审核流程" class="w-90">
-				      <el-option label="流程1" value="1"></el-option>
-				      <el-option label="流程2" value="2"></el-option>
-				    </el-select>
-				    <span class="text-primary cursor-pointer w-10 text-right" v-if="index == 0" @click="addField()">添加</span>
-				    <span class="text-danger cursor-pointer w-10 text-right" v-if="index != 0" @click="delField(index)">删除</span>
-			  	</div>
-			  </el-form-item>
-		  </template>
-		  <el-form-item label="项目节点" prop="node">
-		    <el-select v-model="categoryForm.node" filterable placeholder="选择项目节点" class="w-90">
-			    <el-option label="节点1" value="1"></el-option>
-			    <el-option label="节点2" value="2"></el-option>
-			  </el-select>
+		  <el-form-item label="类型备注">
+		    <el-input type="textarea" v-model="categoryForm.remark" placeholder="请输入类型备注" :autosize="{ minRows: 3, maxRows: 5}" maxlength="30" show-word-limit></el-input>
 		  </el-form-item>
 	  </el-form>
 	  <span slot="footer" class="dialog-footer">
@@ -56,33 +35,13 @@
 		data () {
 			return {
 				categoryForm:{
-					category:"",
-					categoryNum:"",
-					person:"",
+					name:"",
 					remark:"",
-					fieldArray:[
-						{
-							id:"",
-							value:"",
-						},
-					],
-					node:"",
+					is_show:"1",
 				},
 				rules: {
-          category: [
+          name: [
             { required: true, message: '请输入项目类别', trigger: 'blur' }
-          ],
-          categoryNum: [
-            { required: true, message: '请选择项目类别编号', trigger: 'change' }
-          ],
-          person: [
-            { required: true, message: '请输入设置人', trigger: 'blur' },
-          ],
-          remark: [
-            { required: true, message: '请输入类型备注', trigger: 'blur' },
-          ],
-          node: [
-            { required: true, message: '请选择项目节点', trigger: 'change' }
           ],
         }
 			}
@@ -91,7 +50,23 @@
 		methods:{
 			// dialog初始化
 			openEdit(){
-
+				if(this.categoryData.isEdit){ // 编辑
+					this.$api.p_categoryEdit({
+						id:this.categoryData.id,
+						function_type:2,
+					}).then(data => {
+						if(data.code == 0){
+							this.categoryForm.id = data.data.id;
+							this.categoryForm.name = data.data.name;
+							this.categoryForm.remark = data.data.remark;
+							this.categoryForm.is_show = data.data.is_show;
+						}else{
+							this.$message.error(data.msg);
+						}
+					})
+				}else{ // 新增
+					
+				}
 			},
 			// dialog关闭
 			closedEdit(formName){
@@ -102,22 +77,42 @@
 			handleClose(){
 				this.categoryData.dialog = false;
 			},
-			// 添加字段
-			addField(){
-				this.categoryForm.fieldArray.push({});
-			},
-			// 删除字段
-			delField(index){
-				this.categoryForm.fieldArray.splice(index, 1);
-			},
 			// form提交
 			submitForm(formName) {
 				var _this = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-          	_this.handleClose();
-						_this.resetForm(formName);
-            alert('submit!');
+          	if(this.categoryData.isEdit){ // 编辑后提交
+          		this.$api.p_categoryEdit({
+          			id:this.categoryForm.id,
+          			name:this.categoryForm.name,
+	          		remark:this.categoryForm.remark,
+	          		is_show:this.categoryForm.is_show,
+	          		function_type:1,
+	          	}).then(data =>{
+	          		if(data.code == 0){
+									_this.handleClose();
+									_this.resetForm(formName);
+									_this.loadData();
+	          		}else{
+	          			this.$message.error(data.msg);
+	          		}
+	          	});
+          	}else{ // 新增后提交
+          		this.$api.p_categoryAdd({
+	          		name:this.categoryForm.name,
+	          		remark:this.categoryForm.remark,
+	          		is_show:this.categoryForm.is_show,
+	          	}).then(data =>{
+	          		if(data.code == 0){
+									_this.handleClose();
+									_this.resetForm(formName);
+									_this.loadData();
+	          		}else{
+	          			this.$message.error(data.msg);
+	          		}
+	          	});
+          	}
           } else {
             console.log('error submit!!');
             return false;

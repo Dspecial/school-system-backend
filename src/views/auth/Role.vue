@@ -22,18 +22,9 @@
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="角色名称"></el-table-column>
-        <el-table-column prop="status" label="状态">
-        	<template slot-scope="scope">
-	        	<el-switch
-						  v-model="scope.row.status"
-						  active-value="1"
-						  inactive-value="0"
-						  active-color="#005DDA"
-						  inactive-color="#969191">
-						</el-switch>
-        	</template>
-        </el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
+        <el-table-column prop="createtime" label="创建时间"></el-table-column>
+        <el-table-column prop="updatetime" label="编辑时间"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <span class="text-primary cursor-pointer" @click="authPerson()" v-if="scope.row.id != 1">人员配置</span>

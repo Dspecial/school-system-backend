@@ -148,6 +148,15 @@ const router = new Router({
 				  children: null
 				},
 				{
+				  path: '/auditProcess',
+				  component: resolve => require(['@/views/project/Auditprocess'], resolve),
+				  name: 'Auditprocess',
+				  meta: {
+				    title: '审核流程管理'
+				  },
+				  children: null
+				},
+				{
 				  path: '/project/projectnode',
 				  component: resolve => require(['@/views/project/Projectnode'], resolve),
 				  name: 'Projectnode',
@@ -162,19 +171,6 @@ const router = new Router({
 				  name: 'Distribution',
 				  meta: {
 				    title: '项目资源分配'
-				  },
-				  children: null
-				},
-
-				/*
-				**流程管理
-				 */
-				{
-				  path: '/auditProcess',
-				  component: resolve => require(['@/views/auditProcess/AuditProcess'], resolve),
-				  name: 'AuditProcess',
-				  meta: {
-				    title: '审核流程管理'
 				  },
 				  children: null
 				},
@@ -218,7 +214,16 @@ const router = new Router({
 				  component: resolve => require(['@/views/knowledge/Category'], resolve),
 				  name: 'KnowledgeCategory',
 				  meta: {
-				    title: '知识库分类管理'
+				    title: '知识库分类列表'
+				  },
+				  children: null
+				},
+				{
+				  path: '/knowledge/content',
+				  component: resolve => require(['@/views/knowledge/Content'], resolve),
+				  name: 'KnowledgeContent',
+				  meta: {
+				    title: '知识库内容列表'
 				  },
 				  children: null
 				},

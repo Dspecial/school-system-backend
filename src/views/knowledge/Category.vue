@@ -24,13 +24,8 @@
         <el-table-column prop="cate_name" label="分类名"></el-table-column>
         <el-table-column prop="is_show" label="是否使用">
           <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.is_show"
-              active-value="1"
-              inactive-value="2"
-              active-color="#52C418"
-              inactive-color="#969191">
-            </el-switch>
+            <span v-if="scope.row.is_show == 1"><i class="dot bg-success mr-1"></i>正常</span>
+            <span v-else><i class="dot bg-danger mr-1"></i>禁用</span>
           </template>
         </el-table-column>
         <el-table-column prop="sort" label="排序" width="80"></el-table-column>
@@ -55,7 +50,7 @@
   import CategoryEdit from "./CategoryEdit";
 
   export default {
-    name: 'Cate',
+    name: 'Category',
     provide() {
       return {
         loadData: this.loadData
@@ -127,13 +122,6 @@
         this.categoryData.isEdit = false;
       },
 
-      // 分配参数
-      handleParams(index,row){
-        this.paramsData.dialog = true;
-        this.paramsData.title = '分配参数';
-        this.paramsData.id = row.id;
-      },
-
       // 编辑
       editCate(index,row){
         this.categoryData.dialog = true;
@@ -147,7 +135,7 @@
         this.$confirm("此操作将永久删除该分类, 是否继续?", "提示", {
           type: 'warning'
         }).then(() => {
-          this.$api.cateDel({
+          this.$api.kl_categoryDel({
             id:row.id
           }).then(data=>{ 
              if(data.code == 0){
