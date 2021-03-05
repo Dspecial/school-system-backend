@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2020-12-24 11:19:21
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-02-05 19:01:25
+* @Last Modified time: 2021-03-04 15:21:49
 */
 @charset "UTF-8";
 
@@ -482,5 +482,12 @@ html,body,#app,.page-container{
     margin: 0;
     line-height: 1;
     margin-right: 8px;
+  }
+}
+/*auditprocess.vue*/
+.authCheck_row{
+  margin-bottom:10px;
+  .el-form-item--small.el-form-item{
+    margin-bottom: 0;
   }
 }

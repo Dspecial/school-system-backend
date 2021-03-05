@@ -2,11 +2,11 @@
 	<div class="user-container">
 		<!-- 登录信息 -->
     <global-tips></global-tips>
-    <!-- 项目类别列表 -->
+    <!-- 流程管理列表 -->
     <el-card class="mt-3">
       <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
-          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">项目类别</h4>
+          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">流程管理</h4>
           <div class="d-flex align-items-center">
           	<div class="mr-auto d-flex align-items-center">
           		<el-input
@@ -16,7 +16,7 @@
     				  </el-input>
           	</div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增项目类别</el-button>
+              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增流程</el-button>
             </div>
           </div>
         </div>
@@ -134,7 +134,7 @@
         this.$confirm("此操作将永久删除该审核流程, 是否继续?", "提示", {
           type: 'warning'
         }).then(() => {
-          this.$api.p_categoryDel({
+          this.$api.p_flowDel({
             id:row.id
           }).then(data=>{ 
              if(data.code == 0){

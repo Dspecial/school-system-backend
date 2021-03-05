@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2021-01-15 16:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-02-26 14:55:28
+* @Last Modified time: 2021-03-04 14:56:46
 */
 
 import {post,postJson,postUpload} from '@/core/axios.js';
@@ -119,10 +119,10 @@ export default {
 	p_flowAdd: p => post('/backstage/project.flow/add', p),
 	// 删除项目审核流程
 	p_flowDel: p => post('/backstage/project.flow/del', p),
+
 	// 节点列表
 	p_nodeList: p => post('/backstage/project.node/index', p),
-
-
+	auth_userList: p=> post('/backstage/ajax/get_auth_group_user',p),
 
 	/*
 		***厂商管理
