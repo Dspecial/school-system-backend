@@ -3,6 +3,7 @@
 	  :title="processData.title"
 	  :visible.sync="processData.dialog"
 	  width="35%"
+	  top="5vh"
 	  @open="openEdit"
 	  @closed="closedEdit('processForm')"
 	  :before-close="handleClose">
@@ -189,7 +190,7 @@
 							this.processForm.cate_id = data.data.cate_id;
 							this.processForm.is_use = data.data.is_use;
 							this.processForm.brief = data.data.brief;
-
+							console.log(data.data.relation);
 							var relation = new Array;
 							data.data.relation.map((item,index) =>{
 								item.check_str = item.check_str.map((b,j)=>{

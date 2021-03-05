@@ -30,10 +30,34 @@
             <span v-else><i class="dot bg-primary mr-1"></i>使用中</span>
           </template>
         </el-table-column>
+        <el-table-column prop="desc" label="项目节点" width="200">
+          <template slot-scope="scope">
+            <el-popover
+              placement="top-start"
+              title="项目节点"
+              width="200"
+              trigger="hover"
+              :content="scope.row.check_process_text">
+              <span class="text-truncate" slot="reference">{{scope.row.check_process_text}}</span>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column prop="desc" label="审核信息" width="200">
+          <template slot-scope="scope">
+            <el-popover
+              placement="top-start"
+              title="审核信息"
+              width="200"
+              trigger="hover"
+              :content="scope.row.check_process_member">
+              <span class="text-truncate" slot="reference">{{scope.row.check_process_member}}</span>
+            </el-popover>
+          </template>
+        </el-table-column>
         <el-table-column prop="aname" label="创建人"></el-table-column>
         <el-table-column prop="aename" label="最新编辑人"></el-table-column>
-        <el-table-column prop="createtime" label="创建时间"></el-table-column>
-        <el-table-column prop="updatetime" label="更新时间"></el-table-column>
+        <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
+        <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <span class="text-primary cursor-pointer" @click="editCate(scope.$index,scope.row)">编辑</span>
