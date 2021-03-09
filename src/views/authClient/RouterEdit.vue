@@ -81,7 +81,7 @@
 			// dialog初始化
 			openEdit(){
 				if(this.routerData.isEdit){ // 编辑
-					this.$api.routerEdit({
+					this.$api.c_routerEdit({
 						id:this.routerData.id,
 						func_type:'',
 					}).then(data => {
@@ -126,7 +126,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.routerData.isEdit){ // 编辑后提交
-          		this.$api.routerEdit({
+          		this.$api.c_routerEdit({
 								id:this.routerForm.id,
 								pid:this.routerForm.pid,
 								title:this.routerForm.title,
@@ -140,14 +140,12 @@
 									_this.handleClose();
 									_this.resetForm(formName);
 									_this.loadData();
-									globalBus.$emit('reMenu');
 								}else{
 									this.$message.error(data.msg);
 								}
 							})
           	}else{ // 新增后提交
-          		this.$api.routerAdd({
-								id:this.routerForm.id,
+          		this.$api.c_routerAdd({
 								pid:this.routerForm.pid,
 								title:this.routerForm.title,
 								name:this.routerForm.name,
@@ -159,7 +157,6 @@
 									_this.handleClose();
 									_this.resetForm(formName);
 									_this.loadData();
-									globalBus.$emit('reMenu');
 								}else{
 									this.$message.error(data.msg);
 								}

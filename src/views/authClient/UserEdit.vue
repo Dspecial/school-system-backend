@@ -7,8 +7,8 @@
 	  @closed="closedEdit('userForm')"
 	  :before-close="handleClose">
 	  <el-form :model="userForm" :rules="rules" ref="userForm" label-width="120px">
-	  	<el-form-item label="工号" prop="job_number">
-		    <el-input v-model="userForm.job_number" placeholder="请输入工号"></el-input>
+	  	<el-form-item label="工号" prop="zgh">
+		    <el-input v-model="userForm.zgh" placeholder="请输入职工号"></el-input>
 		  </el-form-item>
 
 		  <el-form-item label="真实姓名" prop="name">
@@ -34,25 +34,11 @@
 			  </el-radio-group>
 		  </el-form-item>
 
-		  <el-form-item label="设置密码" prop="password" v-if="!userData.isEdit">
-		    <el-input v-model="userForm.password" placeholder="请输入密码,默认123456"></el-input>
-		  </el-form-item>
-
-		  <el-form-item label="修改密码" prop="password2" v-else>
-		    <el-input v-model="userForm.password2" placeholder="请修改密码,不填写默认不修改"></el-input>
-		  </el-form-item>
-
 		  <el-form-item label="手机号码" prop="phone">
 		    <el-input v-model="userForm.phone" placeholder="请输入手机号码"></el-input>
 		  </el-form-item>
 		  <el-form-item label="电子邮箱" prop="email">
 		    <el-input v-model="userForm.email" placeholder="请输入电子邮箱"></el-input>
-		  </el-form-item>
-		  <el-form-item label="是否禁用">
-		    <el-radio-group v-model="userForm.is_normal">
-			    <el-radio :label="0">正常</el-radio>
-			    <el-radio :label="6">禁用</el-radio>
-			  </el-radio-group>
 		  </el-form-item>
 	  </el-form>
 	  <span slot="footer" class="dialog-footer">
@@ -77,20 +63,17 @@
 	    };
 			return {
 				userForm:{
-					job_number:"",
+					zgh:"",
 					name:"",
 					group_ids:[],
-					is_normal:"",
 					sex:"",
-					password:"",
-					password2:"",
 					phone:"",
 					email:"",
 				},
 				roleParentOptions:[
 				],
 				rules: {
-          job_number: [
+          zgh: [
             { required: true, message: '请输入职工号', trigger: 'blur' }
           ],
           name: [
@@ -99,26 +82,12 @@
           group_ids: [
             { required: true, message: '请下拉选择或搜索输入角色', trigger: 'change' }
           ],
-          passWord: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-            { 
-            	trigger: 'blur',
-            	validator: (rule, value, callback) => {
-			          var passwordreg = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,16}/
-			          if (!passwordreg.test(value)) {
-			            callback(new Error('密码必须由数字、字母、特殊字符组合,请输入6-16位'))
-			          }else{
-			            callback()
-			          }
-		        	}
-      			}
+          phone: [
+            { required: true,validator: this.commonJs.checkPhone, trigger: 'blur' },
           ],
-          // phone: [
-          //   { validator: this.commonJs.checkPhone, trigger: 'blur' },
-          // ],
-          // email: [
-          // 	{ validator: this.commonJs.checkEmail, trigger: 'blur' },
-          // ],
+          email: [
+          	{ required: true, validator: this.commonJs.checkEmail, trigger: 'blur' },
+          ],
         }
 			}
 		},
@@ -133,10 +102,16 @@
 
 			// 获取上级角色
 			initRoleParent(){
-				this.$api.roleParent({
+				this.$api.c_roleParent({
         }).then(data=>{
           if(data.code == 0){
-          	this.roleParentOptions = data.data;
+          	var topOptions = [
+          		{
+          			name:"顶级",
+          			id:0,
+          		},
+          	];
+            this.roleParentOptions = [...topOptions,...data.data];
           }else{
             this.$message.error(data.msg);
           }
@@ -148,7 +123,7 @@
 				var _this = this;
 				this.initRoleParent();
 				if(this.userData.isEdit){ // 编辑
-					this.$api.c_userEdit({
+					this.$api.userEdit({
 						id:this.userData.id,
 						function_type:2,
 					}).then(data => {
@@ -184,7 +159,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.userData.isEdit){ // 编辑后提交
-          		this.$api.c_userEdit({
+          		this.$api.userEdit({
           			id:this.userData.id,
 	          		name:this.userForm.name,
 	          		job_number:this.userForm.job_number,
@@ -204,20 +179,12 @@
 	          		}
 	          	});
           	}else{ // 新增后提交
-          		var psw;
-          		if(this.userForm.password){
-	          		psw = this.userForm.password;
-	          	}else{
-	          		psw = '123456';
-	          	}
           		this.$api.c_userAdd({
 	          		name:this.userForm.name,
-	          		job_number:this.userForm.job_number,
-	          		password:psw,
+	          		zgh:this.userForm.zgh,
 	          		group_ids:this.userForm.group_ids.join(","),
 	          		phone:this.userForm.phone,
 	          		email:this.userForm.email,
-	          		is_normal:this.userForm.is_normal,
 	          	}).then(data =>{
 	          		if(data.code == 0){
 									_this.handleClose();

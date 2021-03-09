@@ -22,36 +22,24 @@
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="角色名称"></el-table-column>
-        <el-table-column prop="status" label="状态">
-        	<template slot-scope="scope">
-	        	<el-switch
-						  v-model="scope.row.status"
-						  active-value="1"
-						  inactive-value="0"
-						  active-color="#005DDA"
-						  inactive-color="#969191">
-						</el-switch>
-        	</template>
-        </el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
+        <el-table-column prop="createtime" label="创建时间"></el-table-column>
+        <el-table-column prop="updatetime" label="编辑时间"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer" @click="authPerson()" v-if="scope.row.id != 1">人员配置</span>
-            <span class="text-primary cursor-pointer ml-3" @click="editRole(scope.$index,scope.row)" v-if="scope.row.id != 1">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" v-if="scope.row.id != 1">删除</span>
+            <span class="text-primary cursor-pointer ml-3" @click="editRole(scope.$index,scope.row)">编辑</span>
+            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
           </template>
         </el-table-column>
       </data-tables-server>
     </el-card>
     <role-edit :roleData="roleData"></role-edit>
-    <role-authperson :rolePersonData="rolePersonData"></role-authperson>
 	</div>
 </template>
 
 <script>
 	import GlobalTips from "@/components/GlobalTips";
   import RoleEdit from "./RoleEdit";
-  import RoleAuthperson from "./RoleAuthperson";
 
 	export default {
 		name: 'Role',
@@ -63,12 +51,16 @@
 		components: {
 			GlobalTips,
       RoleEdit,
-      RoleAuthperson,
 		},
 		data () {
 			return {
 				tableProps: {
-          'max-height': 670,
+          'default-expand-all':true,
+          'row-key':"id",
+          'tree-props':{
+            'children': 'children', 
+            'hasChildren': 'hasChildren'
+          }
         },
         tableData: [],
         filters: [
@@ -108,7 +100,7 @@
           this.currentPage = queryInfo.page;
           this.pageSize = queryInfo.pageSize;
         }
-        this.$api.roleList({
+        this.$api.c_roleList({
         }).then(data =>{
           if(data.code == 0){
             this.tableData = data.data;
@@ -117,6 +109,7 @@
           }
         });
       },
+
       // 新增角色
       handleAdd(){
       	this.roleData.dialog = true;
@@ -124,6 +117,7 @@
       	this.roleData.id = '';
         this.roleData.isEdit = false;
       },
+
       // 编辑角色
       editRole(index,row){
         this.roleData.dialog = true;
@@ -131,11 +125,28 @@
         this.roleData.id = row.id;
         this.roleData.isEdit = true;
       },
-      // 人员配置
-      authPerson(){
-        this.rolePersonData.dialog = true;
-        this.rolePersonData.title = "人员配置";
-        this.rolePersonData.id = '';
+
+      // 删除
+      handleDel(index,row){
+        this.$confirm("此操作将永久删除该角色, 是否继续?", "提示", {
+          type: 'warning'
+        }).then(() => {
+          this.$api.c_roleDel({
+            id:row.id
+          }).then(data=>{ 
+             if(data.code == 0){
+                this.$message({
+                  message: "删除角色成功!",
+                  type: 'success'
+                });
+                this.loadData();
+             }else{
+               this.$message.error(data.msg);
+             }
+          })
+        }).catch(() => {
+
+        });
       },
 		},
 	}

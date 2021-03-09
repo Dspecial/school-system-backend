@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2021-01-15 16:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-03-04 14:56:46
+* @Last Modified time: 2021-03-09 18:04:19
 */
 
 import {post,postJson,postUpload} from '@/core/axios.js';
@@ -14,17 +14,20 @@ export default {
 	// 菜单
 	menu: p => post('/backstage/menu/index', p),
 
+
 	/*
 		***客户端权限管理
 	 */
-	// 人员列表(没对完)
+	// 人员列表(教师)(没对完)
 	c_userList: p => post('/backstage/auth.admin/index', p),
-	// 编辑人员列表
+	// 编辑人员列表(教师)
 	c_userEdit: p => post('/backstage/auth.admin/edit', p),
-	// 新增人员列表
+	// 新增人员列表(教师)
 	c_userAdd: p => post('/backstage/auth.admin/add', p),
+	// 删除人员(教师)
+	c_userDel: p => post('/backstage/auth.admin/del', p),
 
-	// 角色列表(没对呢)
+	// 角色列表
 	c_roleList: p => post('/backstage/auth.group/index', p),
 	// 编辑角色
 	c_roleEdit: p => post('/backstage/auth.group/edit', p),
@@ -33,7 +36,30 @@ export default {
 	// 上级角色列表
 	c_roleParent: p => post('/backstage/ajax/get_auth_group_list', p),
 	// 获取对应角色的权限列表
-	c_roleAuth: p => post('/backstage/ajax/get_auth_group_rule', p),
+	c_roleAuth: p => post('/backstage/ajax/get_application_auth_group_rule', p),
+	// 删除角色
+	c_roleDel: p => post('/backstage/auth.group/del', p),
+
+	// 路由管理列表
+	c_routerList: p => post('/backstage/auth.rule/index', p),
+	// 编辑路由
+	c_routerEdit: p => post('/backstage/auth.rule/edit', p),
+	// 新增路由
+	c_routerAdd: p => post('/backstage/auth.rule/add', p),
+	// 删除路由(没有接口)
+	c_routerDel: p => post('/backstage/auth.rule/del', p),
+
+
+	/*
+		***专家管理
+	 */
+	// 专家列表
+	expertList: p => post('/backstage/expert.expert/index', p),
+	// 新增专家列表
+	expertAdd: p => post('/backstage/expert.expert/add', p),
+	// 编辑专家列表
+	expertEdit: p => post('/backstage/expert.expert/edit', p),
+
 
 	/*
 		***资源管理
@@ -71,6 +97,7 @@ export default {
 	// 删除资源
 	resourceDel: p => post('/backstage/resource.resource/del', p),
 
+
 	/*
 		***后台权限管理
 	 */
@@ -99,6 +126,7 @@ export default {
 	// 新增路由
 	routerAdd: p => post('/backstage/adminauth.rule/add', p),
 
+
 	/*
 		***项目配置
 	 */
@@ -123,6 +151,7 @@ export default {
 	// 节点列表
 	p_nodeList: p => post('/backstage/project.node/index', p),
 	auth_userList: p=> post('/backstage/ajax/get_auth_group_user',p),
+
 
 	/*
 		***厂商管理
@@ -149,6 +178,7 @@ export default {
 	// 供应商可用列表
 	// supplierRole: p => post('/backstage/ajax/get_company_supplier', p),
 	
+
 	/*
 		***知识库管理
 	 */
@@ -175,5 +205,4 @@ export default {
 	kl_contentUpload: p => postUpload('/backstage/upload/upload_knowledge', p),
 	// 内容文件删除
 	kl_contentUploadDel: p => post('/backstage/upload/del_upload', p),
-
 }

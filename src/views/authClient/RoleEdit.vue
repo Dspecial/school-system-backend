@@ -21,7 +21,7 @@
 			    </el-option>
 			  </el-select>
 		  </el-form-item>
-		  <el-form-item label="权限配置" v-if="isAuth">
+		  <el-form-item label="权限配置" prop="auth" v-if="isAuth">
 			  <el-tree
 			  	ref="authTree"
 			  	class="authTree"
@@ -93,10 +93,16 @@
       },
 			// 获取上级角色
 			initRoleParent(){
-				this.$api.roleParent({
+				this.$api.c_roleParent({
         }).then(data=>{
           if(data.code == 0){
-          	this.roleParentOptions = data.data;
+          	var topOptions = [
+          		{
+          			name:"顶级",
+          			id:0,
+          		},
+          	];
+            this.roleParentOptions = [...topOptions,...data.data];
           }else{
             this.$message.error(data.msg);
           }
@@ -104,11 +110,12 @@
 			},
 
 			handleCheckChange(data, checked, indeterminate) {
+				this.roleForm.auth = [999]; // 随便写个值，过验证
         // console.log(data, checked, indeterminate);
       },
       // 根据角色获取对应的权限列表
 			initRoleAuth(id){
-				this.$api.roleAuth({
+				this.$api.c_roleAuth({
 					group_id:id,
         }).then(data=>{
           if(data.code == 0){
@@ -123,11 +130,12 @@
 				var _this = this;
 				this.initRoleParent();
 				if(this.roleData.isEdit){ // 编辑
-					this.$api.roleEdit({
+					this.$api.c_roleEdit({
 						id:this.roleData.id,
 						func_type:'',
 					}).then(data => {
 						if(data.code == 0){
+							console.log(data.data);
 							this.roleForm.id = data.data.id;
 							this.roleForm.name = data.data.name;
 							this.roleForm.pid = data.data.pid;
@@ -172,7 +180,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.roleData.isEdit){ // 编辑后提交
-          		this.$api.roleEdit({
+          		this.$api.c_roleEdit({
           			id:this.roleForm.id,
 								name:this.roleForm.name,
 								pid:this.roleForm.pid,
@@ -188,7 +196,7 @@
 								}
 							})
           	}else{ // 新增后提交
-          		this.$api.roleAdd({
+          		this.$api.c_roleAdd({
 								name:this.roleForm.name,
 								pid:this.roleForm.pid,
 								rules:allTreeNode,

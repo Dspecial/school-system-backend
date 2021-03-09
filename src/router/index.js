@@ -59,7 +59,38 @@ const router = new Router({
 				  component: resolve => require(['@/views/authClient/User'], resolve),
 				  name: 'ClientUser',
 				  meta: {
-				    title: '客户端管理员用户'
+				    title: '客户端用户（教师）'
+				  },
+				  children: null
+				},
+				{
+				  path: '/authClient/role',
+				  component: resolve => require(['@/views/authClient/Role'], resolve),
+				  name: 'ClientRole',
+				  meta: {
+				    title: '客户端角色'
+				  },
+				  children: null
+				},
+				{
+				  path: '/authClient/router',
+				  component: resolve => require(['@/views/authClient/Router'], resolve),
+				  name: 'ClientRouter',
+				  meta: {
+				    title: '客户端路由'
+				  },
+				  children: null
+				},
+
+				/*
+				**专家管理
+				 */
+				{
+				  path: '/expert/expert',
+				  component: resolve => require(['@/views/expert/Expert'], resolve),
+				  name: 'expertList',
+				  meta: {
+				    title: '专家列表'
 				  },
 				  children: null
 				},
