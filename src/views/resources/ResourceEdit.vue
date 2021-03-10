@@ -181,6 +181,8 @@
 					this.isExpand = true;
 					var cate_id = value[value.length-1]
 					this.initParams(cate_id);
+				}else{
+					this.isExpand = false;
 				}
 			},
 			// 获取供应商
