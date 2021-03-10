@@ -2,11 +2,11 @@
 	<div class="user-container">
 		<!-- 登录信息 -->
     <global-tips></global-tips>
-    <!-- 用户管理 -->
+    <!-- 教师列表 -->
     <el-card class="mt-3">
       <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
-          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">用户管理</h4>
+          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">教师列表</h4>
           <div class="d-flex align-items-center">
           	<div class="mr-auto d-flex align-items-center">
           		<el-input
@@ -27,7 +27,7 @@
               </el-date-picker>
           	</div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增用户</el-button>
+              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增教师职工</el-button>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@
         }else{
           lastlogintime = '';
         }
-        this.$api.c_userList({ // dxx mark: 筛选条件报错500
+        this.$api.c_userList({
           page:this.currentPage,
           limit:this.pageSize,
           keywords:this.filters[0].value,
@@ -137,7 +137,7 @@
       // 新增用户
       handleAdd(){
       	this.userData.dialog = true;
-      	this.userData.title = "新增用户";
+      	this.userData.title = "新增教师职工";
       	this.userData.id = '';
         this.userData.isEdit = false;
       },
@@ -145,14 +145,14 @@
       // 编辑用户
       editUser(index,row){
         this.userData.dialog = true;
-        this.userData.title = "编辑用户";
+        this.userData.title = "编辑教师职工";
         this.userData.id = row.id;
         this.userData.isEdit = true;
       },
 
       // 删除
       handleDel(index,row){
-        this.$confirm("此操作将永久删除该教师用户, 是否继续?", "提示", {
+        this.$confirm("此操作将永久删除该教师职工, 是否继续?", "提示", {
           type: 'warning'
         }).then(() => {
           this.$api.c_userDel({
@@ -160,7 +160,7 @@
           }).then(data=>{ 
              if(data.code == 0){
                 this.$message({
-                  message: "删除教师用户成功!",
+                  message: "删除教师职工成功!",
                   type: 'success'
                 });
                 this.loadData();

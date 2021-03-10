@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2021-01-15 16:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-03-10 10:36:49
+* @Last Modified time: 2021-03-10 14:36:29
 */
 
 import {post,postJson,postUpload} from '@/core/axios.js';
@@ -20,12 +20,16 @@ export default {
 	 */
 	// 人员列表(教师)(没对完)
 	c_userList: p => post('/backstage/auth.admin/index', p),
-	// 编辑人员列表(教师)(没对完)
+	// 编辑人员列表(教师)
 	c_userEdit: p => post('/backstage/auth.admin/edit', p),
-	// 新增人员列表(教师)(没对完)
+	// 新增人员列表(教师)
 	c_userAdd: p => post('/backstage/auth.admin/add', p),
 	// 删除人员(教师)
 	c_userDel: p => post('/backstage/auth.admin/del', p),
+	// 新增人员(教师)时先调用部门列表
+	c_dept: p => post('/backstage/ajax/getdepartlist', p),
+	// 新增人员(教师)时根据部门选择教师
+	c_user_form_dept: p => post('/backstage/ajax/get_user_for_depart', p),
 
 	// 角色列表
 	c_roleList: p => post('/backstage/auth.group/index', p),

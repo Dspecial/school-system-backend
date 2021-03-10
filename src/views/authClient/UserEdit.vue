@@ -7,12 +7,27 @@
 	  @closed="closedEdit('userForm')"
 	  :before-close="handleClose">
 	  <el-form :model="userForm" :rules="rules" ref="userForm" label-width="120px">
-	  	<el-form-item label="工号" prop="zgh">
-		    <el-input v-model="userForm.zgh" placeholder="请输入职工号"></el-input>
+
+	  	<el-form-item label="所属部门" prop="depart_num">
+				<el-select v-model="userForm.depart_num" filterable placeholder="请选择所属所属部门" class="w-100" @change="onDeptChange" popper-class="dept_select">
+			    <el-option
+			      v-for="item in deptOptions"
+			      :key="item.wid"
+			      :label="item.name"
+			      :value="item.wid">
+			    </el-option>
+			  </el-select>
 		  </el-form-item>
 
-		  <el-form-item label="真实姓名" prop="name">
-		    <el-input v-model="userForm.name" placeholder="请输入姓名"></el-input>
+	  	<el-form-item label="职工号" prop="zgh">
+		    <el-select v-model="userForm.zgh" filterable placeholder="请选择教师职工" class="w-100">
+			    <el-option
+			      v-for="item in zghOptions"
+			      :key="item.ZGH"
+			      :label="item.ZGH + ' - ' + item.XM"
+			      :value="item.ZGH">
+			    </el-option>
+			  </el-select>
 		  </el-form-item>
 
 		  <el-form-item label="所属角色" prop="group_ids">
@@ -25,13 +40,6 @@
 			      {{item.cate_name?item.cate_name+item.name:item.name}}
 			    </el-option>
 			  </el-select>
-		  </el-form-item>
-
-		  <el-form-item label="性别">
-		    <el-radio-group v-model="userForm.sex">
-			    <el-radio :label="1">男</el-radio>
-			    <el-radio :label="2">女</el-radio>
-			  </el-radio-group>
 		  </el-form-item>
 
 		  <el-form-item label="手机号码" prop="phone">
@@ -55,40 +63,33 @@
 		inject: ['loadData'],
 		name: 'UserEdit',
 		data () {
-			var validatePass = (rule, value, callback) => {
-	      if (!this.$commonJs.checkSpecialKey(value)) {
-	        callback(new Error("不能含有特殊字符！！"));
-	      } else {
-	        callback();
-	      }
-	    };
 			return {
 				userForm:{
+					depart_num:"",
 					zgh:"",
-					name:"",
 					group_ids:[],
-					sex:"",
 					phone:"",
 					email:"",
 				},
-				roleParentOptions:[
-				],
+				deptOptions:[],
+				zghOptions:[],
+				roleParentOptions:[],
 				rules: {
+					depart_num: [
+            { required: true, message: '请下拉选择或搜索输入部门', trigger: 'change' }
+          ],
           zgh: [
             { required: true, message: '请输入职工号', trigger: 'blur' }
-          ],
-          name: [
-            { required: true, message: '请输入姓名', trigger: 'blur' },
           ],
           group_ids: [
             { required: true, message: '请下拉选择或搜索输入角色', trigger: 'change' }
           ],
-          phone: [
-            { required: true,validator: this.commonJs.checkPhone, trigger: 'blur' },
-          ],
-          email: [
-          	{ required: true, validator: this.commonJs.checkEmail, trigger: 'blur' },
-          ],
+          // phone: [
+          //   { validator: this.commonJs.checkPhone, trigger: 'blur' },
+          // ],
+          // email: [
+          // 	{ validator: this.commonJs.checkEmail, trigger: 'blur' },
+          // ],
         }
 			}
 		},
@@ -97,10 +98,34 @@
 
 		},
 		methods:{
-			handleChange(value) {
-        // console.log(value,'99999');
+      // 获取部门列表
+      initDept(){
+      	this.$api.c_dept({
+        }).then(data=>{
+          if(data.code == 0){
+            this.deptOptions = data.data;
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
+      },
+      // 部门选择后
+      onDeptChange(value) {
+        this.initUser_zgh(value);
       },
 
+      // 获取教师职工号列表
+      initUser_zgh(wid){
+      	this.$api.c_user_form_dept({
+      		wid:wid,
+        }).then(data=>{
+          if(data.code == 0){
+            this.zghOptions = data.data;
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
+      },
 			// 获取上级角色
 			initRoleParent(){
 				this.$api.c_roleParent({
@@ -122,6 +147,7 @@
 			// dialog初始化
 			openEdit(){
 				var _this = this;
+				this.initDept();
 				this.initRoleParent();
 				if(this.userData.isEdit){ // 编辑
 					this.$api.c_userEdit({
@@ -130,13 +156,12 @@
 					}).then(data => {
 						if(data.code == 0){
 								this.userForm.id = data.data.id;
-								this.userForm.job_number = data.data.job_number;
-								this.userForm.name = data.data.name;
+								this.userForm.depart_num = data.data.depart_num;
+								this.initUser_zgh(data.data.depart_num);
+								this.userForm.zgh = data.data.job_number;
 								this.userForm.group_ids = data.data.group_arr;
-								this.userForm.sex = data.data.sex;
 								this.userForm.phone = data.data.phone;
 								this.userForm.email = data.data.email;
-								this.userForm.is_normal = data.data.is_normal;
 						}else{
 							this.$message.error(data.msg);
 						}
@@ -162,7 +187,6 @@
           	if(this.userData.isEdit){ // 编辑后提交
           		this.$api.c_userEdit({
           			id:this.userData.id,
-	          		name:this.userForm.name,
 	          		zgh:this.userForm.zgh,
 	          		group_ids:this.userForm.group_ids.join(","),
 	          		phone:this.userForm.phone,
@@ -179,7 +203,6 @@
 	          	});
           	}else{ // 新增后提交
           		this.$api.c_userAdd({
-	          		name:this.userForm.name,
 	          		zgh:this.userForm.zgh,
 	          		group_ids:this.userForm.group_ids.join(","),
 	          		phone:this.userForm.phone,
