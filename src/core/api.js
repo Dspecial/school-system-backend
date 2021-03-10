@@ -3,7 +3,7 @@
 * @Email: dxxtalking@163.com
 * @Date:   2021-01-15 16:11:11
 * @Last Modified by:   dxx
-* @Last Modified time: 2021-03-10 14:36:29
+* @Last Modified time: 2021-03-10 15:20:27
 */
 
 import {post,postJson,postUpload} from '@/core/axios.js';
@@ -154,6 +154,7 @@ export default {
 
 	// 节点列表
 	p_nodeList: p => post('/backstage/project.node/index', p),
+	// 新增项目选了角色后的人员
 	auth_userList: p=> post('/backstage/ajax/get_auth_group_user',p),
 
 
