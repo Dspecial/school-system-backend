@@ -42,11 +42,13 @@
           </template>
         </el-table-column>
         <el-table-column prop="depart_name" label="所属部门"></el-table-column>
+        <el-table-column prop="phone" label="手机号"></el-table-column>
+        <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="lastlogintime" label="上次登录时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="150" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer" @click="editUser(scope.$index,scope.row)" v-if="scope.row.id != 1">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" v-if="scope.row.id != 1">删除</span>
+            <span class="text-primary cursor-pointer" @click="editUser(scope.$index,scope.row)">编辑</span>
+            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -118,7 +120,7 @@
         }else{
           lastlogintime = '';
         }
-        this.$api.c_userList({
+        this.$api.c_userList({ // dxx mark: 筛选条件报错500
           page:this.currentPage,
           limit:this.pageSize,
           keywords:this.filters[0].value,
@@ -147,6 +149,30 @@
         this.userData.id = row.id;
         this.userData.isEdit = true;
       },
+
+      // 删除
+      handleDel(index,row){
+        this.$confirm("此操作将永久删除该教师用户, 是否继续?", "提示", {
+          type: 'warning'
+        }).then(() => {
+          this.$api.c_userDel({
+            id:row.id,
+          }).then(data=>{ 
+             if(data.code == 0){
+                this.$message({
+                  message: "删除教师用户成功!",
+                  type: 'success'
+                });
+                this.loadData();
+             }else{
+               this.$message.error(data.msg);
+             }
+          })
+        }).catch(() => {
+
+        });
+      },
+
 		},
 	}
 </script>

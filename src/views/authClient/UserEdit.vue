@@ -40,6 +40,7 @@
 		  <el-form-item label="电子邮箱" prop="email">
 		    <el-input v-model="userForm.email" placeholder="请输入电子邮箱"></el-input>
 		  </el-form-item>
+
 	  </el-form>
 	  <span slot="footer" class="dialog-footer">
 	    <el-button @click="closedEdit('userForm')">取 消</el-button>
@@ -123,9 +124,9 @@
 				var _this = this;
 				this.initRoleParent();
 				if(this.userData.isEdit){ // 编辑
-					this.$api.userEdit({
+					this.$api.c_userEdit({
 						id:this.userData.id,
-						function_type:2,
+						func_type:2,
 					}).then(data => {
 						if(data.code == 0){
 								this.userForm.id = data.data.id;
@@ -159,16 +160,14 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.userData.isEdit){ // 编辑后提交
-          		this.$api.userEdit({
+          		this.$api.c_userEdit({
           			id:this.userData.id,
 	          		name:this.userForm.name,
-	          		job_number:this.userForm.job_number,
-	          		password:this.userForm.password2,
+	          		zgh:this.userForm.zgh,
 	          		group_ids:this.userForm.group_ids.join(","),
 	          		phone:this.userForm.phone,
 	          		email:this.userForm.email,
-	          		is_normal:this.userForm.is_normal,
-	          		function_type:1,
+	          		func_type:1,
 	          	}).then(data =>{
 	          		if(data.code == 0){
 									_this.handleClose();
