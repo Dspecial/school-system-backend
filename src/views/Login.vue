@@ -5,7 +5,7 @@
 				<el-image :src="loginBg" fit="fill" class="h-100"></el-image>
 			</div>
 			<div class="login-right">
-				<el-form ref="loginForm" :model="loginForm" label-width="0" class="login-box" size="large">
+				<el-form ref="loginForm" :model="loginForm" label-width="0" class="login-box" size="large"  @submit.native.prevent>
 	        <div class="login-header mb-5">
 	          <p class="fs_28 text-000 text-center">账号登录</p>
 	        </div>
@@ -20,7 +20,7 @@
 	        </el-form-item>
 	        <el-checkbox v-model="rememberPwd">记住密码</el-checkbox>
 	        <el-form-item>
-	          <el-button type="primary" class="w-100 fs_16 mt-5" @click="onSubmit()">登录</el-button>
+	          <el-button type="primary" class="w-100 fs_16 mt-5" native-type="submit" @click="onSubmit()">登录</el-button>
 	        </el-form-item>
 	      </el-form>
 			</div>
@@ -46,12 +46,6 @@
 		},
 		created() {
       let that = this;
-      document.onkeydown = function(e) {
-        var key = window.event.keyCode;
-        if (key == 13) {
-          that.onSubmit();
-        }
-      }
     },
     mounted(){
       if(this.rememberPwd){
