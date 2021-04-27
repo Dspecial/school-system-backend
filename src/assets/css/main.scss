@@ -7,7 +7,6 @@
 */
 @charset "UTF-8";
 
-/* 整体配色 */
 :root{
   --primary: #005DDA;
   --primary-600:#00347A;
@@ -74,6 +73,20 @@
 }
 .bg-cyan{
   background-color: var(--cyan)!important;
+  color: var(--white);
+}
+.text-blue{
+  color: var(--blue)!important;
+}
+.bg-blue{
+  background-color: var(--blue)!important;
+  color: var(--white);
+}
+.text-primary-900{
+  color: var(--primary-900)!important;
+}
+.bg-primary-900{
+  background-color: var(--primary-900)!important;
   color: var(--white);
 }
 
@@ -200,6 +213,13 @@ html,body,#app,.page-container{
 }
 .page{
   background-color:#F0F2F5;
+}
+.dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color:#000;
+  display:inline-block;
 }
 /*Login.vue*/
 .login-container{
@@ -424,13 +444,6 @@ html,body,#app,.page-container{
 .documentUpload .el-form-item__content .el-upload,
 .documentUpload .el-form-item__content .el-upload-dragger{
   width: 100%;
-}
-.dot{
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color:#000;
-  display:inline-block;
 }
 
 /*role.vue*/
