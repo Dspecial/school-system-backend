@@ -2,7 +2,7 @@
 	<div class="dept-container">
 		<!-- 登录信息 -->
     <global-tips></global-tips>
-    <!-- 部门列表 -->
+    <!-- 专家列表 -->
     <el-card class="mt-3">
       <data-tables-server :data="tableData" layout="tool, table, pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">

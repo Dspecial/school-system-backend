@@ -73,6 +73,18 @@ export default {
 	system_config_group: p => post('/api/ajax/get_config_group', p),
 
 	/*
+		***部门管理
+	 */
+	// 部门列表
+	deptList: p => post('/backstage/department.department/index', p),
+	// 添加经费
+	addFund: p => post('/backstage/funds.funds/add', p),
+	// 预算列表
+	budgetList: p => post('/backstage/funds.funds/index', p),
+	// 使用明细
+	budgetUseDetails: p => post('/backstage/department.department/commission_list', p),
+
+	/*
 		***资源管理
 	 */
 	// 类别管理列表

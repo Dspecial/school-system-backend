@@ -94,6 +94,7 @@ const router = new Router({
 				  },
 				  children: null
 				},
+
 				/*
 				**设置管理
 				 */
@@ -101,9 +102,23 @@ const router = new Router({
 				{
 				  path: '/setting/systemSetting',
 				  component: resolve => require(['@/views/setting/SystemSetting'], resolve),
-				  name: 'SystemSettingList',
+				  name: 'systemSettingList',
 				  meta: {
 				    title: '系统设置'
+				  },
+				  children: null
+				},
+
+				/*
+				**部门管理
+				 */
+				// 部门列表
+				{
+				  path: '/department/department',
+				  component: resolve => require(['@/views/department/Department'], resolve),
+				  name: 'departmentList',
+				  meta: {
+				    title: '部门列表'
 				  },
 				  children: null
 				},
@@ -271,15 +286,6 @@ const router = new Router({
 				  },
 				  children: null
 				},
-				// {
-				//   path: '/knowledge/content',
-				//   component: resolve => require(['@/views/knowledge/Content'], resolve),
-				//   name: 'KnowledgeContent',
-				//   meta: {
-				//     title: '知识库内容管理'
-				//   },
-				//   children: null
-				// },
 
 				/*
 				**信息管理
