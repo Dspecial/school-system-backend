@@ -12,8 +12,8 @@
 		    <el-cascader class="w-100" v-model="contentForm.pid_all" placeholder="请选择所属分类" :show-all-levels="false" clearable :options="pidOptions" :props="{value:'id',label:'cate_name',children:'children',checkStrictly: true}" @change="handleChange">
 		    </el-cascader>
 		  </el-form-item>
-		  <el-form-item label="内容名称" prop="title">
-		  	<el-input v-model="contentForm.title" placeholder="请输入内容名称"></el-input>
+		  <el-form-item label="标题" prop="title">
+		  	<el-input v-model="contentForm.title" placeholder="请输入标题"></el-input>
 		  </el-form-item>
 		  <el-form-item label="内容类型" prop="type">
 		  	<el-select v-model="contentForm.type" placeholder="请选择内容类型" class="w-100" @change="selectChange">
@@ -73,7 +73,7 @@
 					  :on-success="handleSuccess"
 					  :on-remove="handleRemove"
 					  :before-upload="beforeUpload">
-					  <div class="el-upload__text"><i class="el-icon-upload"></i>将多媒体拖到此处，或<em>点击选择多媒体</em></div>
+					  <div class="el-upload__text"><i class="el-icon-upload"></i>将多媒体拖到此处，或<em>点击选择多媒体,建议上传.mp4,.rmvb,.webm格式的视频</em></div>
 					</el-upload>
 		  	</div>
 		  </el-form-item>
@@ -161,7 +161,7 @@
       		this.accept = ".png,.jpg,.jpeg,.PNG,.JPG,.JPEG,.gif";
       	}else if(value == 4){
       		// 多媒体
-      		this.accept = ".mp4,.rmvb,.wmv";
+      		this.accept = ".mp4,.rmvb,.webm";
       	}
       },
       

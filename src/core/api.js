@@ -64,6 +64,13 @@ export default {
 	// 编辑专家列表
 	expertEdit: p => post('/backstage/expert.expert/edit', p),
 
+	/*
+		***设置管理
+	 */
+	// 系统设置
+	systemSetting: p => post('/backstage/system.config/index', p),
+	// 资源审核角色
+	system_config_group: p => post('/api/ajax/get_config_group', p),
 
 	/*
 		***资源管理

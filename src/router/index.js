@@ -94,6 +94,19 @@ const router = new Router({
 				  },
 				  children: null
 				},
+				/*
+				**设置管理
+				 */
+				// 系统设置
+				{
+				  path: '/setting/systemSetting',
+				  component: resolve => require(['@/views/setting/SystemSetting'], resolve),
+				  name: 'SystemSettingList',
+				  meta: {
+				    title: '系统设置'
+				  },
+				  children: null
+				},
 
 				/*
 				**资源管理
