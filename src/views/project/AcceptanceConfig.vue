@@ -2,53 +2,45 @@
 	<div class="user-container">
 		<!-- 登录信息 -->
     <global-tips></global-tips>
-    <!-- 项目类别列表 -->
+    <Breadcrumb></Breadcrumb>
+    <!-- 验收配置列表 -->
     <el-card class="mt-3">
       <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
-          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">项目类别</h4>
+          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">验收配置</h4>
           <div class="d-flex align-items-center">
-          	<div class="mr-auto d-flex align-items-center">
-          		<el-input
-    				    placeholder="类别名称、创建人、编辑人"
-    				    prefix-icon="el-icon-search"
-    				    v-model="filters[0].value">
-    				  </el-input>
-          	</div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增项目类别</el-button>
+              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增验收配置</el-button>
             </div>
           </div>
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="type_sn" label="项目类别编号"></el-table-column>
-        <el-table-column prop="name" label="类别名称"></el-table-column>
-        <el-table-column prop="is_show" label="使用状态" width="100">
+        <el-table-column prop="title" label="名称"></el-table-column>
+        <el-table-column prop="sort" label="排序"></el-table-column>
+        <el-table-column prop="file_type" label="允许上传类型"></el-table-column>
+        <el-table-column prop="file_model" label="文件模式">
           <template slot-scope="scope">
-            <span v-if="scope.row.is_show == 1"><i class="dot bg-success mr-1"></i>正常</span>
-            <span v-else><i class="dot bg-danger mr-1"></i>禁用</span>
+            <span v-if="scope.row.file_model == 1"><i class="dot bg-success mr-1"></i>单文件</span>
+            <span v-else><i class="dot bg-danger mr-1"></i>多文件</span>
           </template>
         </el-table-column>
-        <el-table-column prop="aname" label="创建人"></el-table-column>
-        <el-table-column prop="aename" label="最新编辑人"></el-table-column>
-        <el-table-column prop="createtime" label="创建时间"></el-table-column>
-        <el-table-column prop="updatetime" label="更新时间"></el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer" @click="config(scope.$index,scope.row)">验收配置</span>
             <span class="text-primary cursor-pointer ml-3" @click="editCate(scope.$index,scope.row)">编辑</span>
             <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
           </template>
         </el-table-column>
       </data-tables-server>
     </el-card>
-    <category-edit :categoryData="categoryData"></category-edit>
+    <acceptanceconfig-edit :configData="configData"></acceptanceconfig-edit>
 	</div>
 </template>
 
 <script>
 	import GlobalTips from "@/components/GlobalTips";
-	import CategoryEdit from "./CategoryEdit";
+  import Breadcrumb from "@/components/Breadcrumb";
+  import AcceptanceconfigEdit from "./AcceptanceconfigEdit";
 
 	export default {
 		name: 'Category',
@@ -59,7 +51,8 @@
     },
 		components: {
 			GlobalTips,
-			CategoryEdit,
+      Breadcrumb,
+      AcceptanceconfigEdit
 		},
 		data () {
 			return {
@@ -76,7 +69,7 @@
         total: 0, //总条数
         currentPage: 1, //当前页
         pageSize: 15, //每页显示条数
-        categoryData:{
+        configData:{
         	dialog:false,
         	title:"",
         	id:"",
@@ -99,14 +92,11 @@
           this.currentPage = queryInfo.page;
           this.pageSize = queryInfo.pageSize;
         }
-        this.$api.p_categoryList({
-          page:this.currentPage,
-          limit:this.pageSize,
-          keywords:this.filters[0].value,
-        }).then(data=>{
+        this.$api.p_accpetConfig({
+          category_id:this.$route.query.id,
+        }).then(data =>{
           if(data.code == 0){
-            this.total = data.data.total;
-            this.tableData = data.data.data;
+            this.tableData = data.data;
           }else{
             this.$message.error(data.msg);
           }
@@ -115,41 +105,31 @@
 
       // 新增项目类别
       handleAdd(){
-      	this.categoryData.dialog = true;
-      	this.categoryData.title = "新增项目类别";
-      	this.categoryData.id = '';
-        this.categoryData.isEdit = false;
-      },
-
-      // 验收配置
-      config(index,row){
-        this.$router.push({
-          path:"/project/category/accept",
-          query:{
-            id:row.id
-          }
-        });
+      	this.configData.dialog = true;
+      	this.configData.title = "新增验收配置";
+      	this.configData.id = '';
+        this.configData.isEdit = false;
       },
 
       // 编辑项目类别
       editCate(index,row){
-        this.categoryData.dialog = true;
-        this.categoryData.title = '编辑项目类别';
-        this.categoryData.id = row.id;
-        this.categoryData.isEdit = true;
+        this.configData.dialog = true;
+        this.configData.title = '编辑验收配置';
+        this.configData.id = row.id;
+        this.configData.isEdit = true;
       },
 
       // 删除
       handleDel(index,row){
-        this.$confirm("此操作将永久删除该项目类别, 是否继续?", "提示", {
+        this.$confirm("此操作将永久删除该验收配置, 是否继续?", "提示", {
           type: 'warning'
         }).then(() => {
-          this.$api.p_categoryDel({
+          this.$api.p_accpetConfigDel({
             id:row.id
           }).then(data=>{ 
              if(data.code == 0){
                 this.$message({
-                  message: "删除项目类别成功!",
+                  message: data.msg,
                   type: 'success'
                 });
                 this.loadData();

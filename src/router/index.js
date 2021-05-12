@@ -207,6 +207,15 @@ const router = new Router({
 				  children: null
 				},
 				{
+				  path: '/project/category/accept',
+				  component: resolve => require(['@/views/project/AcceptanceConfig'], resolve),
+				  name: 'AcceptanceConfig',
+				  meta: {
+				    title: '验收配置'
+				  },
+				  children: null
+				},
+				{
 				  path: '/auditProcess',
 				  component: resolve => require(['@/views/project/Auditprocess'], resolve),
 				  name: 'Auditprocess',

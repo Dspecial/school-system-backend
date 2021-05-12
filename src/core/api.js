@@ -176,6 +176,14 @@ export default {
 	// 新增项目选了角色后的人员
 	auth_userList: p=> post('/backstage/ajax/get_auth_group_user',p),
 
+	// 验收配置
+	p_accpetConfig: p=> post('/backstage/project.accept/index',p),
+	// 新增验收配置
+	p_accpetConfigAdd: p=> post('/backstage/project.accept/add',p),
+	// 编辑验收配置
+	p_accpetConfigEdit: p=> post('/backstage/project.accept/edit',p),
+	// 删除验收配置
+	p_accpetConfigDel: p=> post('/backstage/project.accept/del',p),
 
 	/*
 		***厂商管理
