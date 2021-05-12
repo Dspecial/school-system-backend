@@ -39,7 +39,7 @@
 		    		<span class="text-primary cursor-pointer ml-3" @click="addPro(item.cellArray)"><i class="el-icon-plus"></i>审核流程</span>
 			    </div>
 			    <template v-for="(cell,INDEX) in item.cellArray">
-					  <el-row type="flex" align="middle" :gutter="10" class="authCheck_row">
+					  <el-row type="flex" align="middle" :gutter="10" class="authCheck_row" :key="INDEX">
 				  		<el-col :span="11">
 						  	<el-form-item label-width="0">
 							  	<el-select v-model="cell.rule_id" placeholder="请选择角色" class="w-100" @blur="blurChange(cell)" @change="ruleChange(cell)">
