@@ -6,7 +6,7 @@
 	  @open="openEdit"
 	  @closed="closedEdit('roleForm')"
 	  :before-close="handleClose">
-	  <el-form :model="roleForm" :rules="rules" ref="roleForm" label-width="100px">
+	  <el-form :model="roleForm" :rules="rules" ref="roleForm" label-width="120px">
 	  	<el-form-item label="角色名称" prop="name">
 		    <el-input v-model="roleForm.name" placeholder="请输入角色名称"></el-input>
 		  </el-form-item>
@@ -35,6 +35,12 @@
 				  @check-change="handleCheckChange">
 				</el-tree>
 		  </el-form-item>
+			<el-form-item label="开启部门审核" prop="is_open_depart_check">
+		    <el-radio-group v-model="roleForm.is_open_depart_check">
+			    <el-radio label="2">是</el-radio>
+					<el-radio label="1">否</el-radio>
+			  </el-radio-group>
+		  </el-form-item>
 		  <el-form-item label="备注" prop="remark">
 		  	<el-input type="textarea" v-model="roleForm.remark" placeholder="请输入备注" :autosize="{ minRows: 3, maxRows: 8 }"></el-input>
 		  </el-form-item>
@@ -58,6 +64,7 @@
 					name:"",
 					pid:"",
 					auth:[],
+					is_open_depart_check:'1',
 					remark:"",
 				},
 				roleParentOptions:[
@@ -79,6 +86,9 @@
           auth: [
             { required: true, message: '请选择权限', trigger: 'change' },
           ],
+					is_open_depart_check: [
+						{ required: true, message: '请选择是否开启部门审核', trigger: 'change' },
+					]
         }
 			}
 		},
@@ -142,6 +152,8 @@
 							this.isAuth = true;
 							this.initRoleAuth(data.data.pid);
 							this.roleForm.auth = data.data.children_rule; 
+							this.roleForm.remark = data.data.remark;
+							this.roleForm.is_open_depart_check = data.data.is_open_depart_check; 
 
 							// ES6 查出两个数组的不同部分,即：所有父
 							var a = data.data.rules.split(',').map(Number);
@@ -185,6 +197,8 @@
 								name:this.roleForm.name,
 								pid:this.roleForm.pid,
 								rules:allTreeNode,
+								remark:this.roleForm.remark,
+								is_open_depart_check:this.roleForm.is_open_depart_check,
 								func_type:1,
 							}).then(data => {
 								if(data.code == 0){
@@ -200,6 +214,8 @@
 								name:this.roleForm.name,
 								pid:this.roleForm.pid,
 								rules:allTreeNode,
+								remark:this.roleForm.remark,
+								is_open_depart_check:this.roleForm.is_open_depart_check,
 							}).then(data => {
 								if(data.code == 0){
 									_this.handleClose();
