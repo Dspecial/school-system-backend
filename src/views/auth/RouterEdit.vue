@@ -10,17 +10,26 @@
 	  	<el-form-item label="ID" prop="id" :hidden="true">
 		    <el-input v-model="routerForm.id" placeholder="请输入路由ID"></el-input>
 		  </el-form-item>
-		  <el-form-item label="所属上级" prop="pid">
-		    <el-input v-model="routerForm.pid" placeholder="所属上级" :disabled="true"></el-input>
+		  <el-form-item label="所属上级id" prop="pid">
+		    <el-input v-model="routerForm.pid" placeholder="所属上级id" :disabled="true"></el-input>
 		  </el-form-item>
 		  <el-form-item label="菜单名称" prop="title">
 		  	<el-input v-model="routerForm.title" placeholder="请输入菜单名称"></el-input>
 		  </el-form-item>
-		  <el-form-item label="路由" prop="name">
-		    <el-input v-model="routerForm.name" placeholder="请输入路由"></el-input>
-		  </el-form-item>
-		  <el-form-item label="路径" prop="path">
+		  <!-- <el-form-item label="路由" prop="name">
+		    <el-input v-model="routerForm.name" placeholder="请输入路由" readonly></el-input>
+		  </el-form-item> -->
+		  <el-form-item label="路径" prop="path" v-if="routerForm.is_menu == 1">
 		    <el-input v-model="routerForm.path" placeholder="请输入路径"></el-input>
+		  </el-form-item>
+			<el-form-item label="菜单类型" prop="is_menu">
+		    <el-select v-model="routerForm.is_menu" placeholder="请选择菜单类型" class="w-100">
+			    <el-option label="菜单" value="1"></el-option>
+			    <el-option label="按钮" value="2"></el-option>
+			  </el-select>
+		  </el-form-item>
+			<el-form-item label="标识" v-if="routerForm.is_menu == 2">
+		    <el-input v-model="routerForm.sign" placeholder="请输入标识"></el-input>
 		  </el-form-item>
 		  <el-form-item label="图标" prop="icon" v-if="isTop">
 		  	<e-icon-picker v-model="routerForm.icon"/>
@@ -52,6 +61,8 @@
 					path:"",
 					icon:"",
 					sort:"",
+					sign:'',
+					is_menu:"",
 				},
 				isTop:false,
 				rules: {
@@ -93,6 +104,9 @@
 							this.routerForm.path = data.data.path;
 							this.routerForm.icon = data.data.icon;
 							this.routerForm.sort = data.data.sort;
+
+							this.routerForm.sign = data.data.sign;
+							this.routerForm.is_menu = data.data.is_menu;
 							if(data.data.pid == 0){
 								this.isTop = true;
 							}else{
@@ -134,6 +148,8 @@
 								path:this.routerForm.path,
 								icon:this.routerForm.icon,
 								sort:this.routerForm.sort,
+								sign:this.routerForm.sign,
+								is_menu:this.routerForm.is_menu,
 								func_type:1,
 							}).then(data => {
 								if(data.code == 0){
@@ -154,6 +170,8 @@
 								path:this.routerForm.path,
 								icon:this.routerForm.icon,
 								sort:this.routerForm.sort,
+								sign:this.routerForm.sign,
+								is_menu:this.routerForm.is_menu,
 							}).then(data => {
 								if(data.code == 0){
 									_this.handleClose();
