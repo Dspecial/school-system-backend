@@ -20,6 +20,22 @@
 			    <el-radio :label="'2'">不显示</el-radio>
 			  </el-radio-group>
 		  </el-form-item>
+			<el-form-item label="图片上传" prop="icon">
+				<el-upload
+					:limit="1"
+				  action="void"
+				  :accept="accept"
+				  list-type="picture-card"
+				  :auto-upload="true"
+				  :http-request="myUpload"
+				  :file-list="fileList"
+				  :on-success="handleSuccess"
+				  :on-remove="handleRemove"
+				  :before-upload="beforeUpload"
+					:on-exceed="onExceed">
+				  <i class="el-icon-plus"></i>
+				</el-upload>
+		  </el-form-item>
 	  </el-form>
 	  <span slot="footer" class="dialog-footer">
 	    <el-button @click="closedEdit('cateForm')">取 消</el-button>
@@ -29,6 +45,7 @@
 </template>
 
 <script>
+	import globalUrl from '@/core/globalUrl.js';
 	export default {
 		props:['cateData'],
 		inject: ['loadData'],
@@ -42,7 +59,10 @@
 					pid_all:[],
 					cate_name:"",
 					is_show:"",
+					icon:[],
 				},
+				accept: ".jpg,.png,.JGEG",
+				fileList:[],
 				rules: {
           pid_all: [
             { required: true, message: '请输入所属上级', trigger: 'change' }
@@ -52,6 +72,9 @@
           ],
           is_show: [
             { required: true, message: '请选择显示与否', trigger: 'change' }
+          ],
+					icon: [
+            { required: true, message: '请上传图片', trigger: 'change' }
           ],
         }
 			}
@@ -98,6 +121,19 @@
 							this.cateForm.is_show = data.data.is_show;
 							var all_parent = data.data.all_parent.reverse();
 							this.cateForm.pid_all = all_parent;
+
+							let arrList = [];
+							for (let i in data.data.icon) {
+								var obj = {};
+								var a = data.data.icon[i].split("/");
+								var b = a[a.length -1];
+								obj.name = b;
+								obj.url = globalUrl.baseURL + data.data.icon[i];
+								obj.path = data.data.icon[i];
+								obj.isExist = true;
+								arrList.push(obj);
+							}
+							this.fileList = arrList;
 						}else{
 							this.$message.error(data.msg);
 						}
@@ -114,6 +150,7 @@
 			// 右上角x关闭
 			handleClose(){
 				this.cateData.dialog = false;
+				this.fileList = [];
 			},
 			// form提交
 			submitForm(formName) {
@@ -127,6 +164,7 @@
 								pid:all[all.length-1],
 								cate_name:this.cateForm.cate_name,
 								is_show:this.cateForm.is_show,
+								icon:this.cateForm.icon.join(","),
 								function_type:1,
 							}).then(data => {
 								if(data.code == 0){
@@ -142,6 +180,7 @@
 								pid:all[all.length-1],
 								cate_name:this.cateForm.cate_name,
 								is_show:this.cateForm.is_show,
+								icon:this.cateForm.icon.join(","),
 							}).then(data => {
 								if(data.code == 0){
 									_this.handleClose();
@@ -161,7 +200,65 @@
       // 表单重置
       resetForm(formName) {
         this.$refs[formName].resetFields();
-      }
+      },
+
+			/****  上传  ****/
+			myUpload(params){
+	      // 通过 FormData 对象上传文件
+	      const formData = new FormData();
+	      formData.append("file", params.file);
+	      formData.append("user_token", this.VueCookies.get("token"));
+
+				this.$api.cateUpload(formData).then(data =>{
+					if(data.code == 0){
+						// 回调成功的方法
+						params.onSuccess(data);
+						this.$message.success(data.msg);
+						this.cateForm.icon.push(data.data.path);
+					}else{
+						this.$message.error(data.msg);
+					}
+				});
+			},
+      // 上传成功
+			handleSuccess(res, file, fileList) {
+				this.fileList = fileList;
+      },
+      // 移除上传文件
+      handleRemove(file,fileList) {
+      	var path;
+      	if(file.isExist){ // 原先上传已存在的
+      		path = file.path;
+      	}else{ // 刚刚上传的
+      		path = file.response.data.path;
+      	}
+      	this.$api.cateUploadDel({
+      		path:path,
+      	}).then(data =>{
+					if(data.code == 0){
+						this.fileList = fileList;
+						this.cateForm.icon.some((item, i)=>{
+							if(item = path){
+								this.cateForm.icon.splice(i, 1);
+								//在数组的some方法中，如果return true，就会立即终止这个数组的后续循环
+								return true
+							}
+						});
+						this.$message({message: '成功移除' + file.name, type: 'success'});
+					}else{
+						this.$message.error(data.msg);
+					}
+				});
+      },
+
+      // 上传前验证
+      beforeUpload(file) {
+      	// 验证大小等
+      },
+			// 文件超出限制
+			onExceed(file,fileList){
+				this.$message.error("只能上传一张图片哦，可以先删除再重新上传！");
+			},
 		}
 	}
 </script>

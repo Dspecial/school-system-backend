@@ -99,6 +99,10 @@ export default {
 	cateParamsOption: p => post('/backstage/ajax/get_cate_form', p),
 	// 分配参数
 	setformparams: p => post('/backstage/resource.cate/setformparams', p),
+	// 类别图片上传
+	cateUpload: p => postUpload('/backstage/upload/upload', p),
+	// 类别图片删除上传
+	cateUploadDel: p => post('/backstage/upload/del_upload', p),
 
 	// 参数管理列表
 	formList: p => post('/backstage/resource.form/index', p),
