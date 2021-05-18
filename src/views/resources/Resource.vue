@@ -7,7 +7,7 @@
 			<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">资源概况</h4>
 			<el-row :gutter="20">
 				<template v-for="item in resources">
-					<el-col :span="12" class="status-item">
+					<el-col :span="12" class="status-item" :key="index">
 						<div class="d-flex align-items-center justify-content-center p-2">
 							<img :src="item.src" alt="" width="80" height="80">
 							<div class="ml-3 text-center">
