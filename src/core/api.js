@@ -9,11 +9,20 @@
 import {post,postJson,postUpload} from '@/core/axios.js';
 
 export default {
-	// 登录
+	/*
+		***登录
+	 */
 	login: p => post('/backstage/login/login', p),
-	// 菜单
-	menu: p => post('/backstage/menu/index', p),
+	// 获取登录申请着的身份
+	loginConfig: p => post('/api/ajax/get_sys_config', p),
 
+	/*
+		***菜单
+	 */
+	// 菜单管理
+	menu: p => post('/backstage/menu/index', p),
+	// 获取所有的操作按钮
+	menuButton: p => post('/backstage/menu/get_menu_buttom', p),
 
 	/*
 		***客户端权限管理

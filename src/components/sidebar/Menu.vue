@@ -1,9 +1,9 @@
 <template>
   <div class="nav_menu">
-    <template v-for="(menuData,index) in menuDatas">
+    <template v-for="menuData in menuDatas">
       <!-- 不分组 -->
       <!-- 不分组只有一级菜单 -->
-      <el-menu-item v-if="menuData&&menuData.sub==undefined || menuData&&menuData.sub===null || menuData&&menuData.sub.length===0" :key="menuData.path" :index="menuData.path" :route="menuData.path">
+      <el-menu-item @click="menuClick(menuData.id)" v-if="menuData&&menuData.sub==undefined || menuData&&menuData.sub===null || menuData&&menuData.sub.length===0" :key="menuData.path" :index="menuData.path" :route="menuData.path">
         <!--图标-->
         <i :class="[menuData.icon,'myMenuIcon']" v-if="menuData.icon"></i>
         <!--标题-->
@@ -12,10 +12,10 @@
 
       <!--不分组有多级菜单-->
       <el-submenu v-if="menuData&&menuData.sub&&menuData.sub.length!=0" :key="menuData.path" :index="menuData.path">
-        <template slot="title">
+        <div slot="title">
           <i :class="menuData.icon"></i>
           <span> {{menuData.title}}</span>
-        </template>
+        </div>
         <!--递归组件，把遍历的值传回子组件，完成递归调用-->
         <Menu class="multiple_menu" :menuDatas="menuData.sub"></Menu>
       </el-submenu>
@@ -30,9 +30,44 @@
     props: ['menuDatas'], // 传入子组件的数据
     data() {
       return {
+        allAction:{
+          addAction:{},
+          moreAction:[],
+        }
       }
     },
-    methods: {},
+    mounted(){
+      window.onbeforeunload = e => {      //刷新时弹出提示
+        this.menuClick(this.$cookies.get("menu_id"));
+      };
+    },
+    methods: {
+      // 获取该菜单列表下的所有操作按钮
+      menuClick(id){
+        this.$cookies.set('menu_id', id);
+        // 清空
+        this.allAction = {
+          addAction:{},
+          moreAction:[],
+        };
+        this.$api.menuButton({
+          menu_id:id
+        }).then(data=>{
+          if(data.code == 0){
+            if(this.commonJs.isEmpty(data.data.current_menu[0])) return;
+            data.data.current_menu.map(item=>{
+              if(item.sign == 1){ // 是添加按钮
+                this.allAction.addAction = item;
+              }else{
+                this.allAction.moreAction.push(item);
+              }
+            })
+            console.log(this.allAction,'this.allAction');
+            this.$store.commit("SET_ACTION",this.allAction);
+          }
+        })
+      },
+    },
   }
 </script>
 

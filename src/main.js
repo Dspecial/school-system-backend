@@ -44,6 +44,7 @@ import './assets/css/main.scss'; // 页面样式表
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
