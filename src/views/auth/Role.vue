@@ -16,7 +16,7 @@
     				  </el-input>
           	</div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增角色</el-button>
+              <el-button type="primary" @click="handleAdd()" v-if="$store.getters.getaddAction.title" ><i class="el-icon-plus el-icon--left"></i>{{$store.getters.getaddAction.title}}</el-button>
             </div>
           </div>
         </div>
@@ -27,9 +27,10 @@
         <el-table-column prop="updatetime" label="编辑时间"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer" @click="authPerson()" v-if="scope.row.id != 1">人员配置</span>
-            <span class="text-primary cursor-pointer ml-3" @click="editRole(scope.$index,scope.row)" v-if="scope.row.id != 1">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" v-if="scope.row.id != 1">删除</span>
+            <template v-if="scope.row.id != 1">
+              <!-- <span class="text-primary cursor-pointer mr-3" @click="authPerson()">人员配置</span> -->
+              <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+            </template>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -115,6 +116,16 @@
       	this.roleData.id = '';
         this.roleData.isEdit = false;
       },
+
+      // 操作们
+      fun(index,row,sign){
+        if(sign == 2){ // 编辑
+          this.editRole(index,row);
+        }else if(sign == 3){ // 删除
+          this.handleDel(index,row);
+        }
+      },
+
       // 编辑角色
       editRole(index,row){
         this.roleData.dialog = true;
@@ -122,6 +133,30 @@
         this.roleData.id = row.id;
         this.roleData.isEdit = true;
       },
+
+      // 删除
+      handleDel(index,row){
+        this.$confirm("此操作将永久删除该角色, 是否继续?", "提示", {
+          type: 'warning'
+        }).then(() => {
+          this.$api.roleDel({ 
+            id:row.id,
+          }).then(data=>{ 
+             if(data.code == 0){
+                this.$message({
+                  message: data.msg,
+                  type: 'success'
+                });
+                this.loadData();
+             }else{
+               this.$message.error(data.msg);
+             }
+          })
+        }).catch(() => {
+
+        });
+      },
+
       // 人员配置
       authPerson(){
         this.rolePersonData.dialog = true;

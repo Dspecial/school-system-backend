@@ -16,7 +16,7 @@
     				  </el-input>
           	</div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增角色</el-button>
+              <el-button type="primary" @click="handleAdd()" v-if="$store.getters.getaddAction.title" ><i class="el-icon-plus el-icon--left"></i>{{$store.getters.getaddAction.title}}</el-button>
             </div>
           </div>
         </div>
@@ -27,19 +27,20 @@
         <el-table-column prop="updatetime" label="编辑时间"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer ml-3" @click="editRole(scope.$index,scope.row)">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
+            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>
         </el-table-column>
       </data-tables-server>
     </el-card>
     <role-edit :roleData="roleData"></role-edit>
+    <role-authperson :rolePersonData="rolePersonData"></role-authperson>
 	</div>
 </template>
 
 <script>
 	import GlobalTips from "@/components/GlobalTips";
   import RoleEdit from "./RoleEdit";
+  import RoleAuthperson from "./RoleAuthperson";
 
 	export default {
 		name: 'Role',
@@ -51,6 +52,7 @@
 		components: {
 			GlobalTips,
       RoleEdit,
+      RoleAuthperson
 		},
 		data () {
 			return {
@@ -118,6 +120,17 @@
         this.roleData.isEdit = false;
       },
 
+      // 操作们
+      fun(index,row,sign){
+        if(sign == 2){ // 编辑
+          this.editRole(index,row);
+        }else if(sign == 3){ // 删除
+          this.handleDel(index,row);
+        }else if(sign == 9){ // 人员配置
+          this.authPerson(index,row);
+        }
+      },
+
       // 编辑角色
       editRole(index,row){
         this.roleData.dialog = true;
@@ -147,6 +160,13 @@
         }).catch(() => {
 
         });
+      },
+
+      // 人员配置
+      authPerson(){
+        this.rolePersonData.dialog = true;
+        this.rolePersonData.title = "人员配置";
+        this.rolePersonData.id = '';
       },
 		},
 	}

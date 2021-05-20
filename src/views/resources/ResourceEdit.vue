@@ -291,7 +291,6 @@
 			handleClose(){
 				this.resourceData.dialog = false;
 				this.isExpand = false;
-				this.resourceForm = {};
 			},
 
 			// form提交

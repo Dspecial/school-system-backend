@@ -4,9 +4,9 @@
 	  :visible.sync="detailsData.dialog"
 	  width="60%"
 	  @open="openEdit"
-	  @closed="closedEdit()"
+	  @closed="closedEdit"
 	  :before-close="handleClose">
-    <data-tables-server :data="tableData" @query-change="openEdit" layout="tool, table, pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" :filters="filters" :table-props="tableProps">
+    <data-tables-server :data="tableData" @query-change="loadDeatilsData" layout="tool, table, pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [5,10,15,20], total: total }" :filters="filters" :table-props="tableProps">
       <div class="mb-3" slot="tool">
         <div class="d-flex align-items-center">
           <div class="mr-auto d-flex align-items-center">
@@ -80,7 +80,7 @@
         ],
         total: 0, //总条数
         currentPage: 1, //当前页
-        pageSize: 15, //每页显示条数
+        pageSize: 5, //每页显示条数
 			}
 		},
 		components: {},
@@ -94,7 +94,14 @@
       },
 			// dialog初始化-加载数据
 			openEdit(){
-				this.$api.budgetUseDetails({
+				// this.loadDeatilsData();
+			},
+      loadDeatilsData(queryInfo){
+        if (queryInfo != null) {
+          this.currentPage = queryInfo.page;
+          this.pageSize = queryInfo.pageSize;
+        }
+        this.$api.budgetUseDetails({
           page:this.currentPage,
           limit:this.pageSize,
           depart_id:this.detailsData.id,
@@ -108,7 +115,7 @@
             this.$message.error(data.msg);
           }
         });
-			},
+      },
 			// dialog关闭
 			closedEdit(){
 				this.handleClose();

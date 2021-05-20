@@ -143,6 +143,8 @@ export default {
 	userEdit: p => post('/backstage/adminauth.admin/edit', p),
 	// 新增人员列表
 	userAdd: p => post('/backstage/adminauth.admin/add', p),
+	// 修改人员状态
+	changeUserState: p => post('/backstage/adminauth.admin/change_normal', p),
 
 	// 角色列表
 	roleList: p => post('/backstage/adminauth.group/index', p),
@@ -150,6 +152,8 @@ export default {
 	roleEdit: p => post('/backstage/adminauth.group/edit', p),
 	// 新增角色
 	roleAdd: p => post('/backstage/adminauth.group/add', p),
+	// 删除角色
+	roleDel: p => post('/backstage/adminauth.group/del', p),
 	// 上级角色列表
 	roleParent: p => post('/backstage/ajax/get_admin_auth_group_list', p),
 	// 获取对应角色的权限列表

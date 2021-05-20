@@ -27,7 +27,7 @@
               </el-date-picker>
             </div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增厂商</el-button>
+              <el-button type="primary" @click="handleAdd()" v-if="$store.getters.getaddAction.title" ><i class="el-icon-plus el-icon--left"></i>{{$store.getters.getaddAction.title}}</el-button>
             </div>
           </div>
         </div>
@@ -51,8 +51,7 @@
         <el-table-column prop="rulename" label="角色"></el-table-column>
         <el-table-column fixed="right" label="操作" width="250" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer" @click="editUser(scope.$index,scope.row)">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
+            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -138,12 +137,22 @@
           }
         });
       },
+      
       // 新增厂商用户
       handleAdd(){
         this.mfuserData.dialog = true;
         this.mfuserData.title = "新增厂商用户";
         this.mfuserData.id = '';
         this.mfuserData.isEdit = false;
+      },
+
+      // 操作们
+      fun(index,row,sign){
+        if(sign == 2){ // 编辑
+          this.editUser(index,row);
+        }else if(sign == 3){ // 删除
+          this.handleDel(index,row);
+        }
       },
 
       // 编辑厂商用户

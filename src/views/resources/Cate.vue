@@ -4,7 +4,7 @@
     <global-tips></global-tips>
     <!-- 类别管理 -->
     <el-card class="mt-3">
-      <data-tables-server :data="tableData" layout="tool, table" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
+      <data-tables-server :data="tableData" layout="tool, table" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
           <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">类别管理</h4>
           <div class="d-flex align-items-center">
@@ -16,7 +16,7 @@
               </el-input> -->
             </div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增类别</el-button>
+              <el-button type="primary" @click="handleAdd()" v-if="$store.getters.getaddAction.title" ><i class="el-icon-plus el-icon--left"></i>{{$store.getters.getaddAction.title}}</el-button>
             </div>
           </div>
         </div>
@@ -28,11 +28,14 @@
         <el-table-column prop="ename" label="最新编辑人"></el-table-column>
         <el-table-column prop="createtime" label="创建时间"></el-table-column>
         <el-table-column prop="updatetime" label="更新时间"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="250">
+        <el-table-column fixed="right" label="操作" width="200">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer" @click="editCate(scope.$index,scope.row)">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
-            <span class="text-primary cursor-pointer ml-3" @click="handleParams(scope.$index,scope.row)" v-if="scope.row.level > 2">分配参数</span>
+            <template v-if="scope.row.level > 2">
+              <span v-for="(action,index) in actions2" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+            </template>
+            <template v-else>
+              <span v-for="(action,index) in actions1" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+            </template>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -91,6 +94,8 @@
           title:"",
           id:"",
         },
+        actions1:[],
+        actions2:[],
       }
     },
     mounted(){
@@ -108,6 +113,19 @@
         }).then(data=>{
           if(data.code == 0){
             this.tableData = data.data;
+            var actions_1 = new Array,actions_2 = new Array,actions_3 = new Array
+            this.$store.getters.getmoreAction.map((item,index)=>{
+              if(item.sign == 2){ // 编辑
+                actions_1.push(item);
+              }else if (item.sign == 3){ // 删除
+                actions_2.push(item);
+              }else if (item.sign == 5){ // 分配参数
+                actions_3.push(item);
+              }
+            })
+            // level > 2 就有分配参数
+            this.actions1 = [...actions_1,...actions_2];
+            this.actions2 = [...actions_1,...actions_2,...actions_3];
           }else{
             this.$message.error(data.msg);
           }
@@ -119,6 +137,17 @@
         this.cateData.dialog = true;
         this.cateData.title = '新增类别';
         this.cateData.isEdit = false;
+      },
+
+      // 操作们
+      fun(index,row,sign){
+        if(sign == 2){ // 编辑
+          this.editCate(index,row);
+        }else if(sign == 3){ // 删除
+          this.handleDel(index,row);
+        }else if(sign == 5){ // 分配参数
+          this.handleParams(index,row);
+        }
       },
 
       // 分配参数

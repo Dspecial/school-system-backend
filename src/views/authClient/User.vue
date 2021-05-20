@@ -27,7 +27,7 @@
               </el-date-picker>
           	</div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增教师职工</el-button>
+              <el-button type="primary" @click="handleAdd()" v-if="$store.getters.getaddAction.title" ><i class="el-icon-plus el-icon--left"></i>{{$store.getters.getaddAction.title}}</el-button>
             </div>
           </div>
         </div>
@@ -41,14 +41,19 @@
             <span v-if="scope.row.sex == 2">女</span>
           </template>
         </el-table-column>
+        <el-table-column prop="is_normal" label="是否禁用">
+          <template slot-scope="scope">
+            <span v-if="scope.row.is_normal == 0"><i class="dot bg-success mr-1"></i>正常</span>
+            <span v-if="scope.row.is_normal == 1"><i class="dot bg-danger mr-1"></i>禁用</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="depart_name" label="所属部门"></el-table-column>
         <el-table-column prop="phone" label="手机号"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="lastlogintime" label="上次登录时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="150" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer" @click="editUser(scope.$index,scope.row)">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
+            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -134,12 +139,22 @@
           }
         });
       },
+      
       // 新增用户
       handleAdd(){
       	this.userData.dialog = true;
       	this.userData.title = "新增教师职工";
       	this.userData.id = '';
         this.userData.isEdit = false;
+      },
+
+      // 操作们
+      fun(index,row,sign){
+        if(sign == 2){ // 编辑
+          this.editUser(index,row);
+        }else if(sign == 3){ // 删除
+          this.handleDel(index,row);
+        }
       },
 
       // 编辑用户

@@ -6,7 +6,7 @@
 		<el-card class="mt-3">
 			<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">资源概况</h4>
 			<el-row :gutter="20">
-				<template v-for="item in resources">
+				<template v-for="(item,index) in resources">
 					<el-col :span="12" class="status-item" :key="index">
 						<div class="d-flex align-items-center justify-content-center p-2">
 							<img :src="item.src" alt="" width="80" height="80">
@@ -37,7 +37,7 @@
 						  </el-select>
           	</div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增资源</el-button>
+              <el-button type="primary" @click="handleAdd()" v-if="$store.getters.getaddAction.title" ><i class="el-icon-plus el-icon--left"></i>{{$store.getters.getaddAction.title}}</el-button>
             </div>
           </div>
         </div>
@@ -73,8 +73,7 @@
         <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" width="150" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer" @click="editResource(scope.$index,scope.row)">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
+            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -183,6 +182,16 @@
         this.resourceData.id = "";
         this.resourceData.isEdit = false;
       },
+
+      // 操作们
+      fun(index,row,sign){
+        if(sign == 2){ // 编辑
+          this.editResource(index,row);
+        }else if(sign == 3){ // 删除
+          this.handleDel(index,row);
+        }
+      },
+
       // 编辑资源
       editResource(index,row){
         this.resourceData.dialog = true;

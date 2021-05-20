@@ -158,15 +158,6 @@ const router = new Router({
 				**后台权限管理
 				 */
 				{
-				  path: '/auth/dept',
-				  component: resolve => require(['@/views/auth/Dept'], resolve),
-				  name: 'Dept',
-				  meta: {
-				    title: '部门管理'
-				  },
-				  children: null
-				},
-				{
 				  path: '/auth/user',
 				  component: resolve => require(['@/views/auth/User'], resolve),
 				  name: 'user',
@@ -221,15 +212,6 @@ const router = new Router({
 				  name: 'Auditprocess',
 				  meta: {
 				    title: '审核流程管理'
-				  },
-				  children: null
-				},
-				{
-				  path: '/project/projectnode',
-				  component: resolve => require(['@/views/project/Projectnode'], resolve),
-				  name: 'Projectnode',
-				  meta: {
-				    title: '项目节点配置'
 				  },
 				  children: null
 				},

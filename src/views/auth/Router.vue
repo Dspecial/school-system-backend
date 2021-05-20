@@ -16,7 +16,7 @@
     				  </el-input> -->
           	</div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增顶级路由</el-button>
+              <el-button type="primary" @click="handleAdd()" v-if="$store.getters.getaddAction.title" ><i class="el-icon-plus el-icon--left"></i>{{$store.getters.getaddAction.title}}顶级路由</el-button>
             </div>
           </div>
         </div>
@@ -33,9 +33,8 @@
         <el-table-column prop="createtime" label="创建时间"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-          	<span class="text-primary cursor-pointer" @click="handleAddSub(scope.$index,scope.row)">新增子级</span>
-          	<span class="text-primary cursor-pointer ml-3" @click="editRouter(scope.$index,scope.row)">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
+            <span class="text-primary cursor-pointer mr-3" @click="handleAddSub(scope.$index,scope.row)">新增子级</span>
+            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -108,14 +107,6 @@
         	}
         })
       },
-      // 编辑
-      editRouter(index,row){
-        this.routerData.dialog = true;
-        this.routerData.title = '编辑路由';
-        this.routerData.pid = row.pid;
-        this.routerData.id = row.id;
-        this.routerData.isEdit = true;
-      },
 
       // 新增顶级路由
       handleAdd(){
@@ -123,6 +114,24 @@
         this.routerData.title = '新增顶级路由';
         this.routerData.pid = 0;
         this.routerData.isEdit = false;
+      },
+
+      // 操作们
+      fun(index,row,sign){
+        if(sign == 2){ // 编辑
+          this.editRouter(index,row);
+        }else if(sign == 3){ // 删除
+          this.handleDel(index,row);
+        }
+      },
+
+      // 编辑
+      editRouter(index,row){
+        this.routerData.dialog = true;
+        this.routerData.title = '编辑路由';
+        this.routerData.pid = row.pid;
+        this.routerData.id = row.id;
+        this.routerData.isEdit = true;
       },
 
       // 新增子级路由

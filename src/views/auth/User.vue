@@ -27,7 +27,7 @@
               </el-date-picker>
           	</div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增用户</el-button>
+              <el-button type="primary" @click="handleAdd()" v-if="$store.getters.getaddAction.title" ><i class="el-icon-plus el-icon--left"></i>{{$store.getters.getaddAction.title}}</el-button>
             </div>
           </div>
         </div>
@@ -41,24 +41,20 @@
             <span v-if="scope.row.sex == 2">女</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="type" label="状态">
+        <el-table-column prop="is_normal" label="是否禁用">
           <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.type"
-              active-value="1"
-              inactive-value="0"
-              active-color="#005DDA"
-              inactive-color="#969191">
-            </el-switch>
+            <span v-if="scope.row.is_normal == 0"><i class="dot bg-success mr-1"></i>正常</span>
+            <span v-if="scope.row.is_normal == 1"><i class="dot bg-danger mr-1"></i>禁用</span>
           </template>
-        </el-table-column> -->
+        </el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="lastlogintime" label="上次登录时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="250" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer" @click="editUser(scope.$index,scope.row)" v-if="scope.row.id != 1">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" v-if="scope.row.id != 1">删除</span>
+            <template v-if="scope.row.id != 1">
+              <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+            </template>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -144,6 +140,7 @@
           }
         });
       },
+      
       // 新增用户
       handleAdd(){
       	this.userData.dialog = true;
@@ -152,6 +149,15 @@
         this.userData.isEdit = false;
       },
 
+      // 操作们
+      fun(index,row,sign){
+        if(sign == 2){ // 编辑
+          this.editUser(index,row);
+        }else if(sign == 8){ // 变更状态
+          this.handleChange(index,row);
+        }
+      },
+      
       // 编辑用户
       editUser(index,row){
         this.userData.dialog = true;
@@ -159,6 +165,30 @@
         this.userData.id = row.id;
         this.userData.isEdit = true;
       },
+
+      // 变更状态
+      handleChange(index,row){
+        this.$confirm("此操作将修改该员工状态, 是否继续?", "提示", {
+          type: 'warning'
+        }).then(() => {
+          this.$api.changeUserState({ 
+            id:row.id,
+          }).then(data=>{ 
+             if(data.code == 0){
+                this.$message({
+                  message: data.msg,
+                  type: 'success'
+                });
+                this.loadData();
+             }else{
+               this.$message.error(data.msg);
+             }
+          })
+        }).catch(() => {
+
+        });
+      },
+
 		},
 	}
 </script>

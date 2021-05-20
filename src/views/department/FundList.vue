@@ -4,9 +4,9 @@
 	  :visible.sync="fundListData.dialog"
 	  width="60%"
 	  @open="openEdit"
-	  @closed="closedEdit()"
+	  @closed="closedEdit"
 	  :before-close="handleClose">
-    <data-tables-server :data="tableData" @query-change="openEdit" layout="tool, table, pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" :filters="filters" :table-props="tableProps">
+    <data-tables-server :data="tableData" @query-change="loadFundList" layout="tool, table, pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" :filters="filters" :table-props="tableProps">
       <div class="mb-3" slot="tool">
         <div class="d-flex align-items-center">
           <div class="mr-auto d-flex align-items-center">
@@ -63,7 +63,14 @@
       },
 			// dialog初始化-加载数据
 			openEdit(){
-				this.$api.budgetList({
+        // this.loadFundList();
+			},
+      loadFundList(queryInfo){
+        if (queryInfo != null) {
+          this.currentPage = queryInfo.page;
+          this.pageSize = queryInfo.pageSize;
+        }
+        this.$api.budgetList({
           page:this.currentPage,
           limit:this.pageSize,
           depart_id:this.fundListData.id,
@@ -76,7 +83,7 @@
             this.$message.error(data.msg);
           }
         });
-			},
+      },
 			// dialog关闭
 			closedEdit(){
 				this.handleClose();

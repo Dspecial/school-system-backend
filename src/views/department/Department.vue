@@ -27,9 +27,7 @@
         <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" width="250" align="center">
           <template slot-scope="scope">
-            <span class="text-primary cursor-pointer" @click="handleFund(scope.$index,scope.row)">添加预算</span>
-            <span class="text-primary cursor-pointer ml-3" @click="goFundList(scope.$index,scope.row)">预算列表</span>
-            <span class="text-primary cursor-pointer ml-3" @click="goDetails(scope.$index,scope.row)">使用明细</span>
+            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -120,6 +118,16 @@
           }
         });
       },
+      // 操作们
+      fun(index,row,sign){
+        if(sign == 7.1){ // 添加预算
+          this.handleFund(index,row);
+        }else if(sign == 7.2){ // 预算列表
+          this.goFundList(index,row);
+        }else if(sign == 7.3){ // 经费明细
+          this.goDetails(index,row);
+        }
+      },
       // 添加预算
       handleFund(index,row){
       	this.fundData.dialog = true;
@@ -133,7 +141,7 @@
       	this.fundListData.title = row.name+" — 预算列表";
       	this.fundListData.id = row.wid;
       },
-      // 使用明细
+      // 经费明细
       goDetails(index,row){
         this.detailsData.dialog = true;
       	this.detailsData.title = row.name+" — 使用明细";
