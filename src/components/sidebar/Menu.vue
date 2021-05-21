@@ -60,7 +60,7 @@
                 this.allAction.moreAction.push(item);
               }
             })
-            console.log(this.allAction,'this.allAction');
+            // console.log(this.allAction,'this.allAction');
             this.$store.commit("SET_ACTION",this.allAction);
           }
         })
