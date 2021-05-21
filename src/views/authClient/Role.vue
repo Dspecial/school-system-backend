@@ -27,7 +27,12 @@
         <el-table-column prop="updatetime" label="编辑时间"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+            <template v-if="scope.row.id == 1">
+              <span v-for="(action,index) in actions1" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+            </template>
+            <template v-else>
+              <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+            </template>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -85,6 +90,7 @@
           title:"",
           id:"",
         },
+        actions1:[],
 			}
 		},
     mounted(){
@@ -106,6 +112,17 @@
         }).then(data =>{
           if(data.code == 0){
             this.tableData = data.data;
+            var actions_1 = new Array,actions_2 = new Array,actions_3 = new Array;
+            this.$store.getters.getmoreAction.map((item,index)=>{
+              if(item.sign == 2){ // 编辑
+                actions_1.push(item);
+              }else if (item.sign == 3){ // 删除
+                actions_2.push(item);
+              }else if (item.sign == 9){ // 人员配置
+                actions_3.push(item);
+              }
+            })
+            this.actions1 = [...actions_1,...actions_3];
           }else{
             this.$message.error(data.msg);
           }

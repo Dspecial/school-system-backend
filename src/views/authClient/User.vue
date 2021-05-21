@@ -34,7 +34,7 @@
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
         <el-table-column prop="job_number" label="职工号"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="rulename" label="角色信息"></el-table-column>
+        <el-table-column prop="rulename" label="角色信息" width="150"></el-table-column>
         <el-table-column prop="sex" label="性别">
           <template slot-scope="scope">
             <span v-if="scope.row.sex == 1">男</span>
@@ -47,10 +47,10 @@
             <span v-if="scope.row.is_normal == 1"><i class="dot bg-danger mr-1"></i>禁用</span>
           </template>
         </el-table-column>
-        <el-table-column prop="depart_name" label="所属部门"></el-table-column>
-        <el-table-column prop="phone" label="手机号"></el-table-column>
-        <el-table-column prop="email" label="邮箱"></el-table-column>
-        <el-table-column prop="lastlogintime" label="上次登录时间"></el-table-column>
+        <el-table-column prop="depart_name" label="所属部门" width="250"></el-table-column>
+        <el-table-column prop="phone" label="手机号" width="150"></el-table-column>
+        <el-table-column prop="email" label="邮箱" width="150"></el-table-column>
+        <el-table-column prop="lastlogintime" label="上次登录时间"  width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" width="150" align="center">
           <template slot-scope="scope">
             <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>

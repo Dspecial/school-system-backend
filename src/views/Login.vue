@@ -7,7 +7,7 @@
 			<div class="login-right">
 				<el-form ref="loginForm" :model="loginForm" label-width="0" class="login-box" size="large"  @submit.native.prevent>
 	        <div class="login-header mb-5">
-	          <p class="fs_28 text-000 text-center">账号登录</p>
+	          <p class="fs_28 text-000 text-center">{{configName}}</p>
 	        </div>
 	        <el-form-item prop="username">
 	          <el-input placeholder="账号" prefix-icon="el-icon-user-solid" v-model="loginForm.username" autocomplete="off">
@@ -34,6 +34,7 @@
 		components: {},
 		data () {
 			return {
+        configName:'',
 				loginBg:require('@/assets/images/login_bg.png'),
 				loginForm: {
           username: '',
@@ -48,11 +49,31 @@
       let that = this;
     },
     mounted(){
+      this.loginConfig();
       if(this.rememberPwd){
         this.loginForm.username = this.$cookies.get('userName');
       }
     },
     methods:{
+      // 获取身份
+      loginConfig(){
+        this.$api.loginConfig({
+        }).then(data=>{
+          if(data.code == 0){
+            this.configName = data.data.system_name;
+          }else{
+            const h = this.$createElement;
+            this.$notify({
+              title: "获取失败",
+              message: h('i', {
+                style: 'color: teal'
+              }, data.msg),
+              type: 'warning',
+              duration: 3000,
+            });
+          }
+        })
+      },
     	showPwd(){
         this.pwdType === 'password' ? this.pwdType = '' : this.pwdType = 'password';
         this.pwdType == '' ? this.suffixIcon = 'icon-eye-blocked2' : this.suffixIcon = 'icon-eye2';
