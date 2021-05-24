@@ -10,6 +10,34 @@
 	  	<el-form-item label="项目类别" prop="name">
 		    <el-input v-model="categoryForm.name" placeholder="项目类别"></el-input>
 		  </el-form-item>
+			<el-form-item label="开启金额申请" prop="is_open_money">
+		    <el-radio-group v-model="categoryForm.is_open_money">
+			    <el-radio label="2">是</el-radio>
+			    <el-radio label="1">否</el-radio>
+			  </el-radio-group>
+		  </el-form-item>
+			<el-form-item label="参数" prop="formids">
+		  	<el-select class="w-100" v-model="categoryForm.formids" filterable :filter-method="getTableList" multiple clearable :collapse-tags="true" placeholder="请选择参数" @change="handleChange">
+			    <el-option
+			      v-for="item in paramsOptions"
+			      :key="item.id"
+			      :label="item.title"
+			      :value="item.id.toString()">
+						{{item.title + '---' +item.name_type}}
+			    </el-option>
+					<el-pagination
+						class="text-center"
+						small
+						@size-change="sizeChange"
+						@current-change="currentChange"
+						:current-page.sync="currentPage"
+						:total="total"
+						:page-size.sync="pageSize"
+						layout="prev,pager,next,total"
+						>
+					</el-pagination>
+			  </el-select>
+		  </el-form-item>
 		  <el-form-item label="状态" prop="is_show">
 		    <el-radio-group v-model="categoryForm.is_show">
 			    <el-radio label="1">正常</el-radio>
@@ -37,28 +65,65 @@
 				categoryForm:{
 					name:"",
 					remark:"",
+					is_open_money:"",
+					formids:[],
 					is_show:"1",
 				},
+				selected_all:[],
+				paramsOptions:[],
+				total: 0, //总条数
+        currentPage: 1, //当前页
+        pageSize: 5, //每页显示条数
 				rules: {
           name: [
             { required: true, message: '请输入项目类别', trigger: 'blur' }
           ],
-        }
+        },
 			}
 		},
 		components: {},
 		methods:{
+			handleChange(value) {
+        // console.log(value,'parms1');
+      },
+			sizeChange() {
+				this.currentPage = 1;
+				this.getTableList();
+			},
+			currentChange(){
+				this.getTableList();
+			},
+			// 获取参数
+			getTableList(query){
+				this.$api.p_category_form({
+					page:this.currentPage,
+          limit:this.pageSize,
+					keywords:query,
+        }).then(data=>{
+          if(data.code == 0){
+						this.total = data.data.total;
+            this.paramsOptions = data.data.data;
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
+			},
 			// dialog初始化
 			openEdit(){
+				this.getTableList();
 				if(this.categoryData.isEdit){ // 编辑
 					this.$api.p_categoryEdit({
 						id:this.categoryData.id,
 						function_type:2,
 					}).then(data => {
-						if(data.code == 0){
+						if(data.code == 0){	
 							this.categoryForm.id = data.data.id;
 							this.categoryForm.name = data.data.name;
 							this.categoryForm.remark = data.data.remark;
+							this.categoryForm.is_open_money = data.data.is_open_money;
+							if(data.data.formids){
+								this.categoryForm.formids = data.data.formids.split(",");
+							}
 							this.categoryForm.is_show = data.data.is_show;
 						}else{
 							this.$message.error(data.msg);
@@ -72,6 +137,7 @@
 			closedEdit(formName){
 				this.handleClose();
 				this.resetForm(formName);
+				this.currentPage = 1;
 			},
 			// 右上角x关闭
 			handleClose(){
@@ -88,6 +154,8 @@
           			name:this.categoryForm.name,
 	          		remark:this.categoryForm.remark,
 	          		is_show:this.categoryForm.is_show,
+								is_open_money:this.categoryForm.is_open_money,
+								formids:this.categoryForm.formids.join(","),
 	          		function_type:1,
 	          	}).then(data =>{
 	          		if(data.code == 0){
@@ -103,6 +171,8 @@
 	          		name:this.categoryForm.name,
 	          		remark:this.categoryForm.remark,
 	          		is_show:this.categoryForm.is_show,
+								is_open_money:this.categoryForm.is_open_money,
+								formids:this.categoryForm.formids.join(","),
 	          	}).then(data =>{
 	          		if(data.code == 0){
 									_this.handleClose();

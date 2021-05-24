@@ -167,6 +167,8 @@ export default {
 	 */
 	// 项目类别列表
 	p_categoryList: p => post('/backstage/project.category/index', p),
+	// 获取参数
+	p_category_form: p => post('/backstage/ajax/get_project_cate_form', p),
 	// 编辑项目类别
 	p_categoryEdit: p => post('/backstage/project.category/edit', p),
 	// 新增项目类别
