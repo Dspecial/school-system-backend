@@ -30,6 +30,15 @@
 			    <el-option value="4" label="日期选择"></el-option>
 			    <el-option value="5" label="文件上传"></el-option>
 			    <el-option value="6" label="文本域"></el-option>
+					<el-option value="7" label="富文本"></el-option>
+					<el-option value="8" label="时间选择"></el-option>
+					<el-option value="9" label="下拉多选"></el-option>
+					<el-option value="10" label="复选"></el-option>
+					<el-option value="11" label="单选"></el-option>
+					<el-option value="12" label="数组"></el-option>
+					<el-option value="13" label="图片上传(单选)"></el-option>
+					<el-option value="14" label="图片上传(多选)"></el-option>
+					<el-option value="15" label="文件上传(多选"></el-option>
 			  </el-select>
 		  </el-form-item>
 		  <el-form-item label="数据值" prop="extra_val" v-if="formForm.name_type == 3">
@@ -37,6 +46,12 @@
 		  </el-form-item>
 		  <el-form-item label="备注" prop="remark">
 		  	<el-input type="textarea" v-model="formForm.remark" placeholder="请输入备注" :autosize="{ minRows: 3, maxRows: 8 }"></el-input>
+		  </el-form-item>
+			<el-form-item label="是否使用" prop="is_show">
+		  	<el-radio-group v-model="formForm.is_show">
+			    <el-radio :label="'1'">是</el-radio>
+			    <el-radio :label="'2'">否</el-radio>
+			  </el-radio-group>
 		  </el-form-item>
 	  </el-form>
 	  <span slot="footer" class="dialog-footer">
@@ -75,6 +90,7 @@
 					name_type:"1",
 					extra_val:"",
 					remark:"",
+					is_show:"",
 				},
 				rules: {
           title: [
@@ -89,6 +105,9 @@
           extra_val: [
             { required: true, message: '请输入数据值', trigger: 'blur' }
           ],
+					is_show: [
+            { required: true, message: '请选择是否使用', trigger: 'change' }
+          ],
         }
 			}
 		},
@@ -99,7 +118,7 @@
 			// dialog初始化
 			openEdit(){
 				if(this.formData.isEdit){ // 编辑
-					this.$api.formEdit({
+					this.$api.p_cateformsEdit({
 						id:this.formData.id,
 						function_type:2,
 					}).then(data => {
@@ -112,6 +131,7 @@
 							this.formForm.name_type = data.data.name_type;
 							this.formForm.extra_val = data.data.extra_val;
 							this.formForm.remark = data.data.remark;
+							this.formForm.is_show = data.data.is_show;
 						}else{
 							this.$message.error(data.msg);
 						}
@@ -135,7 +155,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.formData.isEdit){ // 编辑后提交
-          		this.$api.formEdit({
+          		this.$api.p_cateformsEdit({
           			id:this.formForm.id,
           			name:this.formForm.name,
 								title:this.formForm.title,
@@ -144,6 +164,7 @@
 								is_required:this.formForm.is_required,
 								extra_val:this.formForm.extra_val,
 								remark:this.formForm.remark,
+								is_show:this.formForm.is_show,
 								function_type:1,
 							}).then(data => {
 								if(data.code == 0){
@@ -155,7 +176,7 @@
 								}
 							})
           	}else{ // 新增后提交
-          		this.$api.formAdd({
+          		this.$api.p_cateformsAdd({
 								name:this.formForm.name,
 								title:this.formForm.title,
 								name_type:this.formForm.name_type,
@@ -163,6 +184,7 @@
 								is_required:this.formForm.is_required,
 								extra_val:this.formForm.extra_val,
 								remark:this.formForm.remark,
+								is_show:this.formForm.is_show,
 							}).then(data => {
 								if(data.code == 0){
 									_this.handleClose();

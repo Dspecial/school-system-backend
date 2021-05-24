@@ -190,7 +190,7 @@ const router = new Router({
 				 */
 				{
 				  path: '/project/category',
-				  component: resolve => require(['@/views/project/Category'], resolve),
+				  component: resolve => require(['@/views/project/category/Category'], resolve),
 				  name: 'Category',
 				  meta: {
 				    title: '类别配置'
@@ -199,7 +199,7 @@ const router = new Router({
 				},
 				{
 				  path: '/project/category/accept',
-				  component: resolve => require(['@/views/project/AcceptanceConfig'], resolve),
+				  component: resolve => require(['@/views/project/category/AcceptanceConfig'], resolve),
 				  name: 'AcceptanceConfig',
 				  meta: {
 				    title: '验收配置'
@@ -207,7 +207,7 @@ const router = new Router({
 				  children: null
 				},
 				{
-				  path: '/auditProcess',
+				  path: '/project/auditProcess',
 				  component: resolve => require(['@/views/project/Auditprocess'], resolve),
 				  name: 'Auditprocess',
 				  meta: {
@@ -221,6 +221,15 @@ const router = new Router({
 				  name: 'Distribution',
 				  meta: {
 				    title: '项目资源分配'
+				  },
+				  children: null
+				},
+				{
+				  path: '/project/cateforms',
+				  component: resolve => require(['@/views/project/Cateforms'], resolve),
+				  name: 'Cateforms',
+				  meta: {
+				    title: '参数设置'
 				  },
 				  children: null
 				},

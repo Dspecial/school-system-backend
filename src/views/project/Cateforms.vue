@@ -2,11 +2,11 @@
   <div class="user-container">
     <!-- 登录信息 -->
     <global-tips></global-tips>
-    <!-- 参数管理 -->
+    <!-- 参数设置 -->
     <el-card class="mt-3">
       <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
-          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">参数管理</h4>
+          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">参数设置</h4>
           <div class="d-flex align-items-center">
             <div class="mr-auto d-flex align-items-center">
               <el-input
@@ -22,18 +22,36 @@
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="55" v-if="isShow"></el-table-column>
         <el-table-column prop="id" label="编号ID" width="100"></el-table-column>
-        <el-table-column prop="title" label="参数名称"></el-table-column>
-        <el-table-column prop="name" label="变量名称"></el-table-column>
+        <el-table-column prop="title" label="参数名称" width="250"></el-table-column>
+        <el-table-column prop="name" label="变量名称" width="200"></el-table-column>
         <el-table-column prop="cname" label="创建人"></el-table-column>
         <el-table-column prop="ename" label="最新编辑人"></el-table-column>
+        <el-table-column prop="name_type" label="类型"></el-table-column>
         <el-table-column label="是否必填">
           <template slot-scope="scope">
             <span v-if="scope.row.is_required == 2"><i class="dot bg-success mr-1"></i>是</span>
             <span v-else><i class="dot bg-danger mr-1"></i>否</span>
           </template>
         </el-table-column>
-        <el-table-column prop="placeholder" label="提示语"></el-table-column>
+        <el-table-column prop="placeholder" label="提示语">
+          <template slot-scope="scope">
+            <el-popover
+              placement="top-start"
+              title="提示语"
+              width="200"
+              trigger="hover"
+              :content="scope.row.placeholder">
+              <span class="text-truncate" slot="reference">{{scope.row.placeholder}}</span>
+            </el-popover>
+          </template>
+        </el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
+        <el-table-column label="是否使用">
+          <template slot-scope="scope">
+            <span v-if="scope.row.is_show == 1"><i class="dot bg-success mr-1"></i>是</span>
+            <span v-else><i class="dot bg-danger mr-1"></i>否</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
@@ -41,16 +59,16 @@
         </el-table-column>
       </data-tables-server>
     </el-card>
-    <form-edit :formData="formData"></form-edit>
+    <cateforms-edit :formData="formData"></cateforms-edit>
   </div>
 </template>
 
 <script>
   import GlobalTips from "@/components/GlobalTips";
-  import FormEdit from "./FormEdit";
+  import CateformsEdit from "./CateformsEdit";
 
   export default {
-    name: 'Form',
+    name: 'Cateforms',
     provide() {
       return {
         loadData: this.loadData
@@ -58,7 +76,7 @@
     },
     components: {
       GlobalTips,
-      FormEdit,
+      CateformsEdit,
     },
     data () {
       return {
@@ -99,7 +117,7 @@
           this.currentPage = queryInfo.page;
           this.pageSize = queryInfo.pageSize;
         }
-        this.$api.formList({
+        this.$api.p_cateformsList({
           page:this.currentPage,
           limit:this.pageSize,
           keywords:this.filters[0].value,
@@ -126,6 +144,8 @@
           this.editCate(index,row);
         }else if(sign == 3){ // 删除
           this.handleDel(index,row);
+        }else if(sign == 8){ // 更改状态
+          this.changeStatus(index,row);
         }
       },
 
@@ -147,7 +167,30 @@
           }).then(data=>{ 
              if(data.code == 0){
                 this.$message({
-                  message: "删除参数成功!",
+                  message: data.msg,
+                  type: 'success'
+                });
+                this.loadData();
+             }else{
+               this.$message.error(data.msg);
+             }
+          })
+        }).catch(() => {
+
+        });
+      },
+
+      // 更改状态
+      changeStatus(index,row){
+        this.$confirm("此操作将更改该参数使用状态, 是否继续?", "提示", {
+          type: 'warning'
+        }).then(() => {
+          this.$api.p_cateformsStatus({
+            id:row.id
+          }).then(data=>{ 
+             if(data.code == 0){
+                this.$message({
+                  message: data.msg,
                   type: 'success'
                 });
                 this.loadData();

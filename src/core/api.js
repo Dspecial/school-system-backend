@@ -86,12 +86,7 @@ export default {
 	 */
 	// 部门列表
 	deptList: p => post('/backstage/department.department/index', p),
-	// 添加经费
-	addFund: p => post('/backstage/funds.funds/add', p),
-	// 预算列表
-	budgetList: p => post('/backstage/funds.funds/index', p),
-	// 使用明细
-	budgetUseDetails: p => post('/backstage/department.department/commission_list', p),
+
 
 	/*
 		***资源管理
@@ -178,6 +173,12 @@ export default {
 	p_categoryAdd: p => post('/backstage/project.category/add', p),
 	// 删除项目类别
 	p_categoryDel: p => post('/backstage/project.category/del', p),
+	// 添加经费 (以下三个都是从部门管理挪过来的)
+	addFund: p => post('/backstage/funds.funds/add', p),
+	// 预算列表
+	budgetList: p => post('/backstage/funds.funds/index', p),
+	// 使用明细
+	budgetUseDetails: p => post('/backstage/project.category/commission_list', p),
 
 	// 项目审核流程列表
 	p_flowList: p => post('/backstage/project.flow/index', p),
@@ -201,6 +202,15 @@ export default {
 	p_accpetConfigEdit: p=> post('/backstage/project.accept/edit',p),
 	// 删除验收配置
 	p_accpetConfigDel: p=> post('/backstage/project.accept/del',p),
+
+	// 参数设置
+	p_cateformsList: p => post('/backstage/project.cateforms/index', p),
+	// 新增参数
+	p_cateformsAdd: p => post('/backstage/project.cateforms/add', p),
+	// 编辑参数
+	p_cateformsEdit: p => post('/backstage/project.cateforms/edit', p),
+	// 更改状态
+	p_cateformsStatus: p => post('/backstage/project.cateforms/tranform', p),
 
 	/*
 		***厂商管理

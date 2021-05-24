@@ -21,7 +21,7 @@
 		</el-card>
     <!-- 资源列表 -->
     <el-card class="mt-3">
-      <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [10,20,30,50], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
+      <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
           <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">资源列表</h4>
           <div class="d-flex align-items-center">
@@ -126,7 +126,7 @@
         ],
         total: 0, //总条数
         currentPage: 1, //当前页
-        pageSize: 10, //每页显示条数
+        pageSize: 15, //每页显示条数
         // 新增资源
         resourceData:{
           dialog:false,

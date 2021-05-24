@@ -33,12 +33,7 @@
         <el-table-column prop="aename" label="最新编辑人"></el-table-column>
         <el-table-column prop="createtime" label="创建时间"></el-table-column>
         <el-table-column prop="updatetime" label="更新时间"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
-          <template slot-scope="scope">
-            <span class="text-primary cursor-pointer" @click="config(scope.$index,scope.row)">验收配置</span>
-            <span class="text-primary cursor-pointer ml-3" @click="editCate(scope.$index,scope.row)">编辑</span>
-            <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
-          </template>
+        <el-table-column fixed="right" label="操作" align="center" width="400">
           <template slot-scope="scope">
             <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>
@@ -46,12 +41,18 @@
       </data-tables-server>
     </el-card>
     <category-edit :categoryData="categoryData"></category-edit>
+    <addfund-dialog :fundData="fundData"></addfund-dialog>
+    <fund-list :fundListData="fundListData"></fund-list>
+    <use-details :detailsData="detailsData"></use-details>
 	</div>
 </template>
 
 <script>
 	import GlobalTips from "@/components/GlobalTips";
 	import CategoryEdit from "./CategoryEdit";
+  import AddfundDialog from "./AddfundDialog";
+  import FundList from "./FundList";
+  import UseDetails from "./UseDetails";
 
 	export default {
 		name: 'Category',
@@ -63,6 +64,9 @@
 		components: {
 			GlobalTips,
 			CategoryEdit,
+      AddfundDialog,
+      FundList,
+      UseDetails,
 		},
 		data () {
 			return {
@@ -84,6 +88,22 @@
         	title:"",
         	id:"",
           isEdit:false,
+        },
+        fundData:{
+        	dialog:false,
+        	title:"",
+        	id:"",
+          deptName:"",
+        },
+        fundListData:{
+          dialog:false,
+        	title:"",
+        	id:"",
+        },
+        detailsData:{
+          dialog:false,
+        	title:"",
+        	id:"",
         },
 			}
 		},
@@ -132,6 +152,12 @@
           this.handleDel(index,row);
         }else if(sign == 6){ // 验收配置
           this.config(index,row);
+        }else if(sign == 7.1){ // 添加预算
+          this.handleFund(index,row);
+        }else if(sign == 7.2){ // 预算列表
+          this.goFundList(index,row);
+        }else if(sign == 7.3){ // 经费明细
+          this.goDetails(index,row);
         }
       },
 
@@ -174,6 +200,26 @@
         }).catch(() => {
 
         });
+      },
+
+      // 添加预算
+      handleFund(index,row){
+      	this.fundData.dialog = true;
+      	this.fundData.title = "添加预算";
+      	this.fundData.id = row.id;
+        this.fundData.deptName = row.name;
+      },
+      // 预算列表
+      goFundList(index,row){
+        this.fundListData.dialog = true;
+      	this.fundListData.title = row.name+" — 预算列表";
+      	this.fundListData.id = row.id;
+      },
+      // 经费明细
+      goDetails(index,row){
+        this.detailsData.dialog = true;
+      	this.detailsData.title = row.name+" — 使用明细";
+      	this.detailsData.id = row.id;
       },
 
 		},
