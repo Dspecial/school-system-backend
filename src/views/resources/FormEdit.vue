@@ -11,7 +11,7 @@
 		  	<el-input v-model="formForm.title" placeholder="请输入参数名称"></el-input>
 		  </el-form-item>
 		  <el-form-item label="变量名称" prop="name">
-		  	<el-input v-model="formForm.name" placeholder="请输入变量名称"></el-input>
+		  	<el-input v-model="formForm.name" placeholder="请输入变量名称，变量名称不能是汉字或纯数字"></el-input>
 		  </el-form-item>
 		  <el-form-item label="提示语" prop="placeholder">
 		  	<el-input v-model="formForm.placeholder" placeholder="请输入提示语,如：请输入品牌"></el-input>
@@ -47,16 +47,18 @@
 </template>
 
 <script>
-	// 验证只能是英文
+	// 不能是汉字或纯数字
 	var checkName = (rule, value, callback) => {
     if (!value) {
       return callback(new Error('请输入变量名称'));
     } else {
-      var reg = /^[A-Za-z]+$/;
-      if (reg.test(value)) {
+			// var reg = /^[A-Za-z]+$/; // 只能是英文字母
+      var reg = /[\u4E00-\u9FA5]/g; // 是中文，汉字
+			var reg2 = /^\d*$/; // 是纯数字
+      if (!reg.test(value) && !reg2.test(value)) {
         callback();
       } else {
-        callback(new Error("变量名称必须为英文字母格式"));
+        callback(new Error("变量名称不能是汉字或纯数字"));
       }
     }
   };
