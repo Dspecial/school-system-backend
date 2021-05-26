@@ -110,6 +110,7 @@
 				pidOptions:[],
 				accept:'',
 				fileList:[],
+				removeFilesArr:[],
 				contentForm:{
 					id:"",
 					title:"",
@@ -177,26 +178,6 @@
         });
 			},
 
-			// type=2 文档上传
-			myUpload(params){
-	      // 通过 FormData 对象上传文件
-	      const formData = new FormData();
-	      formData.append("type", this.contentForm.type);
-	      formData.append("file", params.file);
-	      formData.append("user_token", this.VueCookies.get("token"));
-
-				this.$api.kl_contentUpload(formData).then(data =>{
-					if(data.code == 0){
-						// 回调成功的方法
-						params.onSuccess(data);
-						this.$message.success(data.msg);
-						this.contentForm.fileContent.push(data.data.path);
-					}else{
-						this.$message.error(data.msg);
-					}
-				});
-			},
-
 			// dialog初始化
 			openEdit(){
 				this.initPid();
@@ -251,6 +232,8 @@
 			handleClose(){
 				this.contentData.dialog = false;
 				this.contentForm.type = 1; // 复原
+				this.fileList = [];
+				this.removeFilesArr = [];
 			},
 			// form提交
 			submitForm(formName) {
@@ -277,9 +260,13 @@
           			function_type:1,
 							}).then(data => {
 								if(data.code == 0){
+									_this.removeFilesArr.map((path)=>{
+										_this.removeFile(path);
+									})
 									_this.handleClose();
 									_this.resetForm(formName);
 									_this.loadData();
+
 								}else{
 									this.$message.error(data.msg);
 								}
@@ -295,6 +282,9 @@
           			sort:this.contentForm.sort,
 							}).then(data => {
 								if(data.code == 0){
+									_this.removeFilesArr.map((path)=>{
+										_this.removeFile(path);
+									})
 									_this.handleClose();
 									_this.resetForm(formName);
 									_this.loadData();
@@ -315,6 +305,25 @@
       },
 
       /****  上传  ****/
+			// type=2 文档上传
+			myUpload(params){
+	      // 通过 FormData 对象上传文件
+	      const formData = new FormData();
+	      formData.append("type", this.contentForm.type);
+	      formData.append("file", params.file);
+	      formData.append("user_token", this.VueCookies.get("token"));
+
+				this.$api.kl_contentUpload(formData).then(data =>{
+					if(data.code == 0){
+						// 回调成功的方法
+						params.onSuccess(data);
+						this.$message.success(data.msg);
+						this.contentForm.fileContent.push(data.data.path);
+					}else{
+						this.$message.error(data.msg);
+					}
+				});
+			},
       // 上传成功
 			handleSuccess(res, file, fileList) {
 				this.fileList = fileList;
@@ -325,38 +334,51 @@
       	if(file.isExist){ // 原先上传已存在的
       		path = file.path;
       	}else{ // 刚刚上传的
-      		path = file.response.data.path;
+      		if(file.status == 'success'){
+						path = file.response.data.path;
+					}else{
+						return false
+					}
       	}
-      	this.$api.kl_contentUploadDel({
+				this.fileList = fileList;
+				this.contentForm.fileContent.some((item, i)=>{
+					if(item = path){
+						this.contentForm.fileContent.splice(i, 1);
+						//在数组的some方法中，如果return true，就会立即终止这个数组的后续循环
+						return true
+					}
+				});
+				this.$message({message: '成功移除' + file.name, type: 'success'});
+				if(this.removeFilesArr.indexOf(path) == -1){
+					this.removeFilesArr.push(path);
+				}
+      },
+
+			// 删除调接口
+			removeFile(path){
+				this.$api.kl_contentUploadDel({
       		path:path,
       	}).then(data =>{
 					if(data.code == 0){
-						// this.$refs.upload.abort(); //取消上传
-						this.fileList = fileList;
-						this.contentForm.fileContent.some((item, i)=>{
-							if(item = path){
-								this.contentForm.fileContent.splice(i, 1);
-								//在数组的some方法中，如果return true，就会立即终止这个数组的后续循环
-								return true
-							}
-						});
-
-						this.$message({message: '成功移除' + file.name, type: 'success'});
+						// this.$message.success("文件更新成功");
 					}else{
 						this.$message.error(data.msg);
 					}
 				});
-      },
+			},
 
       // 上传前验证
       beforeUpload(file) {
+				var isUpload = true;
       	// 验证大小等
-      	if(this.contentForm.type == 2){
-      		return true;
-
-      	}else if(this.contentForm.type==3){
-	        
-      	}
+				this.fileList.map((fff)=>{
+					if(fff.name == file.name){
+						this.$message.warning("请不要重复上传相同文件！");
+						isUpload = false;
+						return
+					}
+				})
+				return isUpload;
       },
 
 		}

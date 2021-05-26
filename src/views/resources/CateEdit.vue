@@ -63,6 +63,7 @@
 				},
 				accept: ".jpg,.png,.JGEG",
 				fileList:[],
+				removeFilesArr:[],
 				rules: {
           pid_all: [
             { required: true, message: '请输入所属上级', trigger: 'change' }
@@ -151,6 +152,7 @@
 			handleClose(){
 				this.cateData.dialog = false;
 				this.fileList = [];
+				this.removeFilesArr = [];
 			},
 			// form提交
 			submitForm(formName) {
@@ -168,6 +170,9 @@
 								function_type:1,
 							}).then(data => {
 								if(data.code == 0){
+									_this.removeFilesArr.map((path)=>{
+										_this.removeFile(path);
+									})
 									_this.handleClose();
 									_this.resetForm(formName);
 									_this.loadData();
@@ -183,6 +188,9 @@
 								icon:this.cateForm.icon.join(","),
 							}).then(data => {
 								if(data.code == 0){
+									_this.removeFilesArr.map((path)=>{
+										_this.removeFile(path);
+									})
 									_this.handleClose();
 									_this.resetForm(formName);
 									_this.loadData();
@@ -230,31 +238,53 @@
       	if(file.isExist){ // 原先上传已存在的
       		path = file.path;
       	}else{ // 刚刚上传的
-      		path = file.response.data.path;
+      		if(file.status == 'success'){
+						path = file.response.data.path;
+					}else{
+						return false
+					}
       	}
-      	this.$api.cateUploadDel({
+      	this.fileList = fileList;
+				this.cateForm.icon.some((item, i)=>{
+					if(item = path){
+						this.cateForm.icon.splice(i, 1);
+						//在数组的some方法中，如果return true，就会立即终止这个数组的后续循环
+						return true
+					}
+				});
+				this.$message({message: '成功移除' + file.name, type: 'success'});
+				if(this.removeFilesArr.indexOf(path) == -1){
+					this.removeFilesArr.push(path);
+				}
+      },
+
+			// 删除调接口
+			removeFile(path){
+				this.$api.cateUploadDel({
       		path:path,
       	}).then(data =>{
 					if(data.code == 0){
-						this.fileList = fileList;
-						this.cateForm.icon.some((item, i)=>{
-							if(item = path){
-								this.cateForm.icon.splice(i, 1);
-								//在数组的some方法中，如果return true，就会立即终止这个数组的后续循环
-								return true
-							}
-						});
-						this.$message({message: '成功移除' + file.name, type: 'success'});
+						// this.$message.success("文件更新成功");
 					}else{
 						this.$message.error(data.msg);
 					}
 				});
-      },
+			},
 
       // 上传前验证
       beforeUpload(file) {
+				var isUpload = true;
       	// 验证大小等
+				this.fileList.map((fff)=>{
+					if(fff.name == file.name){
+						this.$message.warning("请不要重复上传相同文件！");
+						isUpload = false;
+						return
+					}
+				})
+				return isUpload;
       },
+			
 			// 文件超出限制
 			onExceed(file,fileList){
 				this.$message.error("只能上传一张图片哦，可以先删除再重新上传！");

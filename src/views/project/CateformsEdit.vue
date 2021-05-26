@@ -28,7 +28,7 @@
 			    <el-option value="2" label="数字框"></el-option>
 			    <el-option value="3" label="下拉单选"></el-option>
 			    <el-option value="4" label="日期选择"></el-option>
-			    <el-option value="5" label="文件上传"></el-option>
+			    <el-option value="5" label="文件上传(单选)"></el-option>
 			    <el-option value="6" label="文本域"></el-option>
 					<el-option value="7" label="富文本"></el-option>
 					<el-option value="8" label="时间选择"></el-option>
@@ -38,11 +38,17 @@
 					<el-option value="12" label="数组"></el-option>
 					<el-option value="13" label="图片上传(单选)"></el-option>
 					<el-option value="14" label="图片上传(多选)"></el-option>
-					<el-option value="15" label="文件上传(多选"></el-option>
+					<el-option value="15" label="文件上传(多选)"></el-option>
 			  </el-select>
 		  </el-form-item>
-		  <el-form-item label="数据值" prop="extra_val" v-if="formForm.name_type == 3">
+			<el-form-item label="数据值" prop="extra_val" v-if="formForm.name_type == 3 || formForm.name_type == 9 || formForm.name_type == 10">
+		  	<el-input type="textarea" v-model="formForm.extra_val" placeholder="请输入数据值,格式如:北京|上海|广州" :autosize="{ minRows: 3, maxRows: 8 }"></el-input>
+		  </el-form-item>
+		  <el-form-item label="数据值" prop="extra_val" v-if="formForm.name_type == 11">
 		  	<el-input type="textarea" v-model="formForm.extra_val" placeholder="请输入数据值,格式如:是|否" :autosize="{ minRows: 3, maxRows: 8 }"></el-input>
+		  </el-form-item>
+			<el-form-item label="数据值" prop="extra_val" v-if="formForm.name_type == 12">
+		  	<el-input type="textarea" v-model="formForm.extra_val" placeholder='请输入数据值,格式如:[{"title":"名称1","value":""},{"title":"名称2","value":""},{"title":"名称3","value":""},{"title":"名称4","value":""}]' :autosize="{ minRows: 3, maxRows: 8 }"></el-input>
 		  </el-form-item>
 		  <el-form-item label="备注" prop="remark">
 		  	<el-input type="textarea" v-model="formForm.remark" placeholder="请输入备注" :autosize="{ minRows: 3, maxRows: 8 }"></el-input>
