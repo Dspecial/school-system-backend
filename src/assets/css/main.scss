@@ -511,3 +511,8 @@ html,body,#app,.page-container{
     margin-bottom: 0;
   }
 }
+
+/*project.vue*/
+.params_select .el-select-dropdown__wrap{
+  max-height: 317px;
+}

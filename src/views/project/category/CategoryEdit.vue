@@ -10,14 +10,8 @@
 	  	<el-form-item label="项目类别" prop="name">
 		    <el-input v-model="categoryForm.name" placeholder="项目类别"></el-input>
 		  </el-form-item>
-			<el-form-item label="开启金额申请" prop="is_open_money">
-		    <el-radio-group v-model="categoryForm.is_open_money">
-			    <el-radio label="2">是</el-radio>
-			    <el-radio label="1">否</el-radio>
-			  </el-radio-group>
-		  </el-form-item>
 			<el-form-item label="参数" prop="formids">
-		  	<el-select class="w-100" v-model="categoryForm.formids" filterable :filter-method="getTableList" multiple clearable :collapse-tags="true" placeholder="请选择参数" @change="handleChange">
+		  	<el-select class="w-100" popper-class="params_select" v-model="categoryForm.formids" filterable :filter-method="getTableList" multiple clearable :collapse-tags="true" placeholder="请选择参数" @change="handleChange">
 			    <el-option
 			      v-for="item in paramsOptions"
 			      :key="item.id"
@@ -38,6 +32,18 @@
 					</el-pagination>
 			  </el-select>
 		  </el-form-item>
+			<el-form-item label="开启金额申请" prop="is_open_money">
+		    <el-radio-group v-model="categoryForm.is_open_money">
+			    <el-radio label="2">是</el-radio>
+			    <el-radio label="1">否</el-radio>
+			  </el-radio-group>
+		  </el-form-item>
+			<el-form-item label="开启企业选择" prop="is_need_company">
+		    <el-radio-group v-model="categoryForm.is_need_company">
+			    <el-radio label="2">是</el-radio>
+			    <el-radio label="1">否</el-radio>
+			  </el-radio-group>
+		  </el-form-item>
 		  <el-form-item label="状态" prop="is_show">
 		    <el-radio-group v-model="categoryForm.is_show">
 			    <el-radio label="1">正常</el-radio>
@@ -45,7 +51,7 @@
 			  </el-radio-group>
 		  </el-form-item>
 		  <el-form-item label="类型备注">
-		    <el-input type="textarea" v-model="categoryForm.remark" placeholder="请输入类型备注" :autosize="{ minRows: 3, maxRows: 5}" maxlength="30" show-word-limit></el-input>
+		    <el-input type="textarea" v-model="categoryForm.remark" placeholder="请输入类型备注" :autosize="{ minRows: 5, maxRows: 8}" maxlength="30" show-word-limit></el-input>
 		  </el-form-item>
 	  </el-form>
 	  <span slot="footer" class="dialog-footer">
@@ -65,7 +71,8 @@
 				categoryForm:{
 					name:"",
 					remark:"",
-					is_open_money:"",
+					is_open_money:"1",
+					is_need_company:"1",
 					formids:[],
 					is_show:"1",
 				},
@@ -73,7 +80,7 @@
 				paramsOptions:[],
 				total: 0, //总条数
         currentPage: 1, //当前页
-        pageSize: 5, //每页显示条数
+        pageSize: 8, //每页显示条数
 				rules: {
           name: [
             { required: true, message: '请输入项目类别', trigger: 'blur' }
@@ -110,7 +117,17 @@
 			},
 			// dialog初始化
 			openEdit(){
-				this.getTableList();
+				this.$api.p_category_form({
+        }).then(data=>{
+          if(data.code == 0){
+						// 先获取所有的数据
+            this.paramsOptions = data.data.data;
+						// 再分页获取
+						this.getTableList();
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
 				if(this.categoryData.isEdit){ // 编辑
 					this.$api.p_categoryEdit({
 						id:this.categoryData.id,
@@ -121,6 +138,7 @@
 							this.categoryForm.name = data.data.name;
 							this.categoryForm.remark = data.data.remark;
 							this.categoryForm.is_open_money = data.data.is_open_money;
+							this.categoryForm.is_need_company = data.data.is_need_company;
 							if(data.data.formids){
 								this.categoryForm.formids = data.data.formids.split(",");
 							}
@@ -155,6 +173,7 @@
 	          		remark:this.categoryForm.remark,
 	          		is_show:this.categoryForm.is_show,
 								is_open_money:this.categoryForm.is_open_money,
+								is_need_company:this.categoryForm.is_need_company,
 								formids:this.categoryForm.formids.join(","),
 	          		function_type:1,
 	          	}).then(data =>{
@@ -172,6 +191,7 @@
 	          		remark:this.categoryForm.remark,
 	          		is_show:this.categoryForm.is_show,
 								is_open_money:this.categoryForm.is_open_money,
+								is_need_company:this.categoryForm.is_need_company,
 								formids:this.categoryForm.formids.join(","),
 	          	}).then(data =>{
 	          		if(data.code == 0){
