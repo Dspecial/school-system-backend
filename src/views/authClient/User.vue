@@ -13,7 +13,8 @@
                 class="w-40"
     				    placeholder="请输入姓名、部门名称、工号、角色身份"
     				    prefix-icon="el-icon-search"
-    				    v-model="filters[0].value">
+    				    v-model="filters[0].value"
+                clearable>
     				  </el-input>
               <el-date-picker
                 class="ml-3 w-40"
@@ -21,9 +22,11 @@
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
                 type="daterange"
+                range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                placeholder="选择上次登录时间">
+                placeholder="选择上次登录时间"
+                clearable>
               </el-date-picker>
           	</div>
             <div class="ml-auto">

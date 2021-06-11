@@ -29,9 +29,10 @@
 						  <el-input
                 placeholder="请输入资源名称查询"
                 prefix-icon="el-icon-search"
-                v-model="filters[0].value">
+                v-model="filters[0].value"
+                clearable>
               </el-input>
-						  <el-select v-model="filters[1].value" placeholder="请选择是否使用" class="ml-3" @change="onChange">
+						  <el-select v-model="filters[1].value" placeholder="请选择是否使用" class="ml-3" @change="onChange" clearable>
 						    <el-option label="使用中" :value="1"></el-option>
                 <el-option label="已禁用" :value="2"></el-option>
 						  </el-select>

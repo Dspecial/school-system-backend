@@ -12,7 +12,8 @@
           		<el-input
     				    placeholder="类别名称、创建人、编辑人"
     				    prefix-icon="el-icon-search"
-    				    v-model="filters[0].value">
+    				    v-model="filters[0].value"
+                clearable>
     				  </el-input>
           	</div>
             <div class="ml-auto">

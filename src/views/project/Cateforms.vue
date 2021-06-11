@@ -12,7 +12,8 @@
               <el-input
                 placeholder="请输入参数名称/变量名称查询"
                 prefix-icon="el-icon-search"
-                v-model="filters[0].value">
+                v-model="filters[0].value"
+                clearable>
               </el-input>
             </div>
             <div class="ml-auto">

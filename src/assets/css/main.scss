@@ -123,8 +123,15 @@
   }
 }
 .sc-table{
-  .tool .el-input__inner{
-    min-width: 240px;
+  .tool .el-input:not(.el-range-editor),
+  .tool .el-select{
+    width: 250px!important;
+  }
+  .tool .el-date-editor--daterange.el-input__inner{
+    width: 300px!important;
+  }
+  .tool .el-range-input{
+    width: 100px;
   }
   .pagination-bar{
     margin-top:1.25rem;

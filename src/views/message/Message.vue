@@ -8,14 +8,14 @@
 				<h4 class="fs_16 font-weight-semibold m-0 text-000">信息处理</h4>
 				<div class="tab_nav ml-3">
 					<template v-for="(nav,index) in handleNav">
-						<span :class="['cursor-pointer ml-3 opacity-60',handleNavIndex == nav.id?'active':'']" @click="handleTab(nav.id)">{{nav.title}}</span>
+						<span :key="index" :class="['cursor-pointer ml-3 opacity-60',handleNavIndex == nav.id?'active':'']" @click="handleTab(nav.id)">{{nav.title}}</span>
 					</template> 
 				</div>
 			</div>
 			<div class="tab_content">
 				<el-row class="isCell handleType">
 					<template v-for="(type,index) in handleType">
-						<el-col :span="8" class="text-center">
+						<el-col :span="8" class="text-center" :key="index">
 							<span class="opacity-60">{{type.typeName}}</span>
 							<p class="m-0 fs_30 mt-2">{{type.num}}/{{type.total}}</p>
 						</el-col>
@@ -36,15 +36,16 @@
 					      type="daterange"
 					      range-separator="至"
 					      start-placeholder="开始日期"
-					      end-placeholder="结束日期">
+					      end-placeholder="结束日期"
+								clearable>
 					    </el-date-picker>
           		<el-input
           			class="ml-3 w-100"
     				    placeholder="标题/发出部门/发出人/状态/类型"
     				    prefix-icon="el-icon-search"
-    				    v-model="filters[1].value">
+    				    v-model="filters[1].value"
+								clearable>
     				  </el-input>
-              <el-button type="primary" class="ml-3">查询</el-button>
           	</div>
           </div>
         </div>

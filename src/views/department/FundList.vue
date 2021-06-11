@@ -15,7 +15,8 @@
               v-model="filters[0].value"
               type="year"
               value-format="yyyy"
-              placeholder="请选择要查的年份">
+              placeholder="请选择要查的年份"
+              clearable>
             </el-date-picker>
           </div>
         </div>

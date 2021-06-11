@@ -13,9 +13,10 @@
             <el-input
               placeholder="请输入标题、项目名称"
               prefix-icon="el-icon-search"
-              v-model="filters[0].value">
+              v-model="filters[0].value"
+              clearable>
             </el-input>
-            <el-select v-model="filters[1].value" placeholder="请选择类型" class="ml-3">
+            <el-select v-model="filters[1].value" placeholder="请选择类型" class="ml-3" clearable>
               <el-option
                 v-for="item in typeOptions"
                 :key="item.value"

@@ -29,7 +29,8 @@
 	          		<el-input
 	    				    placeholder="下拉选择或搜索输入"
 	    				    prefix-icon="el-icon-search"
-	    				    v-model="filters[0].value">
+	    				    v-model="filters[0].value"
+									clearable>
 	    				  </el-input>
 	              <el-button type="primary" class="ml-3">查询</el-button>
 	          	</div>

@@ -12,7 +12,8 @@
           		<el-input
     				    placeholder="公司名称/营业执照编码/负责人姓名/手机号"
     				    prefix-icon="el-icon-search"
-    				    v-model="filters[0].value">
+    				    v-model="filters[0].value"
+                clearable>
     				  </el-input>
               <el-button type="primary" class="ml-3">查询</el-button>
           	</div>

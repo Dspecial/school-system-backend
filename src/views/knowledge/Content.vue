@@ -12,7 +12,8 @@
               <el-input
                 placeholder="标题、简介、创建人、编辑人"
                 prefix-icon="el-icon-search"
-                v-model="filters[0].value">
+                v-model="filters[0].value"
+                clearable>
               </el-input>
               <el-select v-model="filters[1].value" placeholder="请选择是否使用" clearable class="ml-3" @change="onChange">
                 <el-option label="正常" :value="1"></el-option>

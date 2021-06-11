@@ -12,7 +12,8 @@
           		<el-input
     				    placeholder="请输入专家姓名、手机号、专业、擅长领域"
     				    prefix-icon="el-icon-search"
-    				    v-model="filters[0].value">
+    				    v-model="filters[0].value"
+                clearable>
     				  </el-input>
           	</div>
             <div class="ml-auto">

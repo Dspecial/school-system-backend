@@ -12,7 +12,8 @@
           		<el-input
     				    placeholder="项目名称、阶段、供应商名字、负责人名"
     				    prefix-icon="el-icon-search"
-    				    v-model="filters[0].value">
+    				    v-model="filters[0].value"
+                clearable>
     				  </el-input>
               <el-button type="primary" class="ml-3">查询</el-button>
           	</div>

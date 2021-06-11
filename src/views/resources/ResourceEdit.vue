@@ -21,10 +21,10 @@
 					  </el-form-item>
 					</el-col>
 					<el-col :span="12">
-				  	<el-form-item label="供应商" prop="supplier_id">
+				  	<el-form-item label="供应商">
 					    <el-select v-model="resourceForm.supplier_id" placeholder="请选择供应商" class="w-100">
 					    	<template v-for="(item,index) in supplierOptions">
-					    		<el-option :label="item.name" :value="item.id" :key="item.id"></el-option>
+					    		<el-option :label="item.name" :value="item.id" :key="index"></el-option>
 					    	</template>
 					    </el-select>
 					  </el-form-item>
