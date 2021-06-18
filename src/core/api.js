@@ -39,7 +39,12 @@ export default {
 	c_dept: p => post('/backstage/ajax/getdepartlist', p),
 	// 新增人员(教师)时根据部门选择教师
 	c_user_form_dept: p => post('/backstage/ajax/get_user_for_depart', p),
+	// 人员配置
+	c_user_setuser: p => post('/backstage/auth.group/setuser', p),
+	// 人员列表
+	c_getUserList: p => post('/backstage/ajax/get_user_list', p),
 
+	
 	// 角色列表
 	c_roleList: p => post('/backstage/auth.group/index', p),
 	// 编辑角色
@@ -213,6 +218,9 @@ export default {
 	p_cateformsEdit: p => post('/backstage/project.cateforms/edit', p),
 	// 更改状态
 	p_cateformsStatus: p => post('/backstage/project.cateforms/tranform', p),
+
+	//项目列表
+	p_projectList: p => post('/backstage/project.project/index', p),
 
 	/*
 		***厂商管理

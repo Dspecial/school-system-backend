@@ -233,6 +233,15 @@ const router = new Router({
 				  },
 				  children: null
 				},
+				{
+				  path: '/project/project',
+				  component: resolve => require(['@/views/project/Project'], resolve),
+				  name: 'Project',
+				  meta: {
+				    title: '项目列表'
+				  },
+				  children: null
+				},
 
 				/*
 				**厂商管理

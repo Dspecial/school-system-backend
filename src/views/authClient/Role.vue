@@ -90,6 +90,7 @@
           dialog:false,
           title:"",
           id:"",
+          roleName:"",
         },
         actions1:[],
 			}
@@ -181,10 +182,11 @@
       },
 
       // 人员配置
-      authPerson(){
+      authPerson(index,row){
         this.rolePersonData.dialog = true;
         this.rolePersonData.title = "人员配置";
-        this.rolePersonData.id = '';
+        this.rolePersonData.id = row.id;
+        this.rolePersonData.roleName = row.name;
       },
 		},
 	}
