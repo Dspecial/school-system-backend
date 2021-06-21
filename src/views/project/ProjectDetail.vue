@@ -213,7 +213,7 @@
 				// 表单值
 				dataJson:[],
 				//项目状态
-				statusActive:7,
+				statusActive:0,
 				statusSteps:[],
 				// 审核记录
 				checkList:[],

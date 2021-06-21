@@ -42,6 +42,7 @@
         <el-table-column prop="apply_number" label="项目编号" width="220"></el-table-column>
         <el-table-column prop="cname" label="项目类别" width="200"></el-table-column>
         <el-table-column prop="p_name" label="项目名称" width="200"></el-table-column>
+        <el-table-column prop="check_process.text" label="项目状态" width="220"></el-table-column>
         <el-table-column prop="projecttime" label="年份"></el-table-column>
         <el-table-column prop="job_number" label="所属公司" width="220"></el-table-column>
         <el-table-column prop="name" label="申请人姓名" width="100"></el-table-column>
