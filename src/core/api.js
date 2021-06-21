@@ -219,8 +219,40 @@ export default {
 	// 更改状态
 	p_cateformsStatus: p => post('/backstage/project.cateforms/tranform', p),
 
-	//项目列表
+	// 项目列表
 	p_projectList: p => post('/backstage/project.project/index', p),
+	// 新增项目
+	p_projectAdd: p => post('/backstage/project.project/add', p),
+	// 获取部门
+	p_project_dept: p => post('/backstage/ajax/getdepartlist', p),
+	// 根据部门id获取教师列表
+	p_project_dept_user: p => post('/backstage/ajax/get_user_list_by_department', p),
+	// 获取项目类别
+	p_project_cate: p => post('/backstage/ajax/get_project_cate_list', p),
+	// 根据项目类别id获取表单
+	p_project_cate_forms: p => post('/backstage/ajax/get_project_forms', p),
+	// 获取企业列表（接口没给）
+	p_project_company: p => post('/api/ajax/get_company_list', p),
+	// 表单中文件上传
+	p_upload: p => postUpload('/backstage/upload/upload', p),
+	// 表单中文件上传后删除
+	p_uploadDel: p => post('/backstage/upload/del_upload', p),
+	// 上传付款附件或凭证
+	p_uploadPayNode: p => postUpload('/api/upload/upload_pay_file', p),
+	// 删除项目
+	p_projectDel: p => post('/backstage/project.project/del', p),
+	// 编辑项目
+	p_projectEdit: p => post('/backstage/project.project/edit', p),
+	// 项目详情
+	p_projectDetail: p => post('/backstage/project.project/details', p),
+	// 文件预览
+	file_preview: p => post('/api/ajax/preview', p),
+
+	// 流程节点管理
+	p_processNode: p => post('/backstage/project.node/index', p),	
+	// 流程节点编辑
+	p_processNodeEdit: p => post('/backstage/project.node/edit', p),	
+
 
 	/*
 		***厂商管理

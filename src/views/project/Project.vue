@@ -44,12 +44,12 @@
         <el-table-column prop="p_name" label="项目名称" width="200"></el-table-column>
         <el-table-column prop="projecttime" label="年份"></el-table-column>
         <el-table-column prop="job_number" label="所属公司" width="220"></el-table-column>
-        <el-table-column prop="name" label="申请人姓名"></el-table-column>
-        <el-table-column prop="depart_name" label="申请人部门"></el-table-column>
+        <el-table-column prop="name" label="申请人姓名" width="100"></el-table-column>
+        <el-table-column prop="depart_name" label="申请人部门" width="200"></el-table-column>
         <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="250">
+        <el-table-column fixed="right" label="操作" align="center" width="220">
           <template slot-scope="scope">
-            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-2">{{action.title}}</span>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -135,46 +135,47 @@
         });
       },
 
-      // 新增审核流程
+      // 新增项目
       handleAdd(){
-      	this.processData.dialog = true;
-      	this.processData.title = "新增审核流程";
-      	this.processData.id = '';
-        this.processData.isEdit = false;
+      	this.$router.push({
+          path:"/project/project/edit",
+        });
       },
 
       // 操作们
       fun(index,row,sign){
         if(sign == '2'){ // 编辑
-          this.editCate(index,row);
+          this.editProject(index,row);
         }else if(sign == '3'){ // 删除
           this.handleDel(index,row);
         }else if(sign == '4'){ // 详情
-          
+          this.goDetail(index,row);
         }else if(sign == '10'){ // 更改流程
-          
+          this.projectProcess(index,row);
         }
       },
 
-      // 编辑审核流程
-      editCate(index,row){
-        this.processData.dialog = true;
-        this.processData.title = '编辑审核流程';
-        this.processData.id = row.id;
-        this.processData.isEdit = true;
+      // 编辑项目
+      editProject(index,row){
+        this.$router.push({
+          path:"/project/project/edit",
+          query: {
+            id: row.id,
+          }
+        })
       },
 
       // 删除
       handleDel(index,row){
-        this.$confirm("此操作将永久删除该审核流程, 是否继续?", "提示", {
+        this.$confirm("此操作将永久删除该该项目, 是否继续?", "提示", {
           type: 'warning'
         }).then(() => {
-          this.$api.p_flowDel({
+          this.$api.p_projectDel({
             id:row.id
           }).then(data=>{ 
              if(data.code == 0){
                 this.$message({
-                  message: "删除审核流程成功!",
+                  message: data.msg,
                   type: 'success'
                 });
                 this.loadData();
@@ -187,6 +188,25 @@
         });
       },
 
+      // 详情
+      goDetail(index,row){
+        this.$router.push({
+          path:"/project/project/detail",
+          query: {
+            id: row.id,
+          }
+        })
+      },
+
+      // 项目流程
+      projectProcess(index,row){
+        // this.$router.push({
+        //   path:"/project/project/edit",
+        //   query: {
+        //     id: row.id,
+        //   }
+        // })
+      },
 		},
 	}
 </script>

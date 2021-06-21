@@ -188,6 +188,7 @@ const router = new Router({
 				/*
 				**项目管理
 				 */
+				// 类别配置
 				{
 				  path: '/project/category',
 				  component: resolve => require(['@/views/project/category/Category'], resolve),
@@ -206,6 +207,7 @@ const router = new Router({
 				  },
 				  children: null
 				},
+				// 审核流程
 				{
 				  path: '/project/auditProcess',
 				  component: resolve => require(['@/views/project/Auditprocess'], resolve),
@@ -215,15 +217,16 @@ const router = new Router({
 				  },
 				  children: null
 				},
-				{
-				  path: '/project/distribution',
-				  component: resolve => require(['@/views/project/Distribution'], resolve),
-				  name: 'Distribution',
-				  meta: {
-				    title: '项目资源分配'
-				  },
-				  children: null
-				},
+				// {
+				//   path: '/project/distribution',
+				//   component: resolve => require(['@/views/project/Distribution'], resolve),
+				//   name: 'Distribution',
+				//   meta: {
+				//     title: '项目资源分配'
+				//   },
+				//   children: null
+				// },
+				// 参数设置
 				{
 				  path: '/project/cateforms',
 				  component: resolve => require(['@/views/project/Cateforms'], resolve),
@@ -233,12 +236,41 @@ const router = new Router({
 				  },
 				  children: null
 				},
+				// 项目列表
 				{
 				  path: '/project/project',
 				  component: resolve => require(['@/views/project/Project'], resolve),
 				  name: 'Project',
 				  meta: {
 				    title: '项目列表'
+				  },
+				  children: null
+				},
+				{
+				  path: '/project/project/edit',
+				  component: resolve => require(['@/views/project/ProjectEdit'], resolve),
+				  name: 'ProjectEdit',
+				  meta: {
+				    title: '编辑项目'
+				  },
+				  children: null
+				},
+				{
+				  path: '/project/project/detail',
+				  component: resolve => require(['@/views/project/ProjectDetail'], resolve),
+				  name: 'ProjectDetail',
+				  meta: {
+				    title: '项目详情'
+				  },
+				  children: null
+				},
+				// 流程节点管理
+				{
+				  path: '/project/processNode',
+				  component: resolve => require(['@/views/project/ProcessNode'], resolve),
+				  name: 'ProcessNode',
+				  meta: {
+				    title: '流程节点管理'
 				  },
 				  children: null
 				},

@@ -61,7 +61,18 @@
         </el-table-column>
         <el-table-column prop="cate_name" label="所属分类" width="100"></el-table-column>
         <el-table-column prop="free_end_date" label="免费维护期" width="120"></el-table-column>
-        <el-table-column prop="remark" label="备注"></el-table-column>
+        <el-table-column label="备注" width="150">
+          <template slot-scope="scope">
+            <el-popover
+              placement="top-start"
+              title="备注"
+              width="200"
+              trigger="hover"
+              :content="scope.row.remark">
+              <span class="text-truncate" slot="reference">{{scope.row.remark}}</span>
+            </el-popover>
+          </template>
+        </el-table-column>
         <el-table-column prop="is_use" label="是否使用">
           <template slot-scope="scope">
             <span v-if="scope.row.is_use == 1"><i class="dot bg-success mr-1"></i>使用中</span>
@@ -72,7 +83,7 @@
         <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
         <el-table-column prop="ename" label="最新编辑人" width="100"></el-table-column>
         <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="150" align="center">
+        <el-table-column fixed="right" label="操作" width="220" align="center">
           <template slot-scope="scope">
             <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>

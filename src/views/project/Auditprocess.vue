@@ -75,7 +75,7 @@
 	import AuditprocessEdit from "./AuditprocessEdit";
 
 	export default {
-		name: 'Category',
+		name: 'Auditprocess',
 		provide() {
       return {
         loadData: this.loadData

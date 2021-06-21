@@ -50,6 +50,13 @@
 			    <el-radio label="2">禁用</el-radio>
 			  </el-radio-group>
 		  </el-form-item>
+			<el-form-item label="允许资源申请" prop="is_resource_apply">
+		    <el-radio-group v-model="categoryForm.is_resource_apply">
+			    <el-radio label="2">是</el-radio>
+			    <el-radio label="1">否</el-radio>
+			  </el-radio-group>
+				<p class="m-0 mt-1 text-warning">Tips: 如若开启资源申请，请在节点管理中也同样开启！</p>
+		  </el-form-item>
 		  <el-form-item label="类型备注">
 		    <el-input type="textarea" v-model="categoryForm.remark" placeholder="请输入类型备注" :autosize="{ minRows: 5, maxRows: 8}" maxlength="30" show-word-limit></el-input>
 		  </el-form-item>
@@ -75,6 +82,7 @@
 					is_need_company:"1",
 					formids:[],
 					is_show:"1",
+					is_resource_apply:"1",
 				},
 				selected_all:[],
 				paramsOptions:[],
@@ -174,6 +182,7 @@
 	          		is_show:this.categoryForm.is_show,
 								is_open_money:this.categoryForm.is_open_money,
 								is_need_company:this.categoryForm.is_need_company,
+								is_resource_apply:this.categoryForm.is_resource_apply,
 								formids:this.categoryForm.formids.join(","),
 	          		function_type:1,
 	          	}).then(data =>{
@@ -192,6 +201,7 @@
 	          		is_show:this.categoryForm.is_show,
 								is_open_money:this.categoryForm.is_open_money,
 								is_need_company:this.categoryForm.is_need_company,
+								is_resource_apply:this.categoryForm.is_resource_apply,
 								formids:this.categoryForm.formids.join(","),
 	          	}).then(data =>{
 	          		if(data.code == 0){
