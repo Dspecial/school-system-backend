@@ -153,7 +153,15 @@ const router = new Router({
 				  },
 				  children: null
 				},
-
+				{
+				  path: '/resources/resource/useList',
+				  component: resolve => require(['@/views/resources/ResourceUselist'], resolve),
+				  name: 'ResourceUselist',
+				  meta: {
+				    title: '资源使用列表'
+				  },
+				  children: null
+				},
 				/*
 				**后台权限管理
 				 */

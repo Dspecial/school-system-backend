@@ -85,7 +85,7 @@
         <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" width="220" align="center">
           <template slot-scope="scope">
-            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign,action.id)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -196,11 +196,14 @@
       },
 
       // 操作们
-      fun(index,row,sign){
+      fun(index,row,sign,actionId){
         if(sign == 2){ // 编辑
           this.editResource(index,row);
         }else if(sign == 3){ // 删除
           this.handleDel(index,row);
+        }else if(sign == 11){ // 资源使用列表
+          this.goUseList(index,row);
+          this.menuClick(actionId);
         }
       },
 
@@ -235,6 +238,44 @@
         });
       },
 
+      // 资源使用列表
+      goUseList(index,row){
+        this.$router.push({
+          path:"/resources/resource/useList",
+          query: {
+            id: row.id,
+          }
+        });
+      },
+
+      // 获取该菜单列表下的所有操作按钮
+      menuClick(id){
+        this.$cookies.set('back_menu_id', id);
+        // 清空
+        this.allAction = {
+          addAction:{},
+          moreAction:[],
+        };
+        this.$api.menuButton({
+          menu_id:id
+        }).then(data=>{
+          if(data.code == 0){
+            if(this.commonJs.isEmpty(data.data.current_menu[0])){
+              this.$store.commit("SET_ACTION",this.allAction);
+            }else{
+              data.data.current_menu.map(item=>{
+                if(item.sign == 1){ // 是添加按钮
+                  this.allAction.addAction = item;
+                }else{
+                  this.allAction.moreAction.push(item);
+                }
+              })
+              this.$store.commit("SET_ACTION",this.allAction);
+            }
+            // console.log(this.allAction,'this.allAction');
+          }
+        })
+      },
     },
   }
 </script>

@@ -132,7 +132,10 @@ export default {
 	resourceAdd: p => post('/backstage/resource.resource/add', p),
 	// 删除资源
 	resourceDel: p => post('/backstage/resource.resource/del', p),
-
+	// 资源使用列表
+	resource_useList: p => post('/backstage/resource.resource/use_list', p),
+	// 回收资源
+	resource_reover: p => post('/backstage/resource.resource/use_resource_reover', p),
 
 	/*
 		***后台权限管理
