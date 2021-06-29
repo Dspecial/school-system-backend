@@ -30,7 +30,7 @@
 		  <el-form-item label="简介">
 		    <el-input type="textarea" v-model="processForm.brief" placeholder="请输入简介" :autosize="{ minRows: 3, maxRows: 5}" maxlength="30" show-word-limit></el-input>
 		  </el-form-item>
-		  <el-form-item label="节点">
+		  <el-form-item label="审核流程">
 		  	<!-- 节点和审核流程配置 -->
 		  	<span class="opacity-60">Tips:请勿在审核流程中选择厂商角色</span>
 		  	<div v-for="(item,index) in nodeList" :key="index">
@@ -177,7 +177,6 @@
 			openEdit(){
 				var _this = this;
 				this.initProjectCate();
-				this.initNode();
 				this.initRule();
 				if(this.processData.isEdit){ // 编辑
 					this.$api.p_flowEdit({
@@ -190,7 +189,7 @@
 							this.processForm.cate_id = data.data.cate_id;
 							this.processForm.is_use = data.data.is_use;
 							this.processForm.brief = data.data.brief;
-							console.log(data.data.relation);
+
 							var relation = new Array;
 							data.data.relation.map((item,index) =>{
 								item.check_str = item.check_str.map((b,j)=>{
@@ -207,32 +206,44 @@
 								relation.push(item);
 							});
 
-							var dataArry = JSON.parse(JSON.stringify(this.nodeList));
-							var list = new Array;
-							dataArry.forEach(item =>{
-								relation.find(_item =>{
-									if(item.node_id ===_item.node_id){
-										item.cellArray = _item.check_str;
-									}
-								});
-								list.push(item);
+							this.$api.p_nodeList({
+							}).then(data=>{
+								if(data.code == 0){
+									var dataArry = data.data.map((item) => {
+										return {
+											'node_id':item.id,
+											'name':item.name,
+											'cellArray':new Array,
+										};
+									});
+									var list = new Array;
+									dataArry.forEach(item =>{
+										relation.find(_item =>{
+											if(item.node_id === _item.node_id){
+												item.cellArray = _item.check_str;
+											}
+										});
+										list.push(item);
+									});
+									this.nodeList = list
+									
+								}else{
+									this.$message.error(data.msg);
+								}
 							});
-							// 重新赋值
-							this.nodeList = list;
-
-							console.log(this.nodeList,'this.nodeList');
 						}else{
 							this.$message.error(data.msg);
 						}
 					})
 				}else{ // 新增
-					
+					this.initNode();
 				}
 			},
 			// dialog关闭
 			closedEdit(formName){
 				this.handleClose();
 				this.resetForm(formName);
+				this.nodeList = [];
 			},
 			// 右上角x关闭
 			handleClose(){

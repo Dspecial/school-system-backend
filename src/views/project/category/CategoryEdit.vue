@@ -147,6 +147,7 @@
 							this.categoryForm.remark = data.data.remark;
 							this.categoryForm.is_open_money = data.data.is_open_money;
 							this.categoryForm.is_need_company = data.data.is_need_company;
+							this.categoryForm.is_resource_apply = data.data.is_resource_apply;
 							if(data.data.formids){
 								this.categoryForm.formids = data.data.formids.split(",");
 							}
