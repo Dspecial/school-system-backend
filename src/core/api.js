@@ -25,6 +25,16 @@ export default {
 	menuButton: p => post('/backstage/menu/get_menu_buttom', p),
 
 	/*
+		***首页
+	 */
+	// 获取最新的维护记录
+	dashboard_record: p => post('/backstage/dashboard/record', p),	
+	// 获取项目状态数
+	dashboard_state: p => post('/backstage/dashboard/get_my_project_state', p),
+	// 获取首页获取付款信息
+	dashboard_pay: p => post('/backstage/dashboard/project_pay_state', p),	
+
+	/*
 		***客户端权限管理
 	 */
 	// 人员列表(教师)(没对完)
@@ -136,6 +146,9 @@ export default {
 	resource_useList: p => post('/backstage/resource.resource/use_list', p),
 	// 回收资源
 	resource_reover: p => post('/backstage/resource.resource/use_resource_reover', p),
+
+	// 资源维护记录列表
+	resource_recordList: p => post('/backstage/resource.resource/record', p),
 
 	/*
 		***后台权限管理

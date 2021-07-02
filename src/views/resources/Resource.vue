@@ -83,9 +83,9 @@
         <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
         <el-table-column prop="ename" label="最新编辑人" width="100"></el-table-column>
         <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="220" align="center">
+        <el-table-column fixed="right" label="操作" width="280" align="center">
           <template slot-scope="scope">
-            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign,action.id)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign,action.id)" class="text-primary cursor-pointer mr-2">{{action.title}}</span>
           </template>
         </el-table-column>
       </data-tables-server>
@@ -201,8 +201,11 @@
           this.editResource(index,row);
         }else if(sign == 3){ // 删除
           this.handleDel(index,row);
-        }else if(sign == 11){ // 资源使用列表
+        }else if(sign == 11.1){ // 资源使用列表
           this.goUseList(index,row);
+          this.menuClick(actionId);
+        }else if(sign == 11.2){ // 资源维护记录列表
+          this.goRecordList(index,row);
           this.menuClick(actionId);
         }
       },
@@ -242,6 +245,16 @@
       goUseList(index,row){
         this.$router.push({
           path:"/resources/resource/useList",
+          query: {
+            id: row.id,
+          }
+        });
+      },
+
+      // 资源维护记录列表
+      goRecordList(index,row){
+        this.$router.push({
+          path:"/resources/resource/recordList",
           query: {
             id: row.id,
           }

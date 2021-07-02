@@ -162,6 +162,15 @@ const router = new Router({
 				  },
 				  children: null
 				},
+				{
+				  path: '/resources/resource/recordList',
+				  component: resolve => require(['@/views/resources/ResourceRecordlist'], resolve),
+				  name: 'ResourceRecordlist',
+				  meta: {
+				    title: '资源维护记录列表'
+				  },
+				  children: null
+				},
 				/*
 				**后台权限管理
 				 */
