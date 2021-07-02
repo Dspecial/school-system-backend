@@ -37,69 +37,73 @@
 			</el-col>
 		</el-row>
 
-		<!-- 状态统计 -->
+		<!-- 我的项目--状态统计 -->
 		<el-card class="mt-3">
-			<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">状态统计</h4>
+			<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">我的项目</h4>
 			<el-row :gutter="20" type="flex">
 				<template v-for="(status,index) in statusList">
 					<el-col class="text-center status-item" :key="index">
-						<span class="mb-2 d-inline-block opacity-60">{{status.title}}</span>
-						<p class="m-0 fs_24">{{status.num}}/{{status.total}}</p>
+						<span class="mb-2 d-inline-block opacity-60">{{status.name}}</span>
+						<p class="m-0 fs_24">{{status.count}}/{{statusTotal}}</p>
 					</el-col>
 				</template>
 			</el-row>
 		</el-card>
 
 		<el-row :gutter="20" class="mt-3">
-			<!-- 信息处理 -->
+			<!-- 维护记录 -->
 			<el-col :span="12">
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="d-flex justify-content-between align-items-center isCell">
-						<h4 class="fs_16 font-weight-semibold m-0 text-000">信息处理</h4>
+						<h4 class="fs_16 font-weight-semibold m-0 text-000">维护记录</h4>
 						<div class="tab_nav">
-							<template v-for="(nav,index) in handleNav">
-								<span  :key="index" :class="['cursor-pointer ml-3',handleNavIndex == nav.id?'active':'']" @click="handleTab(nav.id)">{{nav.title}}</span>
-							</template> 
+							<!-- <span class="ml-3 cursor-pointer text-primary" @click="moreRecord">更多</span> -->
 						</div>
 					</div>
-					<div class="tab_content">
-						<el-row class="isCell handleType">
-							<template v-for="(type,index) in handleType">
-								<el-col :key="index" :span="8" class="text-center">
-									<p class="m-0 fs_30 mb-3">{{type.num}}/{{type.total}}</p>
-									<span>{{type.typeName}}</span>
-								</el-col>
-							</template>
-						</el-row>
-						<el-table :data="handleData" class="mt-3">
-				      <el-table-column type="index" :index="indexMethod" label="编号"></el-table-column>
-				      <el-table-column prop="date" label="日期" width="90"></el-table-column>
-				      <el-table-column prop="type" label="类别"></el-table-column>
-				      <el-table-column prop="title" label="标题" width="140"></el-table-column>
-				      <el-table-column prop="dept" label="发出部门"></el-table-column>
-				      <el-table-column prop="sender" label="发出人"></el-table-column>
-				      <el-table-column prop="status" label="状态"></el-table-column>
-				      <el-table-column fixed="right" label="操作" width="100">
-					      <template slot-scope="scope">
-					      	<div class="text-success cursor-pointer">
-						        <i class="el-icon-view"></i>
-						        <i class="el-icon-circle-check ml-2"></i>
-						        <i class="el-icon-notebook-2 ml-2"></i>
-					        </div>
-					      </template>
-					    </el-table-column>
-				    </el-table>
+					<div class="tab_content" style="padding: 20px">
+						<el-table :data="handleData" :default-expand-all="true" :row-class-name="getRowClass" height="335">
+							<el-table-column type="expand">
+								<template slot-scope="scope">
+									<div class="d-flex align-items-center justify-content-between" v-for="(file,index) in scope.row.files" :key="index">
+										<div class="cursor-pointer view" @click="preview(file.path)" title="在线预览">
+											<i class="el-icon-document mr-2"></i><span>{{file.name}}</span>
+										</div>
+										<div class="opacity-80">
+											<i class="el-icon-view cursor-pointer view mr-3" @click="preview(file.path)"></i>
+											<i class="el-icon-download cursor-pointer view" @click="downloadview(file)"></i>
+										</div>
+									</div>
+								</template>
+							</el-table-column>
+							<el-table-column prop="record_number" label="记录编号" width="150"></el-table-column>
+							<el-table-column prop="desc" label="所属资源" width="150">
+								<template slot-scope="scope">
+									<el-popover
+										placement="top-start"
+										title="所属资源"
+										width="200"
+										trigger="hover"
+										:content="scope.row.resource_name">
+										<span class="text-truncate" slot="reference">{{scope.row.resource_name}}</span>
+									</el-popover>
+								</template>
+							</el-table-column>
+							<el-table-column prop="title" label="标题" width="100"></el-table-column>
+							<el-table-column prop="username" label="上传企业" width="150"></el-table-column>
+							<el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
+						</el-table>
 					</div>
 				</el-card>
 			</el-col>
-			<!-- 信息处理 -->
+
+			<!-- 付款信息 -->
 			<el-col :span="12">
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="d-flex justify-content-between align-items-center isCell">
-						<h4 class="fs_16 font-weight-semibold m-0 text-000">信息处理</h4>
+						<h4 class="fs_16 font-weight-semibold m-0 text-000">付款信息</h4>
 						<div class="tab_nav">
 							<template v-for="(year,index) in handleYear">
-								<span  :key="index" :class="['cursor-pointer ml-3',handleYearIndex == year.id?'active':'']" @click="handleTab(year.id)">{{year.title}}</span>
+								<span :key="index" :class="['cursor-pointer ml-3',handleYearIndex == year.id?'active':'']" @click="handleYearTab(year.id)">{{year.title}}</span>
 							</template> 
 						</div>
 					</div>
@@ -169,144 +173,33 @@
 						total:"100"
 					},
 				],
-				// 状态统计
-				statusList:[
-					{
-						title:"项目申请",
-						num:"8",
-						total:"16"
-					},
-					{
-						title:"项目审核",
-						num:"8",
-						total:"16"
-					},
-					{
-						title:"项目实施",
-						num:"8",
-						total:"16"
-					},
-					{
-						title:"试运行状态",
-						num:"8",
-						total:"16"
-					},
-					{
-						title:"项目验收状态",
-						num:"8",
-						total:"16"
-					},
-					{
-						title:"归档",
-						num:"8",
-						total:"16"
-					},
-					{
-						title:"维保执行中",
-						num:"8",
-						total:"16"
-					},
-				],
-				// 信息处理Tab
-				handleNav:[
-					{
-						id:0,
-						title:"全部",
-					},
-					{
-						id:1,
-						title:"警报",
-					},
-					{
-						id:2,
-						title:"审批",
-					},{
-						id:3,
-						title:"信息",
-					},
-				],
-				// 默认选中的tab
-				handleNavIndex:"1",
-				handleType:[
-					{
-						typeName:"待处理",
-						num:"8",
-						total:"100",
-					},
-					{
-						typeName:"处理中",
-						num:"10",
-						total:"22",
-					},
-					{
-						typeName:"已完结",
-						num:"20",
-						total:"20",
-					},
-				],
-				handleData: [
-					{
-	          date: "2020.12.20",
-	          type: "审批",
-	          title: "xx项目申请服务器",
-	          dept:"学工处",
-	          sender: '王小虎',
-	          status: "未处理",
-	        }, 
-	        {
-	          date: "2020.12.20",
-	          type: "审批",
-	          title: "xx项目申请服务器",
-	          dept:"学工处",
-	          sender: '王小虎',
-	          status: "未处理",
-	        },
-	        {
-	          date: "2020.12.20",
-	          type: "审批",
-	          title: "xx项目申请服务器",
-	          dept:"学工处",
-	          sender: '王小虎',
-	          status: "未处理",
-	        },
-	        {
-	          date: "2020.12.20",
-	          type: "审批",
-	          title: "xx项目申请服务器",
-	          dept:"学工处",
-	          sender: '王小虎',
-	          status: "未处理",
-	        },
-	        {
-	          date: "2020.12.20",
-	          type: "审批",
-	          title: "xx项目申请服务器",
-	          dept:"学工处",
-	          sender: '王小虎',
-	          status: "未处理",
-	        }
-	      ],
+				// 我的项目--状态统计
+				statusList:[],
 
-	      // 信息处理Tab
+				// 维护记录
+				handleData: [],
+
+				// 付款信息Tab
 				handleYear:[
 					{
-						id:0,
+						id:"",
 						title:"总计",
 					},
 					{
-						id:1,
-						title:"2020年",
+						id:new Date().getFullYear(),
+						title:new Date().getFullYear() + '年',
 					},
 					{
-						id:2,
-						title:"2019年",
-					},{
-						id:3,
-						title:"2018年",
+						id:new Date().getFullYear()-1,
+						title:new Date().getFullYear()-1 + '年',
+					},
+					{
+						id:new Date().getFullYear()-2,
+						title:new Date().getFullYear()-2 + '年',
 					},
 				],
-				// 默认选中的tab
-				handleYearIndex:"0",
+				// 默认选中的年份tab
+				handleYearIndex:new Date().getFullYear(),
 				// 图
 				option:{
 					title: {
@@ -354,7 +247,7 @@
                     borderRadius: 4,
                   }
                 }
-            },
+            	},
 	            data: [
                 {value: 7000, name: '未付款'},
                 {value: 3000, name: '已付款'},
@@ -372,13 +265,80 @@
 				},
 			}
 		},
+
+		mounted(){
+			this.initRecord();
+			this.initState();
+			this.initPay();
+		},
 		methods:{
-			handleTab(id){
-				this.handleNavIndex = id; 
+			// 获取我的项目-状态统计
+			initState(){
+				this.$api.dashboard_state({
+				}).then(data=>{
+					if(data.code == 0){
+						this.statusTotal = data.data.all_count;
+						this.statusList = data.data.project_node_list;
+					}else{
+						this.$message.error(data.msg);
+					}
+				})
 			},
+			
+			// 更多
+			moreRecord(){
+				// this.$router.push({ 
+				// 	path:"/works/routine"
+				// });
+			},
+
 			indexMethod(index) { //自增序列
         return ++index;
       },
+
+			// 获取维护记录
+			initRecord(){
+				this.$api.dashboard_record({
+				}).then(data=>{
+					if(data.code == 0){
+						this.handleData = data.data;
+					}else{
+						this.$message.error(data.msg);
+					}
+				})
+			},
+
+			// 判断表格是否有子项，无子项不显示展开按钮
+			getRowClass (row) {
+				if (row.row.is_pay == 1) {
+					return 'row-expand-cover'
+				}
+			},
+
+			// 年份tab
+			handleYearTab(year){
+				this.handleYearIndex = year; 
+				this.initPay(year);
+			},
+			// 获取首页获取付款信息
+			initPay(year){
+				this.$api.dashboard_pay({
+					year:year
+				}).then(data=>{
+					if(data.code == 0){
+						this.option = {
+							title:{
+								subtext:'\n' + data.data.all_money + '元'
+							},
+							series:[{
+								data:data.data.name_value
+							}],
+						};
+					}else{
+						this.$message.error(data.msg);
+					}
+				})
+			},
 		},
 	}
 </script>
