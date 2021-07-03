@@ -4,7 +4,7 @@
 			<!-- 资源概况 -->
 			<el-col :span="12">
 				<el-card>
-					<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">资源概况</h4>
+					<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">资源概况</h4>
 					<el-row :gutter="20">
 						<template v-for="(item,index) in resources">
 							<el-col :span="8" :key="index">
@@ -21,7 +21,7 @@
 			<!-- 其他资源概况 -->
 			<el-col :span="12">
 				<el-card>
-					<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">其他资源概况</h4>
+					<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">其他资源概况</h4>
 					<el-row :gutter="20">
 						<template v-for="(item,index) in otherResources">
 							<el-col :span="6" :key="index">
@@ -39,7 +39,7 @@
 
 		<!-- 我的项目--状态统计 -->
 		<el-card class="mt-3">
-			<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">我的项目</h4>
+			<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">我的项目</h4>
 			<el-row :gutter="20" type="flex">
 				<template v-for="(status,index) in statusList">
 					<el-col class="text-center status-item" :key="index">
@@ -55,7 +55,7 @@
 			<el-col :span="12">
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="d-flex justify-content-between align-items-center isCell">
-						<h4 class="fs_16 font-weight-semibold m-0 text-000">维护记录</h4>
+						<h4 class="fs_18 font-weight-semibold m-0 text-000">维护记录</h4>
 						<div class="tab_nav">
 							<!-- <span class="ml-3 cursor-pointer text-primary" @click="moreRecord">更多</span> -->
 						</div>
@@ -100,7 +100,7 @@
 			<el-col :span="12">
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="d-flex justify-content-between align-items-center isCell">
-						<h4 class="fs_16 font-weight-semibold m-0 text-000">付款信息</h4>
+						<h4 class="fs_18 font-weight-semibold m-0 text-000">付款信息</h4>
 						<div class="tab_nav">
 							<template v-for="(year,index) in handleYear">
 								<span :key="index" :class="['cursor-pointer ml-3',handleYearIndex == year.id?'active':'']" @click="handleYearTab(year.id)">{{year.title}}</span>

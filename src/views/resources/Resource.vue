@@ -4,7 +4,7 @@
     <global-tips></global-tips>
     <!-- 资源概况 -->
 		<el-card class="mt-3">
-			<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">资源概况</h4>
+			<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">资源概况</h4>
 			<el-row :gutter="20">
 				<template v-for="(item,index) in resources">
 					<el-col :span="12" class="status-item" :key="index">
@@ -23,7 +23,7 @@
     <el-card class="mt-3">
       <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
-          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">资源列表</h4>
+          <h4 class="fs_18 font-weight-semibold m-0 text-000 mb-3">资源列表</h4>
           <div class="d-flex align-items-center">
           	<div class="mr-auto d-flex align-items-center">
 						  <el-input

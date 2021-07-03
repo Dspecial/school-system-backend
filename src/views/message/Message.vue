@@ -5,7 +5,7 @@
     <!-- 信息处理 -->
 		<el-card :body-style="{ padding: '0px' }">
 			<div class="d-flex align-items-center isCell">
-				<h4 class="fs_16 font-weight-semibold m-0 text-000">信息处理</h4>
+				<h4 class="fs_18 font-weight-semibold m-0 text-000">信息处理</h4>
 				<div class="tab_nav ml-3">
 					<template v-for="(nav,index) in handleNav">
 						<span :key="index" :class="['cursor-pointer ml-3 opacity-60',handleNavIndex == nav.id?'active':'']" @click="handleTab(nav.id)">{{nav.title}}</span>

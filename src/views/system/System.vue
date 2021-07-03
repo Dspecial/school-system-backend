@@ -4,7 +4,7 @@
     <global-tips></global-tips>
     <!-- 配置同步时间 -->
     <el-card>
-    	<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">配置同步时间</h4>
+    	<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">配置同步时间</h4>
     	<el-form ref="timeForm" :model="timeForm" label-width="80px" label-position="left">
 			  <el-form-item label="上行时间">
 			    <el-select v-model="timeForm.upHour" placeholder="时" style="width: 80px">
@@ -66,7 +66,7 @@
 
     <!-- 基础设置 -->
     <el-card class="mt-3">
-    	<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">基础设置</h4>
+    	<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">基础设置</h4>
     	<el-form ref="basicForm" :model="basicForm" label-width="110px" style="max-width: 470px">
 				<el-form-item label="系统名称">
 			    <el-input v-model="basicForm.systemName" placeholder="请输入系统名称"></el-input>
@@ -97,7 +97,7 @@
 
     <!-- 系统控制 -->
     <el-card class="mt-3">
-    	<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-000">系统控制</h4>
+    	<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">系统控制</h4>
     	<el-form ref="contorlForm" :model="contorlForm" label-width="100px" label-position="right" inline>
 				<el-form-item label="平台开关" class="mb-0">
 					<el-switch

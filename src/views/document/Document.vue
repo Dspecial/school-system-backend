@@ -5,7 +5,7 @@
     <!-- 文档节点设置 -->
     <el-card class="mt-3">
 
-      <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">文档节点设置</h4>
+      <h4 class="fs_18 font-weight-semibold m-0 text-000 mb-3">文档节点设置</h4>
       <div class="d-flex">
       	<div class="w-20 mr-3 panel">
 					<el-tree

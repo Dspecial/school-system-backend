@@ -7,7 +7,7 @@
     <el-card class="mt-3">
       <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
-          <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">验收配置</h4>
+          <h4 class="fs_18 font-weight-semibold m-0 text-000 mb-3">验收配置</h4>
           <div class="d-flex align-items-center">
             <div class="ml-auto">
               <el-button type="primary" @click="handleAdd()"><i class="el-icon-plus el-icon--left"></i>新增验收配置</el-button>

@@ -8,7 +8,7 @@
 	  :before-close="handleClose">
 	  <el-form :model="resourceForm" :rules="rules" ref="resourceForm" label-width="100px" label-position="left">
 	  	<div class="resourceAdd_form p-3 mb-3">
-	  		<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-primary">基础信息</h4>
+	  		<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-primary">基础信息</h4>
 			  <el-row :gutter="20">
 				  <el-col :span="24">
 				  	<el-form-item label="资源名称" prop="name">
@@ -57,7 +57,7 @@
 		  </div>
 
 		  <div class="resourceAdd_form p-3 mb-3" v-if="isExpand">
-		  	<h4 class="fs_16 font-weight-semibold m-0 mb-3 text-primary">拓展参数</h4>
+		  	<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-primary">拓展参数</h4>
 		  	<el-row :gutter="20">
 				  <template v-for="(field, index) in resourceForm.fieldArray">
 				  	<!-- 字段类型:1=文本框,2=数字框,3=下拉单选,4=日期选择,5=文件上传,6=文本域 -->

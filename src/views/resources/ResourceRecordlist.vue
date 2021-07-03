@@ -5,7 +5,7 @@
     <Breadcrumb></Breadcrumb>
     <!-- 资源维护记录列表 -->
     <el-card class="mt-3">
-      <h4 class="fs_16 font-weight-semibold m-0 text-000 mb-3">资源维护记录列表</h4>
+      <h4 class="fs_18 font-weight-semibold m-0 text-000 mb-3">资源维护记录列表</h4>
       <el-table :data="tableData" :default-expand-all="true" :row-class-name="getRowClass">
 				<el-table-column type="expand">
 					<template slot-scope="scope">
