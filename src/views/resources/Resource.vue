@@ -122,7 +122,7 @@
 					},
 				],
         tableProps: {
-          'max-height': 670,
+          
         },
         isShow:false,
         tableData: [],

@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="rolePersonData.title"
 	  :visible.sync="rolePersonData.dialog"
-	  width="45%"
+	  width="50%"
 	  @open="openEdit"
 	  @closed="closedEdit('authPersonForm')"
 	  :before-close="handleClose">

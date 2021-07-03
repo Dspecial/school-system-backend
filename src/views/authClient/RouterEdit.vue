@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="routerData.title"
 	  :visible.sync="routerData.dialog"
-	  width="25%"
+	  width="30%"
 	  @open="openEdit"
 	  @closed="closedEdit('routerForm')"
 	  :before-close="handleClose">

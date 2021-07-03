@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="cateData.title"
 	  :visible.sync="cateData.dialog"
-	  width="25%"
+	  width="30%"
 	  @open="openEdit"
 	  @closed="closedEdit('cateForm')"
 	  :before-close="handleClose">

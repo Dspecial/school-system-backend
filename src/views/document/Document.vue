@@ -106,7 +106,7 @@
 	      	}
       	],
 				tableProps: {
-          'max-height': 670,
+          
           'row-key':'id',
           'default-expand-all':true,
           'tree-props':{

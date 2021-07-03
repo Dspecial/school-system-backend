@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="replyData.title"
 	  :visible.sync="replyData.dialog"
-	  width="40%"
+	  width="50%"
 	  @open="openEdit"
 	  @closed="closedEdit"
 	  :before-close="handleClose"
@@ -38,8 +38,8 @@
 	  </div>
 
 	  <div class="replayList">
-	  	<template v-for="item in replayList">
-		  	<div class="d-flex mt-3 mr-auto" v-if="item.role == 0">
+	  	<template v-for="(item,ii) in replayList">
+		  	<div class="d-flex mt-3 mr-auto" v-if="item.role == 0" :key="ii">
 		  		<div class="replay_avatar w-20 order-0">
 		  			<div class="text-center pl-3 pr-3">
 			  			<img src="@/assets/images/man.png" width="80" alt="" v-if="item.sex == 0" />
@@ -62,7 +62,7 @@
 		  		<div class="w-20 order-2">
 		  		</div>
 		  	</div>
-		  	<div class="d-flex mt-3 ml-auto" v-else>
+		  	<div class="d-flex mt-3 ml-auto" :key="ii" v-else>
 		  		<div class="replay_avatar w-20 order-2">
 		  			<div class="text-center pl-3 pr-3">
 			  			<img src="@/assets/images/man.png" width="80" alt="" v-if="item.sex == 0" />

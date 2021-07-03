@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="paramsData.title"
 	  :visible.sync="paramsData.dialog"
-	  width="25%"
+	  width="30%"
 	  @open="openEdit"
 	  @closed="closedEdit('paramsForm')"
 	  :before-close="handleClose">

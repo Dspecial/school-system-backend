@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="formData.title"
 	  :visible.sync="formData.dialog"
-	  width="25%"
+	  width="30%"
 	  @open="openEdit"
 	  @closed="closedEdit('formForm')"
 	  :before-close="handleClose">

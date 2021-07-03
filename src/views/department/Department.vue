@@ -61,7 +61,7 @@
 		data () {
 			return {
 				tableProps: {
-          'max-height': 740,
+          
         },
         tableData: [],
         filters: [

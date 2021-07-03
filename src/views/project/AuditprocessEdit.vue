@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="processData.title"
 	  :visible.sync="processData.dialog"
-	  width="40%"
+	  width="50%"
 	  top="5vh"
 	  @open="openEdit"
 	  @closed="closedEdit('processForm')"

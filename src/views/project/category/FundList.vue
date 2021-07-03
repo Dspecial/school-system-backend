@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="fundListData.title"
 	  :visible.sync="fundListData.dialog"
-	  width="60%"
+	  width="50%"
 	  @open="openEdit"
 	  @closed="closedEdit"
 	  :before-close="handleClose">
@@ -39,7 +39,7 @@
 		data () {
 			return {
 				tableProps: {
-          'max-height': 740,
+          
         },
         tableData: [],
         filters: [

@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="configData.title"
 	  :visible.sync="configData.dialog"
-	  width="35%"
+	  width="30%"
 	  top="5vh"
 	  @open="openEdit"
 	  @closed="closedEdit('configForm')"

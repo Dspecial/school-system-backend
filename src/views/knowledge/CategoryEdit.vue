@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="categoryData.title"
 	  :visible.sync="categoryData.dialog"
-	  width="25%"
+	  width="30%"
 	  @open="openEdit"
 	  @closed="closedEdit('categoryForm')"
 	  :before-close="handleClose">

@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="detailsData.title"
 	  :visible.sync="detailsData.dialog"
-	  width="60%"
+	  width="50%"
 	  @open="openEdit"
 	  @closed="closedEdit"
 	  :before-close="handleClose">
@@ -66,7 +66,7 @@
           }
         ],
 				tableProps: {
-          'max-height': 740,
+          
         },
         tableData: [],
         filters: [
