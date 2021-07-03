@@ -528,6 +528,10 @@ html,body,#app,.page-container{
   }
 }
 
+.authCheck_row:last-child{
+  margin-bottom:0px;
+}
+
 /*project.vue*/
 .params_select .el-select-dropdown__wrap{
   max-height: 317px;

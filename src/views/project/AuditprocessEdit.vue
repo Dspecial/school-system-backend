@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="processData.title"
 	  :visible.sync="processData.dialog"
-	  width="35%"
+	  width="40%"
 	  top="5vh"
 	  @open="openEdit"
 	  @closed="closedEdit('processForm')"
@@ -21,12 +21,53 @@
 			    </el-option>
 			  </el-select>
 		  </el-form-item>
-		  <el-form-item label="使用状态" prop="is_use">
+			<el-form-item label="使用状态" prop="is_use">
 		    <el-radio-group v-model="processForm.is_use">
 			    <el-radio label="1">待使用</el-radio>
 			    <el-radio label="2">使用中</el-radio>
 			  </el-radio-group>
 		  </el-form-item>
+		  <el-form-item label="是否申请资源" prop="is_resource_apply">
+		    <el-radio-group v-model="processForm.is_resource_apply">
+			    <el-radio label="2">是</el-radio>
+			    <el-radio label="1">否</el-radio>
+			  </el-radio-group>
+		  </el-form-item>
+			<el-form-item label="资源审核流程" v-if="processForm.is_resource_apply == 2">
+				<template v-for="(resourceCell,index) in processForm.resource_check_data">
+					<el-row type="flex" align="middle" :gutter="10" class="authCheck_row" :key="index">
+						<el-col :span="11">
+							<el-form-item label-width="0">
+								<el-select v-model="resourceCell.rule_id" placeholder="请选择角色" class="w-100" @blur="blurChange(resourceCell)" @change="ruleChange(resourceCell)">
+									<el-option
+										v-for="rule in ruleList"
+										:key="rule.id"
+										:label="rule.name"
+										:value="rule.id">
+									</el-option>
+								</el-select>
+							</el-form-item>
+						</el-col>
+						<el-col :span="11">
+							<el-form-item label-width="0">
+								<el-select v-model="resourceCell.check_ids" collapse-tags multiple placeholder="请选择人员" class="w-100">
+									<el-option
+										v-for="user in resourceCell.authUser"
+										:key="user.id"
+										:label="user.name"
+										:value="user.id">
+									</el-option>
+								</el-select>
+							</el-form-item>
+						</el-col>
+						<el-col :span="6" class="text-right">
+							<span class="text-primary cursor-pointer" v-if="index == processForm.resource_check_data.length - 1" @click="addPro(processForm.resource_check_data)"><i class="el-icon-plus"></i>审核流程</span>
+							<span class="text-danger cursor-pointer ml-2" v-if="processForm.resource_check_data.length != 1" @click="delField(processForm.resource_check_data,index)">删除</span>
+						</el-col>
+					</el-row>
+				</template>
+		  </el-form-item>
+
 		  <el-form-item label="简介">
 		    <el-input type="textarea" v-model="processForm.brief" placeholder="请输入简介" :autosize="{ minRows: 3, maxRows: 5}" maxlength="30" show-word-limit></el-input>
 		  </el-form-item>
@@ -54,7 +95,7 @@
 				  		</el-col>
 				  		<el-col :span="11">
 						  	<el-form-item label-width="0">
-							  	<el-select v-model="cell.check_ids" multiple placeholder="请选择人员" class="w-100">
+							  	<el-select v-model="cell.check_ids" multiple collapse-tags placeholder="请选择人员" class="w-100">
 							    	<el-option
 								      v-for="user in cell.authUser"
 								      :key="user.id"
@@ -91,6 +132,8 @@
 					name:"",
 					cate_id:"",
 					is_use:"1",
+					is_resource_apply:"1", // 1否 2是 默认否
+					resource_check_data:[{}],
 					brief:"",
 				},
 				projectCateOptions:[],
@@ -104,6 +147,9 @@
           ],
           cate_id: [
             { required: true, message: '请输入类别名称', trigger: 'blur' }
+          ],
+					is_resource_apply: [
+            { required: true, message: '请选择是否申请资源', trigger: 'change' }
           ],
         }
 			}
@@ -149,7 +195,6 @@
 			},
 			// 添加审核流程
 			addPro(item){
-				console.log(item);
 				item.push({});
 			},
 			// 删除字段
@@ -188,8 +233,29 @@
 							this.processForm.name = data.data.name;
 							this.processForm.cate_id = data.data.cate_id;
 							this.processForm.is_use = data.data.is_use;
+							this.processForm.is_resource_apply = data.data.is_resource_apply;
 							this.processForm.brief = data.data.brief;
 
+							// 资源审核流程
+							var resourceData = new Array;
+							resourceData = data.data.resource_check_data.map((item,index) =>{
+								return {
+									rule_id:item.rule_id,
+									check_ids:item.check_ids.split(',').map(Number),
+								}
+							});
+							resourceData.map((item,index) =>{
+								// 设置人员接口
+								_this.ruleChange(item);
+							});
+
+							if(resourceData.length == 0){
+								this.processForm.resource_check_data  = [{}]
+							}else{
+								this.processForm.resource_check_data  = resourceData
+							}
+						
+							// 审核流程
 							var relation = new Array;
 							data.data.relation.map((item,index) =>{
 								item.check_str = item.check_str.map((b,j)=>{
@@ -272,7 +338,19 @@
 						checkData.push(item);
 					}
 				});
-				// console.log(checkData,'checkData');
+
+				var resource_dataArry = new Array;
+				if(this.processForm.resource_check_data[0].check_ids.length == 0){
+					resource_dataArry = [];
+				}else{
+					resource_dataArry = this.processForm.resource_check_data.map((item,index)=>{
+						return {
+							rule_id:item.rule_id,
+							check_ids:item.check_ids.join(',')
+						}
+					});
+				}
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.processData.isEdit){ // 编辑后提交
@@ -283,6 +361,8 @@
 	          		brief:this.processForm.brief,
 	          		remark:this.processForm.remark,
 	          		is_use:this.processForm.is_use,
+								is_resource_apply:this.processForm.is_resource_apply,
+								resource_check_data:JSON.stringify(resource_dataArry),
 	          		check_data:JSON.stringify(checkData),
 	          		function_type:1,
 	          	}).then(data =>{
@@ -301,6 +381,8 @@
 	          		brief:this.processForm.brief,
 	          		remark:this.processForm.remark,
 	          		is_use:this.processForm.is_use,
+								is_resource_apply:this.processForm.is_resource_apply,
+								resource_check_data:JSON.stringify(resource_dataArry),
 	          		check_data:JSON.stringify(checkData),
 	          	}).then(data =>{
 	          		if(data.code == 0){
