@@ -340,7 +340,7 @@
 				});
 
 				var resource_dataArry = new Array;
-				if(this.processForm.resource_check_data[0].check_ids.length == 0){
+				if(this.commonJs.isEmpty(this.processForm.resource_check_data[0].check_ids)){
 					resource_dataArry = [];
 				}else{
 					resource_dataArry = this.processForm.resource_check_data.map((item,index)=>{

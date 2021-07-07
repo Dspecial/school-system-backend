@@ -27,9 +27,11 @@ export default {
 	/*
 		***首页
 	 */
+	// 获取首页资源
+	dashboard_resource: p => post('/backstage/dashboard/get_resource_state', p),	
 	// 获取最新的维护记录
 	dashboard_record: p => post('/backstage/dashboard/record', p),	
-	// 获取项目状态数
+	// 获取项目汇总-项目状态数
 	dashboard_state: p => post('/backstage/dashboard/get_my_project_state', p),
 	// 获取首页获取付款信息
 	dashboard_pay: p => post('/backstage/dashboard/project_pay_state', p),	

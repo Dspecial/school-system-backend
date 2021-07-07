@@ -5,13 +5,17 @@
 			<el-col :span="12">
 				<el-card>
 					<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">资源概况</h4>
-					<el-row :gutter="20">
+					<el-row :gutter="20" type="flex">
 						<template v-for="(item,index) in resources">
 							<el-col :span="8" :key="index">
 								<div class="text-center">
-									<img :src="item.src" alt="" width="80" height="80" />
-									<span class="mt-3 d-block opacity-60">{{item.title}}</span>
-									<p class="m-0 mt-2 fs_24">{{item.num}}/{{item.total}}</p>
+									<el-image style="width: 80px; height: 80px" :src="item.icon" fit="cover">
+										<div slot="error" class="el-image__error img-round">
+											<p class="m-0">加载失败或未上传</p>
+										</div>
+									</el-image>
+									<span class="mt-3 d-block opacity-60">{{item.cate_name}}</span>
+									<p class="m-0 mt-2 fs_24">{{item.use_counts}}/{{item.all_counts}}</p>
 								</div>
 							</el-col>
 						</template>
@@ -22,24 +26,28 @@
 			<el-col :span="12">
 				<el-card>
 					<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">其他资源概况</h4>
-					<el-row :gutter="20">
+					<el-row :gutter="20" type="flex">
 						<template v-for="(item,index) in otherResources">
-							<el-col :span="6" :key="index">
+							<el-col :span="8" :key="index">
 								<div class="text-center">
-									<img :src="item.src" alt="" width="80" height="80" />
-									<span class="mt-3 d-block opacity-60">{{item.title}}</span>
-									<p class="m-0 mt-2 fs_24">{{item.num}}/{{item.total}}</p>
+									<el-image style="width: 80px; height: 80px" :src="item.icon" fit="cover">
+										<div slot="error" class="el-image__error img-round">
+											<p class="m-0">加载失败或未上传</p>
+										</div>
+									</el-image>
+									<span class="mt-3 d-block opacity-60">{{item.cate_name}}</span>
+									<p class="m-0 mt-2 fs_24">{{item.use_counts}}/{{item.all_counts}}</p>
 								</div>
 							</el-col>
 						</template>
-					</el-row>	
+					</el-row>
 				</el-card>
 			</el-col>
 		</el-row>
 
-		<!-- 我的项目--状态统计 -->
+		<!-- 项目汇总--状态统计 -->
 		<el-card class="mt-3">
-			<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">我的项目</h4>
+			<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">项目汇总</h4>
 			<el-row :gutter="20" type="flex">
 				<template v-for="(status,index) in statusList">
 					<el-col class="text-center status-item" :key="index">
@@ -126,54 +134,10 @@
 		data () {
 			return {
 				// 资源概况
-				resources:[
-					{
-						src:require("@/assets/images/index-resource2.png"),
-						title:"IP分配(个)",
-						num:"5",
-						total:"20"
-					},
-					{
-						src:require("@/assets/images/index-resource3.png"),
-						title:"场地(m²)",
-						num:"100",
-						total:"1000"
-					},
-					{
-						src:require("@/assets/images/index-resource4.png"),
-						title:"服务器(台)",
-						num:"8",
-						total:"100"
-					},
-				],
+				resources:[],
 				// 其他资源状况
-				otherResources:[
-					{
-						src:require("@/assets/images/index-resource5.png"),
-						title:"类别一",
-						num:"5",
-						total:"20"
-					},
-					{
-						src:require("@/assets/images/index-resource5.png"),
-						title:"类别二",
-						num:"100",
-						total:"1000"
-					},
-					{
-						src:require("@/assets/images/index-resource5.png"),
-						title:"类别三",
-						num:"8",
-						total:"100"
-					},
-					{
-						src:require("@/assets/images/index-resource5.png"),
-						title:"类别四",
-						num:"8",
-						total:"100"
-					},
-				],
-				// 我的项目--状态统计
+				otherResources:[],
+				// 项目汇总--状态统计
 				statusList:[],
 
 				// 维护记录
@@ -267,12 +231,25 @@
 		},
 
 		mounted(){
+			this.initResource();
 			this.initRecord();
 			this.initState();
 			this.initPay();
 		},
 		methods:{
-			// 获取我的项目-状态统计
+			// 获取首页资源
+			initResource(){
+				this.$api.dashboard_resource({
+				}).then(data=>{
+					if(data.code == 0){
+						this.resources = data.data.cate_list_1;
+						this.otherResources = data.data.cate_list_2;
+					}else{
+						this.$message.error(data.msg);
+					}
+				})
+			},
+			// 获取项目汇总-状态统计
 			initState(){
 				this.$api.dashboard_state({
 				}).then(data=>{

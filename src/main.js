@@ -3,7 +3,7 @@
  * @Email: dingxixi@techbloom.net
  * @Date: 2020-12-29 15:50:42
  * @LastEditors: dxx
- * @LastEditTime: 2021-06-19 14:38:07
+ * @LastEditTime: 2021-07-07 17:09:49
  */
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
@@ -20,6 +20,7 @@ import VueCookies  from 'vue-cookies';
 import api from '@/core/api.js'; // 引入公共api
 import commonJs from '@/core/commonJs.js'; // 引入公共js
 import { quillEditor } from 'vue-quill-editor'; // 引入富文本编辑器
+import globalUrl from '@/core/globalUrl.js';
 
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 });// 声明使用ElementUI
 Vue.use(VueDataTables);
@@ -28,6 +29,7 @@ Vue.use(echarts);
 Vue.prototype.$echarts = echarts
 Vue.prototype.commonJs = commonJs; // 挂载原型链
 Vue.prototype.$api = api;
+Vue.prototype.$globalUrl = globalUrl;
 Vue.prototype.VueCookies = VueCookies; // 挂载原型链
 Vue.prototype.$moment = moment;
 
