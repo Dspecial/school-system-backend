@@ -179,8 +179,6 @@
           this.handelEdit(index,row);
         }else if(sign == '4'){ // 详情
           this.detailMaintenance(index,row);
-        }else if(sign == '5.11'){ // 工单列表
-          this.goServiceList(index,row);
         }
       },
 
@@ -198,16 +196,6 @@
       detailMaintenance(index,row){
         this.$router.push({
           path:"/project/maintenance/detail",
-          query: {
-            id: row.id,
-          }
-        })
-      },
-
-      // 工单列表
-      goServiceList(index,row){
-        this.$router.push({
-          path:"/project/maintenance/serviceList",
           query: {
             id: row.id,
           }
