@@ -112,7 +112,7 @@
 										<el-col :span="24">
 											<el-select v-model="cell.is_pay" placeholder="请选择是否支付" class="w-100">
 												<el-option label="待支付" value="1"></el-option>
-												<el-option label="已支付" value="0"></el-option>
+												<el-option label="已支付" value="2"></el-option>
 											</el-select>
 										</el-col>
 										<el-col :span="24">
@@ -364,14 +364,13 @@
 							title: item.title,
 							money: item.money,
 							paytime: item.paytime,
-							haspaytime: item.haspaytime,
+							haspaytime: item.haspaytime?item.haspaytime:"",
 							is_pay: item.is_pay,
 							remark: item.remark,
 							files:filesArray.join(","),
 						}
 					})
 				}
-
 				var files = new Array();
         files = this.filesList.map((item)=>{
 					if(item.isExist){
