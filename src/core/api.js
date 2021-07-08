@@ -249,7 +249,7 @@ export default {
 	p_project_cate: p => post('/backstage/ajax/get_project_cate_list', p),
 	// 根据项目类别id获取表单
 	p_project_cate_forms: p => post('/backstage/ajax/get_project_forms', p),
-	// 获取企业列表（接口没给）
+	// 获取企业列表
 	p_project_company: p => post('/api/ajax/get_company_list', p),
 	// 表单中文件上传
 	p_upload: p => postUpload('/backstage/upload/upload', p),
@@ -271,6 +271,20 @@ export default {
 	// 流程节点编辑
 	p_processNodeEdit: p => post('/backstage/project.node/edit', p),	
 
+	// 维保列表
+	p_maintenance: p => post('/backstage/project.maintenance/index', p), 
+	// 项目维保-根据项目获取信息
+	p_funds: p => post('/api/ajax/get_funds_by_project', p),
+	// 维保编辑
+	p_maintenance_edit: p => post('/backstage/project.maintenance/edit', p),
+	// 维保上传文件
+	p_maintenance_upload: p => postUpload('/api/upload/upload_extend_attach', p),
+	// 维保上传文件删除
+	p_maintenance_uploadDel: p => post('/api/upload/del_upload', p),
+	// 维保详情
+	p_maintenance_detail: p => post('/backstage/project.maintenance/details', p),
+
+	
 
 	/*
 		***厂商管理

@@ -547,6 +547,9 @@ html,body,#app,.page-container{
   .el-form-item{
     margin-bottom:0
   }
+  .agree_pay_more_cell:last-child{
+    margin-bottom:0!important;
+  }
 }
 .my_upload{
   line-height: 0;

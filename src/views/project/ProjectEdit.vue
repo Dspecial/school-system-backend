@@ -76,7 +76,7 @@
 								<span class="text-primary cursor-pointer" @click="addPay(projectForm.agree_payinfo)"><i class="el-icon-plus mr-1"></i>付款信息</span>
 							</div>
 							<template v-for="(cell,INDEX) in projectForm.agree_payinfo">
-								<div :key="INDEX">
+								<div :key="INDEX" class="mb-3 agree_pay_more_cell">
 									<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3">
 										<el-col :span="24">
 											<el-input v-model="cell.title" placeholder="请输入标题"></el-input>
@@ -104,7 +104,7 @@
 											<el-input type="textarea" v-model="cell.remark" placeholder="请输入备注" :autosize="{ minRows: 1, maxRows: 1 }"></el-input>
 										</el-col>
 									</el-row>
-									<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3">
+									<el-row type="flex" align="top" :gutter="20" class="cell_row">
 										<el-col :span="24">
 											<div class="d-flex align-items-start justify-content-between">
 												<el-upload

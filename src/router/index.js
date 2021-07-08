@@ -291,7 +291,37 @@ const router = new Router({
 				  },
 				  children: null
 				},
-
+				// 维保列表
+				{
+				  path: '/project/maintenance',
+				  component: resolve => require(['@/views/project/maintenance/Maintenance'], resolve),
+				  name: 'Maintenance',
+				  meta: {
+				    title: '维保列表'
+				  },
+				  children: null
+				},
+				// 维保编辑
+				{
+				  path: '/project/maintenance/edit',
+				  component: resolve => require(['@/views/project/maintenance/MaintenanceEdit'], resolve),
+				  name: 'MaintenanceEdit',
+				  meta: {
+				    title: '维保编辑'
+				  },
+				  children: null
+				},
+				// 维保详情
+				{
+				  path: '/project/maintenance/detail',
+				  component: resolve => require(['@/views/project/maintenance/MaintenanceDetail'], resolve),
+				  name: 'MaintenanceDetail',
+				  meta: {
+				    title: '维保详情'
+				  },
+				  children: null
+				},
+				
 				/*
 				**厂商管理
 				 */
