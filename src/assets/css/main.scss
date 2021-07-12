@@ -150,7 +150,12 @@
 .el-table .row-expand-cover + tr .el-table__expanded-cell{
   display: none;
 }
-
+.el-table__expanded-cell .files_list{
+  margin-top:10px;
+}
+.el-table__expanded-cell .files_list:first-child{
+  margin-top:0;
+}
 
 /*el-dialog*/
 .el-dialog{
