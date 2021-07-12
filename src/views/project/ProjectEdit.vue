@@ -62,76 +62,6 @@
 							<el-input v-model="projectForm.p_name" placeholder="请输入项目名称"></el-input>
 						</el-form-item>
 					</el-col>
-					<el-col :span="12">
-						<el-form-item label="项目设置状态" prop="is_commit">
-							<el-radio-group v-model="projectForm.is_commit">
-								<el-radio :label="0">新建完成项目</el-radio>
-								<el-radio :label="1">新建审核</el-radio>
-							</el-radio-group>
-						</el-form-item>
-					</el-col>
-					<el-col :span="24" v-if="projectForm.is_commit == 1">
-						<el-form-item label="项目付款信息" class="payment_item">
-							<div slot="label" class="d-flex justify-content-between">
-								<span>项目付款信息</span>
-								<span class="text-primary cursor-pointer" @click="addPay(projectForm.agree_payinfo)"><i class="el-icon-plus mr-1"></i>付款信息</span>
-							</div>
-							<template v-for="(cell,INDEX) in projectForm.agree_payinfo">
-								<div :key="INDEX" class="mb-3 agree_pay_more_cell">
-									<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3">
-										<el-col :span="24">
-											<el-input v-model="cell.title" placeholder="请输入标题"></el-input>
-										</el-col>
-										<el-col :span="24">
-											<el-input v-model.number="cell.money" placeholder="请输入金额，必须为数值">
-												<span slot="suffix" class="el-input__icon mr-2">元</span>
-											</el-input>
-										</el-col>
-										<el-col :span="24">
-											<el-date-picker type="date" placeholder="选择付款节点，必须大于当前日期" clearable v-model="cell.paytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
-										</el-col>
-									</el-row>
-									<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3">
-										<el-col :span="24">
-											<el-date-picker type="date" placeholder="选择付款日期，必须大于当前日期" clearable v-model="cell.haspaytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
-										</el-col>
-										<el-col :span="24">
-											<el-select v-model="cell.is_pay" clearable placeholder="请选择是否支付" class="w-100">
-												<el-option label="待支付" value="1"></el-option>
-												<el-option label="已支付" value="2"></el-option>
-											</el-select>
-										</el-col>
-										<el-col :span="24">
-											<el-input type="textarea" v-model="cell.remark" placeholder="请输入备注" :autosize="{ minRows: 1, maxRows: 1 }"></el-input>
-										</el-col>
-									</el-row>
-									<el-row type="flex" align="top" :gutter="20" class="cell_row">
-										<el-col :span="24">
-											<div class="d-flex align-items-start justify-content-between">
-												<el-upload
-													class="my_upload"
-													drag
-													action="void"
-													:accept="accept"
-													:auto-upload="true"
-													:http-request="myUpload_pay"
-													:file-list="cell.files"
-													:on-success="(res, file, fileList)=>handleSuccess_pay(res, file, fileList,cell)"
-													:on-remove="(file, fileList)=>handleRemove_pay(file, fileList,cell)"
-													:before-upload="(file)=>beforeUpload_pay(file,cell)">
-													<div class="el-upload__text"><i class="el-icon-upload"></i>将付款凭证或附件拖到此处，或<em>点击选择付款凭证或附件</em></div>
-												</el-upload>
-											</div>
-										</el-col>
-										<el-col :span="2" class="text-right">
-											<span class="text-danger cursor-pointer" @click="delpayField(projectForm.agree_payinfo,INDEX)">删除</span>
-										</el-col>
-									</el-row>
-								</div>
-							</template>
-						</el-form-item>
-					</el-col>
-
 					<el-col :span="12" v-if="is_need_company == 2">
 						<el-form-item label="所属公司">
 							<el-select v-model="projectForm.company_id" clearable placeholder="请选择所属公司" class="w-100">
@@ -159,6 +89,7 @@
 							</el-input>
 						</el-form-item>
 					</el-col>
+
 					<template v-for="(formItem,j) in projectForm.secondFrom">
 						<!-- 字段类型:1=文本框,2=数字框,3=下拉单选,4=日期选择,5=文件上传(单选),6=文本域,7=富文本,
 						8=时间选择,9=下拉多选,10=复选,11=单选,12=数组,13=图片上传(单选),14=图片上传(多选),15=文件上传(多选) -->
@@ -359,6 +290,75 @@
 
 					</template>
 
+					<el-col :span="12">
+						<el-form-item label="项目设置状态" prop="is_commit">
+							<el-radio-group v-model="projectForm.is_commit">
+								<el-radio :label="0">新建完成项目</el-radio>
+								<el-radio :label="1">新建审核</el-radio>
+							</el-radio-group>
+						</el-form-item>
+					</el-col>
+					<el-col :span="24" v-if="projectForm.is_commit == 1">
+						<el-form-item label="项目付款信息" class="payment_item">
+							<div slot="label" class="d-flex justify-content-between">
+								<span>项目付款信息</span>
+								<span class="text-primary cursor-pointer" @click="addPay(projectForm.agree_payinfo)"><i class="el-icon-plus mr-1"></i>付款信息</span>
+							</div>
+							<template v-for="(cell,INDEX) in projectForm.agree_payinfo">
+								<div :key="INDEX" class="mb-3 agree_pay_more_cell">
+									<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3">
+										<el-col :span="24">
+											<el-input v-model="cell.title" placeholder="请输入标题"></el-input>
+										</el-col>
+										<el-col :span="24">
+											<el-input v-model.number="cell.money" placeholder="请输入金额，必须为数值">
+												<span slot="suffix" class="el-input__icon mr-2">元</span>
+											</el-input>
+										</el-col>
+										<el-col :span="24">
+											<el-date-picker type="date" placeholder="选择付款节点，必须大于当前日期" clearable v-model="cell.paytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
+										</el-col>
+									</el-row>
+									<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3">
+										<el-col :span="24">
+											<el-date-picker type="date" placeholder="选择付款日期，必须大于当前日期" clearable v-model="cell.haspaytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
+										</el-col>
+										<el-col :span="24">
+											<el-select v-model="cell.is_pay" clearable placeholder="请选择是否支付" class="w-100">
+												<el-option label="待支付" value="1"></el-option>
+												<el-option label="已支付" value="2"></el-option>
+											</el-select>
+										</el-col>
+										<el-col :span="24">
+											<el-input type="textarea" v-model="cell.remark" placeholder="请输入备注" :autosize="{ minRows: 1, maxRows: 1 }"></el-input>
+										</el-col>
+									</el-row>
+									<el-row type="flex" align="top" :gutter="20" class="cell_row">
+										<el-col :span="24">
+											<div class="d-flex align-items-start justify-content-between">
+												<el-upload
+													class="my_upload"
+													drag
+													action="void"
+													:accept="accept"
+													:auto-upload="true"
+													:http-request="myUpload_pay"
+													:file-list="cell.files"
+													:on-success="(res, file, fileList)=>handleSuccess_pay(res, file, fileList,cell)"
+													:on-remove="(file, fileList)=>handleRemove_pay(file, fileList,cell)"
+													:before-upload="(file)=>beforeUpload_pay(file,cell)">
+													<div class="el-upload__text"><i class="el-icon-upload"></i>将付款凭证或附件拖到此处，或<em>点击选择付款凭证或附件</em></div>
+												</el-upload>
+											</div>
+										</el-col>
+										<el-col :span="2" class="text-right">
+											<span class="text-danger cursor-pointer" @click="delpayField(projectForm.agree_payinfo,INDEX)">删除</span>
+										</el-col>
+									</el-row>
+								</div>
+							</template>
+						</el-form-item>
+					</el-col>
 				</el-row>
 				<div class="d-flex justify-content-end">
 					<el-button type="primary" @click="submitForm('projectForm')">确 定</el-button>
