@@ -70,9 +70,9 @@
 					</div>
 					<div class="tab_content" style="padding: 20px">
 						<el-table :data="handleData" :default-expand-all="true" :row-class-name="getRowClass" height="335">
-							<el-table-column type="expand">
+							<el-table-column type="expand" label="" width="50">
 								<template slot-scope="scope">
-									<div class="d-flex align-items-center justify-content-between" v-for="(file,index) in scope.row.files" :key="index">
+									<div class="d-flex align-items-center justify-content-between files_list" v-for="(file,index) in scope.row.files" :key="index">
 										<div class="cursor-pointer view" @click="preview(file.path)" title="在线预览">
 											<i class="el-icon-document mr-2"></i><span>{{file.name}}</span>
 										</div>
