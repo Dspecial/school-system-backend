@@ -12,7 +12,7 @@
 		    <el-input v-model="fundsForm.code" placeholder="请输入编号"></el-input>
 		  </el-form-item>
 		  <el-form-item label="年度" prop="year">
-		    <el-date-picker v-model="fundsForm.year" type="year" placeholder="请选择年"></el-date-picker>
+		    <el-date-picker v-model="fundsForm.year" type="year" placeholder="请选择年" clearable></el-date-picker>
 		  </el-form-item>
 		  <el-form-item label="来源部门" prop="sourceDept">
 		    <el-select v-model="fundsForm.sourceDept" placeholder="请选择来源部门" class="w-100">

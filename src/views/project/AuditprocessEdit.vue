@@ -12,7 +12,7 @@
 		    <el-input v-model="processForm.name" placeholder="流程名称"></el-input>
 		  </el-form-item>
 		  <el-form-item label="类别名称" prop="cate_id">
-		    <el-select v-model="processForm.cate_id" placeholder="请选择类别名称" class="w-100">
+		    <el-select v-model="processForm.cate_id"  clearable filterable placeholder="请选择类别名称" class="w-100">
 			    <el-option
 			      v-for="item in projectCateOptions"
 			      :key="item.id"
@@ -38,7 +38,7 @@
 					<el-row type="flex" align="middle" :gutter="10" class="authCheck_row" :key="index">
 						<el-col :span="11">
 							<el-form-item label-width="0">
-								<el-select v-model="resourceCell.rule_id" placeholder="请选择角色" class="w-100" @blur="blurChange(resourceCell)" @change="ruleChange(resourceCell)">
+								<el-select v-model="resourceCell.rule_id" clearable filterable placeholder="请选择角色" class="w-100" @blur="blurChange(resourceCell)" @change="ruleChange(resourceCell)">
 									<el-option
 										v-for="rule in ruleList"
 										:key="rule.id"
@@ -50,7 +50,7 @@
 						</el-col>
 						<el-col :span="11">
 							<el-form-item label-width="0">
-								<el-select v-model="resourceCell.check_ids" collapse-tags multiple placeholder="请选择人员" class="w-100">
+								<el-select v-model="resourceCell.check_ids" collapse-tags clearable filterable multiple placeholder="请选择人员" class="w-100">
 									<el-option
 										v-for="user in resourceCell.authUser"
 										:key="user.id"
@@ -83,7 +83,7 @@
 					  <el-row type="flex" align="middle" :gutter="10" class="authCheck_row" :key="INDEX">
 				  		<el-col :span="11">
 						  	<el-form-item label-width="0">
-							  	<el-select v-model="cell.rule_id" placeholder="请选择角色" class="w-100" @blur="blurChange(cell)" @change="ruleChange(cell)">
+							  	<el-select v-model="cell.rule_id" clearable filterable placeholder="请选择角色" class="w-100" @blur="blurChange(cell)" @change="ruleChange(cell)">
 										<el-option
 								      v-for="rule in ruleList"
 								      :key="rule.id"
@@ -95,7 +95,7 @@
 				  		</el-col>
 				  		<el-col :span="11">
 						  	<el-form-item label-width="0">
-							  	<el-select v-model="cell.check_ids" multiple collapse-tags placeholder="请选择人员" class="w-100">
+							  	<el-select v-model="cell.check_ids" clearable filterable multiple collapse-tags placeholder="请选择人员" class="w-100">
 							    	<el-option
 								      v-for="user in cell.authUser"
 								      :key="user.id"

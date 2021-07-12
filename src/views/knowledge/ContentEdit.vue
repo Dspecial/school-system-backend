@@ -16,7 +16,7 @@
 		  	<el-input v-model="contentForm.title" placeholder="请输入标题"></el-input>
 		  </el-form-item>
 		  <el-form-item label="内容类型" prop="type">
-		  	<el-select v-model="contentForm.type" placeholder="请选择内容类型" class="w-100" @change="selectChange">
+		  	<el-select v-model="contentForm.type"  clearable placeholder="请选择内容类型" class="w-100" @change="selectChange">
           <el-option label="文章" :value="1"></el-option>
           <el-option label="文档" :value="2"></el-option>
           <el-option label="图片" :value="3"></el-option>

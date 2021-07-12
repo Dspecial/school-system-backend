@@ -16,7 +16,8 @@
 					v-model="fundForm.years"
 					type="year"
 					value-format="yyyy"
-					placeholder="选择年">
+					placeholder="选择年"
+					clearable>
 				</el-date-picker>
 		  </el-form-item>
 			<el-form-item label="经费" prop="advance_money">

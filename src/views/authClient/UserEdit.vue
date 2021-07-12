@@ -9,7 +9,7 @@
 	  <el-form :model="userForm" :rules="rules" ref="userForm" label-width="120px">
 
 	  	<el-form-item label="所属部门" prop="depart_num">
-				<el-select v-model="userForm.depart_num" filterable placeholder="请选择所属所属部门" class="w-100" @change="onDeptChange" popper-class="dept_select">
+				<el-select v-model="userForm.depart_num"  clearable filterable placeholder="请选择所属所属部门" class="w-100" @change="onDeptChange" popper-class="dept_select">
 			    <el-option
 			      v-for="item in deptOptions"
 			      :key="item.wid"
@@ -20,7 +20,7 @@
 		  </el-form-item>
 
 	  	<el-form-item label="职工号" prop="zgh">
-		    <el-select v-model="userForm.zgh" filterable placeholder="请选择教师职工" class="w-100">
+		    <el-select v-model="userForm.zgh" clearable filterable placeholder="请选择教师职工" class="w-100">
 			    <el-option
 			      v-for="item in zghOptions"
 			      :key="item.ZGH"

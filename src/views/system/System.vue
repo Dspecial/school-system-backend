@@ -7,7 +7,7 @@
     	<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">配置同步时间</h4>
     	<el-form ref="timeForm" :model="timeForm" label-width="80px" label-position="left">
 			  <el-form-item label="上行时间">
-			    <el-select v-model="timeForm.upHour" placeholder="时" style="width: 80px">
+			    <el-select v-model="timeForm.upHour" clearable placeholder="时" style="width: 80px">
 				    <el-option
 				      v-for="i in 23"
 				      :key="i-1"
@@ -16,7 +16,7 @@
 				    </el-option>
 				  </el-select>
 				  <span class="ml-2 mr-3">时</span>
-				  <el-select v-model="timeForm.upMinute" placeholder="分" style="width: 80px">
+				  <el-select v-model="timeForm.upMinute" clearable placeholder="分" style="width: 80px">
 				    <el-option
 				      v-for="i in 59"
 				      :key="i"
@@ -35,7 +35,7 @@
 			  </el-form-item>
 
 			  <el-form-item label="下行时间">
-			    <el-select v-model="timeForm.downHour" placeholder="时" style="width: 80px">
+			    <el-select v-model="timeForm.downHour" clearable placeholder="时" style="width: 80px">
 				    <el-option
 				      v-for="i in 23"
 				      :key="i-1"
@@ -44,7 +44,7 @@
 				    </el-option>
 				  </el-select>
 				  <span class="ml-2 mr-3">时</span>
-				  <el-select v-model="timeForm.downMinute" placeholder="分" style="width: 80px">
+				  <el-select v-model="timeForm.downMinute" clearable placeholder="分" style="width: 80px">
 				    <el-option
 				      v-for="i in 59"
 				      :key="i"

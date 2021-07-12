@@ -25,7 +25,8 @@
                 end-placeholder="申请时间"
                 align="right"
                 value-format="yyyy-MM-dd"
-                class="mr-3">
+                class="mr-3"
+                clearable>
               </el-date-picker>
               <el-date-picker
                 v-model="filters[2].value"
@@ -34,7 +35,8 @@
                 start-placeholder="审核时间"
                 end-placeholder="审核时间"
                 align="right"
-                value-format="yyyy-MM-dd">
+                value-format="yyyy-MM-dd"
+                clearable>
               </el-date-picker>
             </div>
             <div class="ml-auto">

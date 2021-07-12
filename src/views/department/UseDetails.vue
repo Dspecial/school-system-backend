@@ -15,7 +15,7 @@
               prefix-icon="el-icon-search"
               v-model="filters[0].value">
             </el-input>
-            <el-select v-model="filters[1].value" placeholder="请选择类型" class="ml-3">
+            <el-select v-model="filters[1].value"  clearable filterable placeholder="请选择类型" class="ml-3">
               <el-option
                 v-for="item in typeOptions"
                 :key="item.value"

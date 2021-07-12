@@ -23,7 +23,7 @@
 			  </el-radio-group>
 		  </el-form-item>
 		  <el-form-item label="用户角色" prop="group_ids">
-		    <el-select v-model="mfuserForm.group_ids" multiple filterable placeholder="下拉选择或搜索输入" class="w-100">
+		    <el-select v-model="mfuserForm.group_ids" multiple clearable filterable placeholder="下拉选择或搜索输入" class="w-100">
 			    <el-option
 			      v-for="item in roleOptions"
 			      :key="item.id"

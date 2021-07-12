@@ -16,7 +16,7 @@
 		  </el-form-item>
 
 		  <el-form-item label="所属角色" prop="group_ids">
-				<el-select v-model="userForm.group_ids" multiple filterable placeholder="请选择所属角色" class="w-100">
+				<el-select v-model="userForm.group_ids" multiple clearable filterable placeholder="请选择所属角色" class="w-100">
 			    <el-option
 			      v-for="item in roleParentOptions"
 			      :key="item.id"

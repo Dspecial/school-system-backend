@@ -10,7 +10,7 @@
 	  	<el-row :gutter="20">
 				<el-col :span="12">
 					<el-form-item label="项目年份" prop="year">
-				    <el-date-picker type="date" placeholder="选择日期" v-model="settingForm.year" style="width: 100%;"></el-date-picker>
+				    <el-date-picker type="date" placeholder="选择日期" v-model="settingForm.year" style="width: 100%;" clearable></el-date-picker>
 				  </el-form-item>
 				</el-col>
 				<el-col :span="12">
@@ -20,12 +20,12 @@
 				</el-col>
 				<el-col :span="12">
 					<el-form-item label="录入时间" prop="date">
-				    <el-date-picker type="date" placeholder="选择日期" v-model="settingForm.date" style="width: 100%;"></el-date-picker>
+				    <el-date-picker type="date" placeholder="选择日期" v-model="settingForm.date" style="width: 100%;" clearable></el-date-picker>
 				  </el-form-item>
 				</el-col>
 				<el-col :span="12">
 					<el-form-item label="项目类型" prop="type">
-						<el-select v-model="settingForm.type" placeholder="请选择项目类型" style="width: 100%;">
+						<el-select v-model="settingForm.type" clearable placeholder="请选择项目类型" style="width: 100%;">
 				      <el-option label="建设类" value="1"></el-option>
 				      <el-option label="工程类" value="2"></el-option>
 				    </el-select>
@@ -33,7 +33,7 @@
 				</el-col>
 				<el-col :span="12">
 					<el-form-item label="录入科室" prop="dept">
-				    <el-select v-model="settingForm.dept" placeholder="请选择录入科室" style="width: 100%;">
+				    <el-select v-model="settingForm.dept" clearable placeholder="请选择录入科室" style="width: 100%;">
 				      <el-option label="教务处" value="1"></el-option>
 				      <el-option label="学工办" value="2"></el-option>
 				    </el-select>
@@ -41,7 +41,7 @@
 				</el-col>
 				<el-col :span="12">
 					<el-form-item label="经费来源" prop="fundSource">
-				    <el-select v-model="settingForm.fundSource" placeholder="请选择经费来源" style="width: 100%;">
+				    <el-select v-model="settingForm.fundSource" clearable placeholder="请选择经费来源" style="width: 100%;">
 				      <el-option label="教务处" value="1"></el-option>
 				      <el-option label="学工办" value="2"></el-option>
 				    </el-select>
@@ -54,7 +54,7 @@
 				</el-col>
 				<el-col :span="12">
 					<el-form-item label="建设方式" prop="constructionMode">
-				    <el-select v-model="settingForm.constructionMode" placeholder="请选择建设方式" style="width: 100%;">
+				    <el-select v-model="settingForm.constructionMode" clearable placeholder="请选择建设方式" style="width: 100%;">
 				      <el-option label="中标公司" value="1"></el-option>
 				      <el-option label="自建" value="2"></el-option>
 				    </el-select>
@@ -92,7 +92,7 @@
 				</el-col>
 				<el-col :span="12">
 					<el-form-item label="配置厂商">
-				    <el-select v-model="settingForm.manufacturer" placeholder="请选择配置厂商" style="width: 100%;">
+				    <el-select v-model="settingForm.manufacturer"  clearable placeholder="请选择配置厂商" style="width: 100%;">
 				      <el-option label="厂商一" value="1"></el-option>
 				      <el-option label="厂商二" value="2"></el-option>
 				    </el-select>

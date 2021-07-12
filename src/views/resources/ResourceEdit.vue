@@ -22,7 +22,7 @@
 					</el-col>
 					<el-col :span="12">
 				  	<el-form-item label="供应商">
-					    <el-select v-model="resourceForm.supplier_id" placeholder="请选择供应商" class="w-100">
+					    <el-select v-model="resourceForm.supplier_id" clearable filterable placeholder="请选择供应商" class="w-100">
 					    	<template v-for="(item,index) in supplierOptions">
 					    		<el-option :label="item.name" :value="item.id" :key="index"></el-option>
 					    	</template>
@@ -37,7 +37,7 @@
 					</el-col>
 					<el-col :span="12">
 					  <el-form-item label="免费维护日期">
-					    <el-date-picker v-model="resourceForm.free_end_date" type="date" placeholder="选择免费维护日期" class="w-100"></el-date-picker>
+					    <el-date-picker v-model="resourceForm.free_end_date" type="date" clearable placeholder="选择免费维护日期" class="w-100"></el-date-picker>
 					  </el-form-item>
 					</el-col>
 					<el-col :span="24">
@@ -75,14 +75,14 @@
 
 				  	<el-col :span="8" v-if="field.name_type == 3" :key="index">
 				  		<el-form-item :label="field.title" :required="field.is_required == 2">
-						  	<el-select v-model="field.val" :placeholder="field.placeholder" class="w-100">
+						  	<el-select v-model="field.val" :placeholder="field.placeholder" class="w-100" clearable>
 						      <el-option v-for="(option,j) in field.extra_val" :label="option" :value="option" :key="j"></el-option>
 						    </el-select>
 						  </el-form-item>
 				  	</el-col>
 				  	<el-col :span="8" v-if="field.name_type == 4" :key="index">
 				  		<el-form-item :label="field.title" :required="field.is_required == 2">
-						  	<el-date-picker v-model="field.val" type="date" :placeholder="field.placeholder" class="w-100"></el-date-picker>
+						  	<el-date-picker v-model="field.val" type="date" :placeholder="field.placeholder" clearable class="w-100"></el-date-picker>
 						  </el-form-item>
 				  	</el-col>
 

@@ -19,12 +19,12 @@
                   </el-switch>
                 </template>
                 <template v-if="item.type == 'select_check'">
-                  <el-select v-model.trim="item.value" :placeholder="item.placeholder" class="w-100">
+                  <el-select v-model.trim="item.value" :placeholder="item.placeholder" class="w-100" clearable>
                     <el-option v-for="(opt,z) in examineOption" :key="z" :label="opt.name" :value="opt.id.toString()"></el-option>
                   </el-select>
                 </template>
                 <template v-if="item.type == 'select'">
-                  <el-select v-model.trim="item.value" :placeholder="item.placeholder" class="w-100">
+                  <el-select v-model.trim="item.value" :placeholder="item.placeholder" class="w-100" clearable>
                     <el-option v-for="(opt,z) in item.extra" :key="z" :label="opt" :value="z.toString()"></el-option>
                   </el-select>
                 </template>

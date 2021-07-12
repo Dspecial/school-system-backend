@@ -11,7 +11,7 @@
 		    <el-input v-model="categoryForm.name" placeholder="项目类别"></el-input>
 		  </el-form-item>
 			<el-form-item label="参数" prop="formids">
-		  	<el-select class="w-100" popper-class="params_select" v-model="categoryForm.formids" filterable :filter-method="getTableList" multiple clearable :collapse-tags="true" placeholder="请选择参数" @change="handleChange">
+		  	<el-select class="w-100" popper-class="params_select" v-model="categoryForm.formids" clearable filterable  :filter-method="getTableList" multiple clearable :collapse-tags="true" placeholder="请选择参数" @change="handleChange">
 			    <el-option
 			      v-for="item in paramsOptions"
 			      :key="item.id"

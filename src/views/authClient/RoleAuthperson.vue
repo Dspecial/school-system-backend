@@ -13,8 +13,11 @@
 			<el-form-item label="添加人员" prop="uid">
 		  	<el-select class="w-100" popper-class="params_select" 
 					v-model="authPersonForm.uid" 
-					filterable :filter-method="getUserList" 
-					multiple :collapse-tags="true" 
+					clearable 
+					filterable
+					multiple
+					:filter-method="getUserList"
+					:collapse-tags="true" 
 					placeholder="下拉选择或搜索输入姓名/企业/部门"
 					@change="handleChange">
 			    <el-option

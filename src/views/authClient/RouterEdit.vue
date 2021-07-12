@@ -23,7 +23,7 @@
 		    <el-input v-model="routerForm.path" placeholder="请输入路径"></el-input>
 		  </el-form-item>
 			<el-form-item label="菜单类型" prop="is_menu">
-		    <el-select v-model="routerForm.is_menu" placeholder="请选择菜单类型" class="w-100">
+		    <el-select v-model="routerForm.is_menu"  clearable placeholder="请选择菜单类型" class="w-100">
 			    <el-option label="菜单" value="1"></el-option>
 			    <el-option label="按钮" value="2"></el-option>
 			  </el-select>

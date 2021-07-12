@@ -9,19 +9,19 @@
 	  :before-close="handleClose">
 	  <el-form :model="uploadForm" :rules="rules" ref="uploadForm" label-width="100px">
 	  	<el-form-item label="项目分类" prop="category">
-		    <el-select v-model="uploadForm.category" placeholder="请选择项目分类" class="w-100">
+		    <el-select v-model="uploadForm.category" clearable placeholder="请选择项目分类" class="w-100">
 			    <el-option label="建设类" value="1"></el-option>
 			    <el-option label="融资类" value="2"></el-option>
 			  </el-select>
 		  </el-form-item>
 		  <el-form-item label="材料类型" prop="materialType">
-		    <el-select v-model="uploadForm.materialType" placeholder="请选择材料类型" class="w-100">
+		    <el-select v-model="uploadForm.materialType" clearable placeholder="请选择材料类型" class="w-100">
 			    <el-option label="材料1" value="1"></el-option>
 			    <el-option label="材料2" value="2"></el-option>
 			  </el-select>
 		  </el-form-item>
 		  <el-form-item label="项目节点" prop="node">
-		    <el-select v-model="uploadForm.node" placeholder="请选择项目节点" class="w-100">
+		    <el-select v-model="uploadForm.node" clearable placeholder="请选择项目节点" class="w-100">
 			    <el-option label="合同状态" value="1"></el-option>
 			    <el-option label="节点2" value="2"></el-option>
 			  </el-select>

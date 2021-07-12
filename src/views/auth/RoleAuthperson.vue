@@ -12,7 +12,7 @@
 		  </el-form-item>
 
 	  	<el-form-item label="添加人员" prop="personName">
-		    <el-select v-model="authPersonForm.personName" filterable placeholder="下拉选择或搜索输入学工号/姓名/部门" class="w-100">
+		    <el-select v-model="authPersonForm.personName" clearable filterable placeholder="下拉选择或搜索输入学工号/姓名/部门" class="w-100">
 			    <el-option label="学工部" value="1"></el-option>
 			    <el-option label="教务处" value="2"></el-option>
 			  </el-select>

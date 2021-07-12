@@ -9,7 +9,7 @@
 				<el-row :gutter="20">
 					<el-col :span="12">
 						<el-form-item label="部门" prop="p_dept">
-							<el-select v-model="projectForm.p_dept" placeholder="请选择部门" class="w-100" @change="deptChange">
+							<el-select v-model="projectForm.p_dept" clearable filterable placeholder="请选择部门" class="w-100" @change="deptChange">
 								<el-option
 									v-for="item in deptOptions"
 									:key="item.wid"
@@ -21,7 +21,7 @@
 					</el-col>
 					<el-col :span="12">
 						<el-form-item label="教师" prop="apply_id">
-							<el-select v-model="projectForm.apply_id" placeholder="请选择教师" class="w-100" @change="applyChange">
+							<el-select v-model="projectForm.apply_id" clearable filterable placeholder="请选择教师" class="w-100" @change="applyChange">
 								<el-option
 									v-for="item in userOptions"
 									:key="item.id"
@@ -33,7 +33,7 @@
 					</el-col>
 					<el-col :span="12">
 						<el-form-item label="项目类别" prop="p_cate_id">
-							<el-select v-model="projectForm.p_cate_id" placeholder="请选择项目类别" class="w-100" @change="cateChange">
+							<el-select v-model="projectForm.p_cate_id" clearable filterable placeholder="请选择项目类别" class="w-100" @change="cateChange">
 								<el-option
 									v-for="item in cateOptions"
 									:key="item.id"
@@ -52,7 +52,8 @@
                 class="w-100"
                 value-format="yyyy"
 								format="yyyy"
-								@change="yearChange">
+								@change="yearChange"
+								clearable>
               </el-date-picker>
 						</el-form-item>
 					</el-col>
@@ -87,15 +88,15 @@
 											</el-input>
 										</el-col>
 										<el-col :span="24">
-											<el-date-picker type="date" placeholder="选择付款节点，必须大于当前日期" v-model="cell.paytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
+											<el-date-picker type="date" placeholder="选择付款节点，必须大于当前日期" clearable v-model="cell.paytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
 										</el-col>
 									</el-row>
 									<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3">
 										<el-col :span="24">
-											<el-date-picker type="date" placeholder="选择付款日期，必须大于当前日期" v-model="cell.haspaytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
+											<el-date-picker type="date" placeholder="选择付款日期，必须大于当前日期" clearable v-model="cell.haspaytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
 										</el-col>
 										<el-col :span="24">
-											<el-select v-model="cell.is_pay" placeholder="请选择是否支付" class="w-100">
+											<el-select v-model="cell.is_pay" clearable placeholder="请选择是否支付" class="w-100">
 												<el-option label="待支付" value="1"></el-option>
 												<el-option label="已支付" value="2"></el-option>
 											</el-select>
@@ -133,7 +134,7 @@
 
 					<el-col :span="12" v-if="is_need_company == 2">
 						<el-form-item label="所属公司">
-							<el-select v-model="projectForm.company_id" placeholder="请选择所属公司" class="w-100">
+							<el-select v-model="projectForm.company_id" clearable placeholder="请选择所属公司" class="w-100">
 								<el-option
 									v-for="item in companyOptions"
 									:key="item.id"
@@ -179,7 +180,7 @@
 						<!-- 3=下拉单选 -->
 						<el-col :span="12" :key="j" v-else-if="formItem.name_type == 3">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
-								<el-select v-model="formItem.value" :placeholder="formItem.placeholder" class="w-100">
+								<el-select v-model="formItem.value" clearable :placeholder="formItem.placeholder" class="w-100">
 									<el-option
 										v-for="item in formItem.extra_val"
 										:key="item"
@@ -197,7 +198,8 @@
 								:placeholder="formItem.placeholder"
 								v-model="formItem.value" 
 								value-format="yyyy-MM-dd"
-								style="width: 100%;"></el-date-picker>
+								style="width: 100%;"
+								clearable></el-date-picker>
 							</el-form-item>
 						</el-col>
 						<!-- 5=文件上传(单选) -->
@@ -242,13 +244,14 @@
 								:placeholder="formItem.placeholder"
 								v-model="formItem.value" 
 								value-format="yyyy-MM-dd HH:mm:ss"
-								style="width: 100%;"></el-date-picker>
+								style="width: 100%;"
+								clearable></el-date-picker>
 							</el-form-item>
 						</el-col>
 						<!-- 9=下拉多选 -->
 						<el-col :span="12" :key="j" v-else-if="formItem.name_type == 9">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
-								<el-select v-model="formItem.value" multiple collapse-tags :placeholder="formItem.placeholder" class="w-100">
+								<el-select v-model="formItem.value" multiple  clearable collapse-tags :placeholder="formItem.placeholder" class="w-100">
 									<el-option
 										v-for="item in formItem.extra_val"
 										:key="item"

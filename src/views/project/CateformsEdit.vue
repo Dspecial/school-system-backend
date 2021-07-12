@@ -23,7 +23,7 @@
 			  </el-radio-group>
 		  </el-form-item>
 		  <el-form-item label="类型" prop="name_type">
-		  	<el-select v-model="formForm.name_type" placeholder="请选择类型" class="w-100">
+		  	<el-select v-model="formForm.name_type" placeholder="请选择类型" class="w-100" clearable filterable>
 			    <el-option value="1" label="文本框"></el-option>
 			    <el-option value="2" label="数字框"></el-option>
 			    <el-option value="3" label="下拉单选"></el-option>

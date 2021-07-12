@@ -11,7 +11,7 @@
 		    <el-input v-model="roleForm.name" placeholder="请输入角色名称"></el-input>
 		  </el-form-item>
 		  <el-form-item label="上级角色" prop="pid">
-		    <el-select v-model="roleForm.pid" placeholder="请选择上级角色" class="w-100" @change="handleChange">
+		    <el-select v-model="roleForm.pid" clearable filterable placeholder="请选择上级角色" class="w-100" @change="handleChange">
 			    <el-option
 			      v-for="item in roleParentOptions"
 			      :key="item.id"

@@ -24,7 +24,8 @@
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                placeholder="选择上次登录时间">
+                placeholder="选择上次登录时间"
+                clearable>
               </el-date-picker>
             </div>
             <div class="ml-auto">
