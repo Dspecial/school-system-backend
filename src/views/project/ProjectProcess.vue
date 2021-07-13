@@ -177,11 +177,16 @@
 			submitForm(row,function_type) {
         // function_type 操作类型-必填:1=获取数据,2=保存父级数据,3=保存子级数据
         var _this = this;
-        var objNew =  {
-          id:row.id,
-          rule_id:row.rule_id,
-          check_ids:row.check_ids.join(',')
-        };
+        var objNew = {};
+        
+        objNew.rule_id = row.rule_id;
+        objNew.check_ids = row.check_ids.join(',');
+
+        if(function_type == 2){ // 父级数据
+          objNew.id = Number(row.id.split("-")[0]);
+        }else if(function_type == 3){ // 子级数据
+          objNew.id = row.id;
+        }
         this.$api.p_projectProcess({
           id:this.$route.query.id,
           function_type:function_type,
