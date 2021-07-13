@@ -576,7 +576,7 @@
 					}
 				});
 			},
-
+			
 			// 编辑的时候获取表单
 			initProjectForms_edit(id,year){
 				this.$api.p_project_cate_forms({
