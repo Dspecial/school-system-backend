@@ -301,6 +301,7 @@
 				this.$api.p_funds({
 					id:this.project_id,
 					years:years,
+					type:2,
 				}).then(data=>{
 					if(data.code == 0){
 						// 可用预算金额

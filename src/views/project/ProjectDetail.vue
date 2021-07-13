@@ -415,12 +415,16 @@
 
 						// 验收记录
 						this.acceptForm = data.data.project_accept_info;
-						this.accept_info_all = data.data.project_accept_info.accept_info;
-						// 默认情况下验收记录
-						if(data.data.project_accept_info.accept_info > 5){
-							this.accept_info = this.accept_info_all;
+						if(this.acceptForm){
+							this.accept_info_all = data.data.project_accept_info.accept_info
+							// 默认情况下验收记录
+							if(data.data.project_accept_info.accept_info > 5){
+								this.accept_info = this.accept_info_all;
+							}else{
+								this.accept_info = this.accept_info_all.slice(0,5);
+							}
 						}else{
-							this.accept_info = this.accept_info_all.slice(0,5);
+							// console.log('666');
 						}
 
 						// 合同付款节点
