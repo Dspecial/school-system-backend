@@ -7,7 +7,7 @@
 			<h6 class="fs_20 font-weight-normal mb-3">{{title}}</h6>
 			<el-form :model="projectForm" :rules="rules" ref="projectForm" label-width="110px" label-position="top" class="pl-3 pr-3">
 				<el-row :gutter="20">
-					<el-col :span="12">
+					<el-col :span="12" v-if="!projectId">
 						<el-form-item label="部门" prop="p_dept">
 							<el-select v-model="projectForm.p_dept" clearable filterable placeholder="请选择部门" class="w-100" @change="deptChange">
 								<el-option
@@ -19,7 +19,7 @@
 							</el-select>
 						</el-form-item>
 					</el-col>
-					<el-col :span="12">
+					<el-col :span="12" v-if="!projectId">
 						<el-form-item label="教师" prop="apply_id">
 							<el-select v-model="projectForm.apply_id" clearable filterable placeholder="请选择教师" class="w-100" @change="applyChange">
 								<el-option
@@ -29,6 +29,19 @@
 									:value="item.id">
 								</el-option>
 							</el-select>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="项目名称" prop="p_name">
+							<el-input v-model="projectForm.p_name" placeholder="请输入项目名称"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12" v-if="!projectId">
+						<el-form-item label="创建类型" prop="is_commit">
+							<el-radio-group v-model="projectForm.is_commit">
+								<el-radio :label="0">新建完成项目</el-radio>
+								<el-radio :label="1">新建审核项目</el-radio>
+							</el-radio-group>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
@@ -57,11 +70,41 @@
               </el-date-picker>
 						</el-form-item>
 					</el-col>
-					<el-col :span="12">
-						<el-form-item label="项目名称" prop="p_name">
-							<el-input v-model="projectForm.p_name" placeholder="请输入项目名称"></el-input>
+
+					<!-- 新建完成项目is_commit == 0, 项目金额 -->
+					<el-col :span="12" v-if="is_open_money == 2 && projectForm.is_commit != 1">
+						<el-form-item prop="real_amount">
+							<template slot="label">
+								<span v-if="can_used_funds == 0">
+									项目金额 <span class="text-danger">(本年度可用项目金额不足，请联系管理员)</span>
+								</span>
+								<span v-else>
+									项目金额 <span class="text-danger">(年度可用预算 {{can_used_funds}} 元)</span>
+								</span>
+							</template>
+							<el-input v-model.number="projectForm.real_amount" placeholder="请输入项目金额">
+								<span slot="suffix" class="el-input__icon mr-2">元</span>
+							</el-input>
 						</el-form-item>
 					</el-col>
+
+					<!-- 新建完成项目is_commit == 1, 预算金额 -->
+					<el-col :span="12" v-if="is_open_money == 2 && projectForm.is_commit == 1">
+						<el-form-item prop="budget_amount">
+							<template slot="label">
+								<span v-if="can_used_funds == 0">
+									预算金额 <span class="text-danger">(本年度可用项目金额不足，请联系管理员)</span>
+								</span>
+								<span v-else>
+									预算金额 <span class="text-danger">(年度可用预算 {{can_used_funds}} 元)</span>
+								</span>
+							</template>
+							<el-input v-model.number="projectForm.budget_amount" placeholder="请输入预算金额">
+								<span slot="suffix" class="el-input__icon mr-2">元</span>
+							</el-input>
+						</el-form-item>
+					</el-col>
+
 					<el-col :span="12" v-if="is_need_company == 2">
 						<el-form-item label="所属公司">
 							<el-select v-model="projectForm.company_id" clearable placeholder="请选择所属公司" class="w-100">
@@ -74,19 +117,66 @@
 							</el-select>
 						</el-form-item>
 					</el-col>
-					<el-col :span="12" v-if="is_open_money == 2">
-						<el-form-item prop="budget_amount">
-							<template slot="label">
-								<span v-if="can_used_funds == 0">
-									预算金额 <span class="text-danger">(本年度可用预算金额不足，请联系管理员)</span>
-								</span>
-								<span v-else>
-									预算金额 <span class="text-danger">(年度可用预算 {{can_used_funds}} 元)</span>
-								</span>
+
+					<el-col :span="24" v-if="projectForm.is_commit != 1 && is_open_money == 2">
+						<el-form-item label="项目付款信息" class="payment_item">
+							<div slot="label" class="d-flex justify-content-between">
+								<span>项目付款信息</span>
+								<span class="text-primary cursor-pointer" @click="addPay(projectForm.agree_payinfo)"><i class="el-icon-plus mr-1"></i>付款信息</span>
+							</div>
+							<template v-for="(cell,INDEX) in projectForm.agree_payinfo">
+								<div :key="INDEX" class="mb-3 agree_pay_more_cell">
+									<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3">
+										<el-col :span="24">
+											<el-input v-model="cell.title" placeholder="请输入标题"></el-input>
+										</el-col>
+										<el-col :span="24">
+											<el-input v-model.number="cell.money" placeholder="请输入金额，必须为数值">
+												<span slot="suffix" class="el-input__icon mr-2">元</span>
+											</el-input>
+										</el-col>
+										<el-col :span="24">
+											<el-date-picker type="date" placeholder="选择付款节点，必须大于当前日期" clearable v-model="cell.paytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
+										</el-col>
+									</el-row>
+									<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3">
+										<el-col :span="24">
+											<el-date-picker type="date" placeholder="选择付款日期，必须大于当前日期" clearable v-model="cell.haspaytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
+										</el-col>
+										<el-col :span="24">
+											<el-select v-model="cell.is_pay" clearable placeholder="请选择是否支付" class="w-100">
+												<el-option label="待支付" value="1"></el-option>
+												<el-option label="已支付" value="2"></el-option>
+											</el-select>
+										</el-col>
+										<el-col :span="24">
+											<el-input type="textarea" v-model="cell.remark" placeholder="请输入备注" :autosize="{ minRows: 1, maxRows: 1 }"></el-input>
+										</el-col>
+									</el-row>
+									<el-row type="flex" align="top" :gutter="20" class="cell_row">
+										<el-col :span="24">
+											<div class="d-flex align-items-start justify-content-between">
+												<el-upload
+													class="my_upload"
+													drag
+													action="void"
+													:accept="accept"
+													:auto-upload="true"
+													:http-request="myUpload_pay"
+													:file-list="cell.files"
+													:on-success="(res, file, fileList)=>handleSuccess_pay(res, file, fileList,cell)"
+													:on-remove="(file, fileList)=>handleRemove_pay(file, fileList,cell)"
+													:before-upload="(file)=>beforeUpload_pay(file,cell)">
+													<div class="el-upload__text"><i class="el-icon-upload"></i>将付款凭证或附件拖到此处，或<em>点击选择付款凭证或附件</em></div>
+												</el-upload>
+											</div>
+										</el-col>
+										<el-col :span="2" class="text-right">
+											<span class="text-danger cursor-pointer" @click="delpayField(projectForm.agree_payinfo,INDEX)">删除</span>
+										</el-col>
+									</el-row>
+								</div>
 							</template>
-							<el-input v-model.number="projectForm.budget_amount" placeholder="请输入预算金额">
-								<span slot="suffix" class="el-input__icon mr-2">元</span>
-							</el-input>
 						</el-form-item>
 					</el-col>
 
@@ -289,76 +379,7 @@
 						</el-col>
 
 					</template>
-
-					<el-col :span="12">
-						<el-form-item label="项目设置状态" prop="is_commit">
-							<el-radio-group v-model="projectForm.is_commit">
-								<el-radio :label="0">新建完成项目</el-radio>
-								<el-radio :label="1">新建审核</el-radio>
-							</el-radio-group>
-						</el-form-item>
-					</el-col>
-					<el-col :span="24" v-if="projectForm.is_commit == 1">
-						<el-form-item label="项目付款信息" class="payment_item">
-							<div slot="label" class="d-flex justify-content-between">
-								<span>项目付款信息</span>
-								<span class="text-primary cursor-pointer" @click="addPay(projectForm.agree_payinfo)"><i class="el-icon-plus mr-1"></i>付款信息</span>
-							</div>
-							<template v-for="(cell,INDEX) in projectForm.agree_payinfo">
-								<div :key="INDEX" class="mb-3 agree_pay_more_cell">
-									<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3">
-										<el-col :span="24">
-											<el-input v-model="cell.title" placeholder="请输入标题"></el-input>
-										</el-col>
-										<el-col :span="24">
-											<el-input v-model.number="cell.money" placeholder="请输入金额，必须为数值">
-												<span slot="suffix" class="el-input__icon mr-2">元</span>
-											</el-input>
-										</el-col>
-										<el-col :span="24">
-											<el-date-picker type="date" placeholder="选择付款节点，必须大于当前日期" clearable v-model="cell.paytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
-										</el-col>
-									</el-row>
-									<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3">
-										<el-col :span="24">
-											<el-date-picker type="date" placeholder="选择付款日期，必须大于当前日期" clearable v-model="cell.haspaytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
-										</el-col>
-										<el-col :span="24">
-											<el-select v-model="cell.is_pay" clearable placeholder="请选择是否支付" class="w-100">
-												<el-option label="待支付" value="1"></el-option>
-												<el-option label="已支付" value="2"></el-option>
-											</el-select>
-										</el-col>
-										<el-col :span="24">
-											<el-input type="textarea" v-model="cell.remark" placeholder="请输入备注" :autosize="{ minRows: 1, maxRows: 1 }"></el-input>
-										</el-col>
-									</el-row>
-									<el-row type="flex" align="top" :gutter="20" class="cell_row">
-										<el-col :span="24">
-											<div class="d-flex align-items-start justify-content-between">
-												<el-upload
-													class="my_upload"
-													drag
-													action="void"
-													:accept="accept"
-													:auto-upload="true"
-													:http-request="myUpload_pay"
-													:file-list="cell.files"
-													:on-success="(res, file, fileList)=>handleSuccess_pay(res, file, fileList,cell)"
-													:on-remove="(file, fileList)=>handleRemove_pay(file, fileList,cell)"
-													:before-upload="(file)=>beforeUpload_pay(file,cell)">
-													<div class="el-upload__text"><i class="el-icon-upload"></i>将付款凭证或附件拖到此处，或<em>点击选择付款凭证或附件</em></div>
-												</el-upload>
-											</div>
-										</el-col>
-										<el-col :span="2" class="text-right">
-											<span class="text-danger cursor-pointer" @click="delpayField(projectForm.agree_payinfo,INDEX)">删除</span>
-										</el-col>
-									</el-row>
-								</div>
-							</template>
-						</el-form-item>
-					</el-col>
+					
 				</el-row>
 				<div class="d-flex justify-content-end">
 					<el-button type="primary" @click="submitForm('projectForm')">确 定</el-button>
@@ -405,6 +426,7 @@
 						files: [],
 					}],
 					company_id: "",
+					real_amount:"",
 					budget_amount:"",
 					secondFrom:{
 					},
@@ -439,6 +461,17 @@
           ],
 					company_id: [
             { required: true, message: '请选择合作企业', trigger: 'change' }
+          ],
+					real_amount: [
+          	{ required: true, message: '请输入项目金额', trigger: 'blur' },
+          	{ validator:(rule, value, callback) => {
+								if (!Number(value)) {
+									callback(new Error('项目金额必须是数值'));
+								}else{
+									callback();
+								}
+            	},trigger: 'blur'
+          	},
           ],
 					budget_amount: [
           	{ required: true, message: '请输入预算金额', trigger: 'blur' },
@@ -543,13 +576,41 @@
 					}
 				});
 			},
+
+			// 编辑的时候获取表单
+			initProjectForms_edit(id,year){
+				this.$api.p_project_cate_forms({
+					p_cate_id:id,
+					years:year,
+					id:this.projectId,
+					type:1, // 项目编辑type = 1;后边的维保编辑，type = 2
+				}).then(data =>{
+					if(data.code == 0){
+						// 回调成功的方法
+						this.is_need_company = data.data.is_need_company;
+						this.is_open_money = data.data.is_open_money;
+						this.can_used_funds = data.data.can_used_funds;
+					}else{
+						this.$message.error(data.msg);
+					}
+				});
+			},
+
 			// 项目分类change
 			cateChange(value){
-				this.initProjectForms(value,this.projectForm.projecttime);
+				if(this.projectId){ // 编辑
+					this.initProjectForms_edit(value,this.projectForm.projecttime);
+				}else{ // 新增
+					this.initProjectForms(value,this.projectForm.projecttime);
+				}
 			},
 			// 年份change
 			yearChange(value){
-				this.initProjectForms(this.projectForm.p_cate_id,value);
+				if(this.projectId){ // 编辑
+					this.initProjectForms_edit(this.projectForm.p_cate_id,value);
+				}else{ // 新增
+					this.initProjectForms(this.projectForm.p_cate_id,value);
+				}
 			},
 			// 添加项目付款信息
 			addPay(item){
@@ -587,7 +648,6 @@
 			// dialog初始化
 			openEdit(){
 				this.projectId = this.$route.query.id;
-
 				this.initDept();
 				this.initCate();
 				this.initCompany();
@@ -595,15 +655,31 @@
 					this.title = "编辑项目";
 					this.$api.p_projectEdit({
 						id:this.projectId,
-						function_type:2,
+						function_type:1,
 					}).then(data =>{
 						if(data.code == 0){
+							
 							this.projectForm.apply_number = data.data.apply_number;
-							this.projectForm.p_cate_id = data.data.p_cate_id;
-							this.projectForm.p_name = data.data.p_name;
-							this.projectForm.projecttime = data.data.projecttime.toString();
-							this.projectForm.company_id = data.data.company_id;
 
+							this.projectForm.p_name = data.data.p_name;
+							this.projectForm.p_cate_id = data.data.p_cate_id;
+							this.projectForm.projecttime = data.data.projecttime.toString();
+							this.projectForm.real_amount = data.data.real_amount;
+							this.projectForm.budget_amount = data.data.budget_amount;
+							
+							this.projectForm.agree_payinfo = data.data.agree_payinfo;
+							this.projectForm.company_id = data.data.company_id;
+							this.projectForm.is_commit = data.data.is_commit;
+
+							// 获取预算
+							this.initProjectForms_edit(this.projectForm.p_cate_id,this.projectForm.projecttime);
+
+							// 展示付款信息
+							if(data.data.agree_payinfo.length > 0){
+								// this.projectForm.is_commit = 0;
+							}
+							
+							// 展示详细信息
 							var datajson = data.data.datajson;
 							datajson.map((item)=>{
 								if(item.name_type == 5 || item.name_type == 13 || item.name_type == 14 || item.name_type == 15){
@@ -681,16 +757,17 @@
 				this.$refs[formName].validate((valid) => {
           if (valid) {
 						if(this.projectId){ // 编辑
-							this.$api.projectEdit({
+							this.$api.p_projectEdit({
 								id:this.projectId,
-								function_type:1,
+								function_type:2,
 								apply_number:this.projectForm.apply_number,
 								p_cate_id:this.projectForm.p_cate_id,
 								p_name:this.projectForm.p_name,
 								projecttime:this.projectForm.projecttime,
-								is_commit:this.projectForm.is_commit,
+								// is_commit:this.projectForm.is_commit,
 								agree_payinfo:JSON.stringify( payArr ),
 								company_id:this.projectForm.company_id,
+								real_amount:this.projectForm.real_amount,
 								budget_amount:this.projectForm.budget_amount,
 								senddata:JSON.stringify(senddata),
 							}).then(data =>{
@@ -717,7 +794,7 @@
 								is_commit:this.projectForm.is_commit,
 								agree_payinfo:JSON.stringify( payArr ),
 								company_id:this.projectForm.company_id,
-								budget_amount:this.projectForm.budget_amount,
+								real_amount:this.projectForm.real_amount,
 								senddata:JSON.stringify(senddata),
 							}).then(data =>{
 								if(data.code == 0){
