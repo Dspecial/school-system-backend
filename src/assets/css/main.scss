@@ -157,6 +157,7 @@
   margin-top:0;
 }
 
+
 /*el-dialog*/
 .el-dialog{
   border-radius: 4px;
@@ -610,5 +611,12 @@ html,body,#app,.page-container{
   }
   .el-form-item.file-form-item{
     display: flex;
+  }
+}
+
+.process_cell{
+  .cell{
+    display: flex;
+    align-items: center;
   }
 }

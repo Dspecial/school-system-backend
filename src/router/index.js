@@ -281,6 +281,15 @@ const router = new Router({
 				  },
 				  children: null
 				},
+				{
+				  path: '/project/project/process',
+				  component: resolve => require(['@/views/project/ProjectProcess'], resolve),
+				  name: 'ProjectProcess',
+				  meta: {
+				    title: '项目流程'
+				  },
+				  children: null
+				},
 				// 流程节点管理
 				{
 				  path: '/project/processNode',

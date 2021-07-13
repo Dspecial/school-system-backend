@@ -153,7 +153,7 @@
           this.handleDel(index,row);
         }else if(sign == '4'){ // 详情
           this.goDetail(index,row);
-        }else if(sign == '10'){ // 更改流程
+        }else if(sign == '10'){ // 项目流程
           this.projectProcess(index,row);
         }
       },
@@ -203,12 +203,12 @@
 
       // 项目流程
       projectProcess(index,row){
-        // this.$router.push({
-        //   path:"/project/project/edit",
-        //   query: {
-        //     id: row.id,
-        //   }
-        // })
+        this.$router.push({
+          path:"/project/project/process",
+          query: {
+            id: row.id,
+          }
+        })
       },
 		},
 	}

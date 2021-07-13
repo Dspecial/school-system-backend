@@ -265,6 +265,9 @@ export default {
 	p_projectDetail: p => post('/backstage/project.project/details', p),
 	// 文件预览
 	file_preview: p => post('/api/ajax/preview', p),
+	// 项目审核流程设置
+	p_projectProcess: p => post('/backstage/project.project/get_process_check', p),	
+
 
 	// 流程节点管理
 	p_processNode: p => post('/backstage/project.node/index', p),	

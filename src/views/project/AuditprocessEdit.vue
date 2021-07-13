@@ -36,7 +36,7 @@
 			<el-form-item label="资源审核流程" v-if="processForm.is_resource_apply == 2">
 				<template v-for="(resourceCell,index) in processForm.resource_check_data">
 					<el-row type="flex" align="middle" :gutter="10" class="authCheck_row" :key="index">
-						<el-col :span="11">
+						<el-col :span="10">
 							<el-form-item label-width="0">
 								<el-select v-model="resourceCell.rule_id" clearable filterable placeholder="请选择角色" class="w-100" @blur="blurChange(resourceCell)" @change="ruleChange(resourceCell)">
 									<el-option
@@ -48,7 +48,7 @@
 								</el-select>
 							</el-form-item>
 						</el-col>
-						<el-col :span="11">
+						<el-col :span="10">
 							<el-form-item label-width="0">
 								<el-select v-model="resourceCell.check_ids" collapse-tags clearable filterable multiple placeholder="请选择人员" class="w-100">
 									<el-option
@@ -60,7 +60,7 @@
 								</el-select>
 							</el-form-item>
 						</el-col>
-						<el-col :span="6" class="text-right">
+						<el-col :span="4" class="text-right">
 							<span class="text-primary cursor-pointer" v-if="index == processForm.resource_check_data.length - 1" @click="addPro(processForm.resource_check_data)"><i class="el-icon-plus"></i>审核流程</span>
 							<span class="text-danger cursor-pointer ml-2" v-if="processForm.resource_check_data.length != 1" @click="delField(processForm.resource_check_data,index)">删除</span>
 						</el-col>
@@ -81,9 +81,9 @@
 			    </div>
 			    <template v-for="(cell,INDEX) in item.cellArray">
 					  <el-row type="flex" align="middle" :gutter="10" class="authCheck_row" :key="INDEX">
-				  		<el-col :span="11">
+				  		<el-col :span="10">
 						  	<el-form-item label-width="0">
-							  	<el-select v-model="cell.rule_id" clearable filterable placeholder="请选择角色" class="w-100" @blur="blurChange(cell)" @change="ruleChange(cell)">
+							  	<el-select v-model="cell.rule_id" clearable filterable placeholder="请选择角色" class="w-100" @change="ruleChange(cell)">
 										<el-option
 								      v-for="rule in ruleList"
 								      :key="rule.id"
@@ -93,7 +93,7 @@
 							    </el-select>
 							  </el-form-item>
 				  		</el-col>
-				  		<el-col :span="11">
+				  		<el-col :span="10">
 						  	<el-form-item label-width="0">
 							  	<el-select v-model="cell.check_ids" clearable filterable multiple collapse-tags placeholder="请选择人员" class="w-100">
 							    	<el-option
@@ -105,7 +105,7 @@
 							    </el-select>
 							  </el-form-item>
 				  		</el-col>
-				  		<el-col :span="3" class="text-right">
+				  		<el-col :span="4" class="text-right">
 						    <span class="text-danger cursor-pointer" @click="delField(item.cellArray,INDEX)">删除</span>
 				  		</el-col>
 					  </el-row>
@@ -201,16 +201,18 @@
 			delField(item,index){
 				item.splice(index, 1);
 			},
-			blurChange(cell){
-				// 清空已选人员
-				cell.check_ids = [];
-			},
+
 			// 角色选择对应人员名单变化
 			ruleChange(cell){
+				if(cell.rule_id != cell.rule_id_old){
+          // 清空已选人员
+          cell.check_ids = [];
+        }
 				this.$api.auth_userList({
 					group_id:cell.rule_id,
         }).then(data=>{
           if(data.code == 0){
+						cell.rule_id_old = cell.rule_id
           	// authUser 重新赋值
           	this.$set(cell,'authUser',data.data);
           }else{
@@ -241,6 +243,7 @@
 							resourceData = data.data.resource_check_data.map((item,index) =>{
 								return {
 									rule_id:item.rule_id,
+									rule_id_old:item.rule_id,
 									check_ids:item.check_ids.split(',').map(Number),
 								}
 							});
@@ -261,6 +264,7 @@
 								item.check_str = item.check_str.map((b,j)=>{
 									return {
 										rule_id:b.rule_id,
+										rule_id_old:b.rule_id,
 										check_ids:b.check_ids.split(',').map(Number),
 										authUser:[],
 									}
@@ -292,7 +296,6 @@
 										list.push(item);
 									});
 									this.nodeList = list
-									
 								}else{
 									this.$message.error(data.msg);
 								}
@@ -350,7 +353,6 @@
 						}
 					});
 				}
-
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.processData.isEdit){ // 编辑后提交
