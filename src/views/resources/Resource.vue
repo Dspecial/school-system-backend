@@ -3,7 +3,7 @@
     <!-- 登录信息 -->
     <global-tips></global-tips>
     <!-- 资源概况 -->
-		<el-card class="mt-3">
+		<!-- <el-card class="mt-3">
 			<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-000">资源概况</h4>
 			<el-row :gutter="20">
 				<template v-for="(item,index) in resources">
@@ -18,7 +18,7 @@
 					</el-col>
 				</template>
 			</el-row>	
-		</el-card>
+		</el-card> -->
     <!-- 资源列表 -->
     <el-card class="mt-3">
       <data-tables-server :data="tableData" layout="tool, table,pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
