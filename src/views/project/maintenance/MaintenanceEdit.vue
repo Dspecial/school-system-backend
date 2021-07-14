@@ -222,14 +222,7 @@
           ],
 					money: [
           	{ required: true, message: '请填写合同金额', trigger: 'blur' },
-          	{ validator:(rule, value, callback) => {
-								if (!Number(value)) {
-									callback(new Error('项目金额必须是数值'));
-								}else{
-									callback();
-								}
-            	},trigger: 'blur'
-          	},
+          	{ validator:this.commonJs.checkNumber,trigger: 'blur'},
           ],
 					title: [
             { required: true, message: '请填写标题', trigger: 'blur' }

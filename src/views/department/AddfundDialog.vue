@@ -59,14 +59,7 @@
           ],
           advance_money: [
 						{ required: true, message: '请输入经费', trigger: 'blur' },
-          	{ validator:(rule, value, callback) => {
-								if (!Number(value)) {
-									callback(new Error('经费必须是数值'));
-								}else{
-									callback();
-								}
-            	},trigger: 'blur'
-          	},
+          	{ validator:this.commonJs.checkNumber,trigger: 'blur'},
           ],
 					remark: [
             { required: false, message: '请填写备注', trigger: 'blur' }

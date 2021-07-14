@@ -464,25 +464,11 @@
           ],
 					real_amount: [
           	{ required: true, message: '请输入项目金额', trigger: 'blur' },
-          	{ validator:(rule, value, callback) => {
-								if (!Number(value)) {
-									callback(new Error('项目金额必须是数值'));
-								}else{
-									callback();
-								}
-            	},trigger: 'blur'
-          	},
+          	{ validator:this.commonJs.checkNumber,trigger: 'blur'},
           ],
 					budget_amount: [
           	{ required: true, message: '请输入预算金额', trigger: 'blur' },
-          	{ validator:(rule, value, callback) => {
-								if (!Number(value)) {
-									callback(new Error('预算金额必须是数值'));
-								}else{
-									callback();
-								}
-            	},trigger: 'blur'
-          	},
+          	{ validator:this.commonJs.checkNumber,trigger: 'blur'},
           ],
         }
 			}
