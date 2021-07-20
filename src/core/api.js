@@ -97,6 +97,8 @@ export default {
 	systemSetting: p => post('/backstage/system.config/index', p),
 	// 资源审核角色
 	system_config_group: p => post('/api/ajax/get_config_group', p),
+	// 系统日志
+	systemLog: p => post('/backstage/system.log/index', p),	
 
 	/*
 		***部门管理

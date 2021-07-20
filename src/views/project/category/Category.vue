@@ -22,21 +22,23 @@
           </div>
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="type_sn" label="项目类别编号"></el-table-column>
-        <el-table-column prop="name" label="类别名称"></el-table-column>
+        <el-table-column prop="type_sn" label="项目类别编号" width="180"></el-table-column>
+        <el-table-column prop="name" label="类别名称" width="200"></el-table-column>
         <el-table-column prop="is_show" label="使用状态" width="100">
           <template slot-scope="scope">
             <span v-if="scope.row.is_show == 1"><i class="dot bg-success mr-1"></i>正常</span>
             <span v-else><i class="dot bg-danger mr-1"></i>禁用</span>
           </template>
         </el-table-column>
-        <el-table-column prop="aname" label="创建人"></el-table-column>
-        <el-table-column prop="aename" label="最新编辑人"></el-table-column>
-        <el-table-column prop="createtime" label="创建时间"></el-table-column>
-        <el-table-column prop="updatetime" label="更新时间"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="400">
+        <el-table-column prop="current_fund" label="本年预算金额" width="120"></el-table-column>
+        <el-table-column prop="all_fund" label="总预算金额" width="120"></el-table-column>
+        <el-table-column prop="aname" label="创建人" width="120"></el-table-column>
+        <el-table-column prop="aename" label="最新编辑人" width="120"></el-table-column>
+        <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
+        <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="350">
           <template slot-scope="scope">
-            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+            <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-2">{{action.title}}</span>
           </template>
         </el-table-column>
       </data-tables-server>

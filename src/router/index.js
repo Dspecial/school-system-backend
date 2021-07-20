@@ -108,6 +108,16 @@ const router = new Router({
 				  },
 				  children: null
 				},
+				// 系统日志
+				{
+				  path: '/setting/systemLog',
+				  component: resolve => require(['@/views/setting/SystemLog'], resolve),
+				  name: 'SystemLog',
+				  meta: {
+				    title: '系统日志'
+				  },
+				  children: null
+				},
 
 				/*
 				**部门管理
@@ -406,32 +416,6 @@ const router = new Router({
 				  name: 'Document',
 				  meta: {
 				    title: '文档管理设置'
-				  },
-				  children: null
-				},
-
-				/*
-				**经费管理
-				 */
-				{
-				  path: '/funds',
-				  component: resolve => require(['@/views/funds/Funds'], resolve),
-				  name: 'Funds',
-				  meta: {
-				    title: '经费管理'
-				  },
-				  children: null
-				},
-
-				/*
-				**日志管理
-				 */
-				{
-				  path: '/log',
-				  component: resolve => require(['@/views/log/Log'], resolve),
-				  name: 'Log',
-				  meta: {
-				    title: '日志管理'
 				  },
 				  children: null
 				},

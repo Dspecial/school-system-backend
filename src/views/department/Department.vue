@@ -19,13 +19,11 @@
           </div>
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="name" label="部门名称" width="350"></el-table-column>
-        <el-table-column prop="alias_name" label="简称" width="250"></el-table-column>
+        <el-table-column prop="name" label="部门名称"></el-table-column>
+        <el-table-column prop="alias_name" label="简称"></el-table-column>
         <el-table-column prop="code" label="编号"></el-table-column>
-        <el-table-column prop="current_fund" label="本年预算金额"></el-table-column>
-        <el-table-column prop="all_fund" label="总预算金额"></el-table-column>
-        <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
-        <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
+        <el-table-column prop="createtime" label="创建时间" width="250"></el-table-column>
+        <el-table-column prop="updatetime" label="更新时间" width="250"></el-table-column>
         <el-table-column fixed="right" label="操作" width="250" align="center" v-if="$store.getters.getmoreAction.length>0">
           <template slot-scope="scope">
             <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
