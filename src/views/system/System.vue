@@ -27,7 +27,7 @@
 				  <span class="ml-2 mr-3">分</span>
 				  <el-switch
 					  v-model="timeForm.upSwitch"
-					  active-color="#005DDA"
+					  active-color="#032F99"
 					  inactive-color="#969191">
 					</el-switch>
 					<span class="ml-2 opacity-60">*上行为平台数据上传至中心数据</span>
@@ -55,7 +55,7 @@
 				  <span class="ml-2 mr-3">分</span>
 				  <el-switch
 					  v-model="timeForm.downSwitch"
-					  active-color="#005DDA"
+					  active-color="#032F99"
 					  inactive-color="#969191">
 					</el-switch>
 					<span class="ml-2 opacity-60">*上下行时间为同一时间点的系统，先上行，再下行完成数据处理</span>
@@ -102,14 +102,14 @@
 				<el-form-item label="平台开关" class="mb-0">
 					<el-switch
 					  v-model="contorlForm.switch1"
-					  active-color="#005DDA"
+					  active-color="#032F99"
 					  inactive-color="#969191">
 					</el-switch>
 				</el-form-item>
 				<el-form-item label="状态更新短信" class="mb-0">
 					<el-switch
 					  v-model="contorlForm.switch2"
-					  active-color="#005DDA"
+					  active-color="#032F99"
 					  inactive-color="#969191">
 					</el-switch>
 				</el-form-item>
