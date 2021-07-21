@@ -23,8 +23,8 @@
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
         <el-table-column prop="e_name" label="专家姓名"></el-table-column>
-        <el-table-column prop="e_phone" label="手机号"></el-table-column>
-        <el-table-column prop="e_email" label="邮箱"></el-table-column>
+        <el-table-column prop="e_phone" label="手机号" width="150"></el-table-column>
+        <el-table-column prop="e_email" label="邮箱" width="150"></el-table-column>
         <el-table-column prop="sex" label="性别">
           <template slot-scope="scope">
             <span v-if="scope.row.e_sex == 1">男</span>

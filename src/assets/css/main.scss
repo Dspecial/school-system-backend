@@ -1,10 +1,10 @@
 /*
-* @Author: dxx
-* @Email: dxxtalking@163.com
-* @Date:   2020-12-24 11:19:21
-* @Last Modified by:   dxx
-* @Last Modified time: 2021-03-09 16:27:44
-*/
+ * @Author: dxx
+ * @Email: dxxtalking@163.com
+ * @Date: 2020-12-24 11:09:03
+ * @LastEditors: dxx
+ * @LastEditTime: 2021-07-21 13:28:00
+ */
 @charset "UTF-8";
 
 :root{
@@ -108,9 +108,6 @@
 /*form*/
 .el-form-item__label{
   color: #333;
-}
-.el-form-item:last-child{
-  /*margin-bottom:0;*/
 }
 /*el-table*/
 .el-table{
@@ -222,15 +219,11 @@
 }
 
 /*el-upload*/
-.el-upload{
-  /*width: 100%;*/
+.limit_upload{
+  .el-upload{
+    display: none;
+  }
 }
-.el-upload-dragger{
-  /*width: 100%;*/
-}
-
-/*el-table*/
-
 
 /*---------- 页面开始 ----------*/
 html,body,#app,.page-container{

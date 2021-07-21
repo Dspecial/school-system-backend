@@ -1,10 +1,11 @@
 /*
-* @Author: dxx
-* @Email: dxxtalking@163.com
-* @Date:   2020-12-24 16:11:11
-* @Last Modified by:   dxx
-* @Last Modified time: 2021-02-25 16:18:31
-*/
+ * @Author: dxx
+ * @Email: dxxtalking@163.com
+ * @Date: 2021-01-24 16:09:03
+ * @LastEditors: dxx
+ * @LastEditTime: 2021-07-21 13:24:56
+ */
+
 import Vue from 'vue';
 import axios from 'axios';
 import store from '@/store';

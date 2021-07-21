@@ -20,7 +20,7 @@
 			    <el-radio :label="'2'">不显示</el-radio>
 			  </el-radio-group>
 		  </el-form-item>
-			<el-form-item label="图片上传" prop="icon">
+			<el-form-item label="图片上传">
 				<el-upload
 					:limit="1"
 				  action="void"
@@ -32,7 +32,8 @@
 				  :on-success="handleSuccess"
 				  :on-remove="handleRemove"
 				  :before-upload="beforeUpload"
-					:on-exceed="onExceed">
+					:on-exceed="onExceed"
+					:class="fileList.length>0?'limit_upload':''">
 				  <i class="el-icon-plus"></i>
 				</el-upload>
 		  </el-form-item>
@@ -73,9 +74,6 @@
           ],
           is_show: [
             { required: true, message: '请选择显示与否', trigger: 'change' }
-          ],
-					icon: [
-            { required: true, message: '请上传图片', trigger: 'change' }
           ],
         }
 			}

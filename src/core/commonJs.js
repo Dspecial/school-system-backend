@@ -1,10 +1,11 @@
 /*
-* @Author: dxx
-* @Email: dxxtalking@163.com
-* @Date:   2020-12-31 10:11:11
-* @Last Modified by:   dxx
-* @Last Modified time: 2021-02-04 15:05:33
-*/
+ * @Author: dxx
+ * @Email: dxxtalking@163.com
+ * @Date: 2021-01-31 16:09:03
+ * @LastEditors: dxx
+ * @LastEditTime: 2021-07-21 13:25:09
+ */
+
 let commonJs = {
   isEmpty(v) {
     switch (typeof v) {
@@ -55,41 +56,31 @@ let commonJs = {
 
 	// 验证手机号
 	checkPhone(rule, value, callback){
-    // if (!value) {
-    //   return callback(new Error('手机号不能为空'));
-    // } else {
-    //   const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
-    //   if (reg.test(value)) {
-    //     callback();
-    //   } else {
-    //     return callback(new Error('请输入正确的手机号'));
-    //   }
-    // }
-    const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
-    if (reg.test(value)) {
+    if (!value) {
       callback();
+      // return callback(new Error('手机号不能为空'));
     } else {
-      return callback(new Error('请输入正确的手机号'));
+      const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+      if (reg.test(value)) {
+        callback();
+      } else {
+        return callback(new Error('请输入正确的手机号'));
+      }
     }
   },
 
   // 验证邮箱
 	checkEmail(rule, value, callback){
-    // if (!value) {
-    //   return callback(new Error('邮箱不能为空'));
-    // } else {
-    //   const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
-    //   if (reg.test(value)) {
-    //     callback();
-    //   } else {
-    //     return callback(new Error('请输入正确的邮箱格式'));
-    //   }
-    // }
-    const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
-    if (reg.test(value)) {
+    if (!value) {
       callback();
+      // return callback(new Error('邮箱不能为空'));
     } else {
-      return callback(new Error('请输入正确的邮箱格式'));
+      const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+      if (reg.test(value)) {
+        callback();
+      } else {
+        return callback(new Error('请输入正确的邮箱格式'));
+      }
     }
   },
 
