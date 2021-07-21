@@ -27,8 +27,8 @@
         <el-table-column prop="level" label="层级" width="80"></el-table-column>
         <el-table-column prop="cname" label="创建人"></el-table-column>
         <el-table-column prop="ename" label="最新编辑人"></el-table-column>
-        <el-table-column prop="createtime" label="创建时间"></el-table-column>
-        <el-table-column prop="updatetime" label="更新时间"></el-table-column>
+        <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
+        <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" width="200">
           <template slot-scope="scope">
             <template v-if="scope.row.level > 2">

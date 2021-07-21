@@ -9,7 +9,7 @@
 						<template v-for="(item,index) in resources">
 							<el-col :span="8" :key="index">
 								<div class="text-center">
-									<el-image style="width: 80px; height: 80px" :src="item.icon" fit="cover">
+									<el-image style="width: 80px; height: 80px" :src="item.icon" fit="cover" class="img-round">
 										<div slot="error" class="el-image__error img-round">
 											<p class="m-0">加载失败或未上传</p>
 										</div>
