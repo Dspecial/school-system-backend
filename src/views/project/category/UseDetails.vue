@@ -6,7 +6,7 @@
 	  @open="openEdit"
 	  @closed="closedEdit"
 	  :before-close="handleClose">
-    <data-tables-server :data="tableData" @query-change="loadDeatilsData" layout="tool, table, pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [5,10,15,20], total: total }" :filters="filters" :table-props="tableProps">
+    <data-tables-server v-if="detailsData.dialog" :data="tableData" @query-change="loadDeatilsData" layout="tool, table, pagination" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [5,10,15,20], total: total }" :filters="filters" :table-props="tableProps">
       <div class="mb-3" slot="tool">
         <div class="d-flex align-items-center">
           <div class="mr-auto d-flex align-items-center">
@@ -29,8 +29,8 @@
       </div>
       <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
       <el-table-column prop="title" label="标题" width="250"></el-table-column>
-      <el-table-column prop="year" label="年份"></el-table-column>
-      <el-table-column prop="type" label="类型">
+      <el-table-column prop="year" label="年份" width="70"></el-table-column>
+      <el-table-column prop="type" label="类型" width="100">
         <template slot-scope="scope">
           <span v-if="scope.row.type == 1"><i class="dot bg-success mr-1"></i>项目合同</span>
           <span v-else-if="scope.row.type == 2"><i class="dot bg-primary mr-1"></i>延保合同</span>
@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column prop="money" label="金额"></el-table-column>
       <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
-      <el-table-column prop="project_name" label="项目名称"></el-table-column>
+      <el-table-column prop="project_name" label="项目名称" width="200"></el-table-column>
     </data-tables-server>
 	</el-dialog>
 </template>

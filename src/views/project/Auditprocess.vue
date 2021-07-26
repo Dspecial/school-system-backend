@@ -22,9 +22,9 @@
           </div>
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="name" label="流程名称"></el-table-column>
-        <el-table-column prop="brief" label="简介"></el-table-column>
-        <el-table-column prop="caname" label="类别名称"></el-table-column>
+        <el-table-column prop="name" label="流程名称" width="150"></el-table-column>
+        <el-table-column prop="brief" label="简介" width="150"></el-table-column>
+        <el-table-column prop="caname" label="类别名称" width="200"></el-table-column>
         <el-table-column prop="is_use" label="使用状态">
           <template slot-scope="scope">
             <span v-if="scope.row.is_use == 1"><i class="dot bg-warning mr-1"></i>待使用</span>
@@ -55,11 +55,11 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="aname" label="创建人"></el-table-column>
-        <el-table-column prop="aename" label="最新编辑人"></el-table-column>
+        <el-table-column prop="aname" label="创建人" width="100"></el-table-column>
+        <el-table-column prop="aename" label="最新编辑人" width="100"></el-table-column>
         <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
         <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
+        <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
             <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>
