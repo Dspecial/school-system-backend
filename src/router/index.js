@@ -410,15 +410,6 @@ const router = new Router({
 				/*
 				**文档管理
 				 */
-				{
-				  path: '/document',
-				  component: resolve => require(['@/views/document/Document'], resolve),
-				  name: 'Document',
-				  meta: {
-				    title: '文档管理设置'
-				  },
-				  children: null
-				},
 
 				/*
 				**版本管理

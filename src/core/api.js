@@ -3,18 +3,18 @@
  * @Email: dxxtalking@163.com
  * @Date: 2021-01-24 16:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2021-07-21 13:24:46
+ * @LastEditTime: 2021-08-06 15:09:59
  */
 
-import {post,postJson,postUpload} from '@/core/axios.js';
+import {post,post2,postJson,postUpload} from '@/core/axios.js';
 
 export default {
 	/*
 		***登录
 	 */
-	login: p => post('/backstage/login/login', p),
+	login: p => post2('/backstage/login/login', p),
 	// 获取登录申请着的身份
-	loginConfig: p => post('/api/ajax/get_sys_config', p),
+	loginConfig: p => post2('/api/ajax/get_sys_config', p),
 
 	/*
 		***菜单
@@ -28,13 +28,13 @@ export default {
 		***首页
 	 */
 	// 获取首页资源
-	dashboard_resource: p => post('/backstage/dashboard/get_resource_state', p),	
+	dashboard_resource: p => post2('/backstage/dashboard/get_resource_state', p),	
 	// 获取最新的维护记录
-	dashboard_record: p => post('/backstage/dashboard/record', p),	
+	dashboard_record: p => post2('/backstage/dashboard/record', p),	
 	// 获取项目汇总-项目状态数
-	dashboard_state: p => post('/backstage/dashboard/get_my_project_state', p),
+	dashboard_state: p => post2('/backstage/dashboard/get_my_project_state', p),
 	// 获取首页获取付款信息
-	dashboard_pay: p => post('/backstage/dashboard/project_pay_state', p),	
+	dashboard_pay: p => post2('/backstage/dashboard/project_pay_state', p),	
 
 	/*
 		***客户端权限管理

@@ -3,7 +3,7 @@
  * @Email: dxxtalking@163.com
  * @Date: 2021-01-24 16:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2021-07-21 13:24:56
+ * @LastEditTime: 2021-08-06 17:28:04
  */
 
 import Vue from 'vue';
@@ -19,7 +19,7 @@ import { Loading } from 'element-ui';
 
 axios.defaults.timeout = 20000; //响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'; //配置请求头
-axios.defaults.baseURL = ''; //配置接口地址
+// axios.defaults.baseURL = "/host"; //配置接口地址 这里的/host 对应 cpnfig/index.js 里面proxyTable的/host
 
 let loadingInstance;
 // 添加请求拦截器
@@ -35,10 +35,12 @@ axios.interceptors.request.use(
     // 每次发送请求之前判断VueCookies是否存在token        
     // 如果存在，则统一在http请求的header都加上token，这样后台根据token判断你的登录情况
     // 即使本地存在token，也有可能token是过期的，所以在响应拦截器中要对返回状态进行判断 
-    var token = '';
-    if(VueCookies.get("token")){
-      token = VueCookies.get("token");// 从VueCookies中拿到token
-    };
+    // var token = '';
+    // if(VueCookies.get("token")){
+    //   token = VueCookies.get("token");// 从VueCookies中拿到token
+    // };
+    // config.headers['accesstoken'] = "4ACD94F6996DE1381BD7EE9570DA555C";
+
     return config;
   },
   error => {
@@ -183,7 +185,7 @@ axios.interceptors.response.use(
 //返回一个Promise(发送post请求)
 const setParams = (url, params) => {
   return {
-    url: globalUrl.baseURL+ url + (typeof params == 'string' ? '/' + params : ''),
+    url: globalUrl.baseURL + url + (typeof params == 'string' ? '/' + params : ''),
     params: (typeof params == 'string' ? {} : params),
   }
 }
@@ -193,6 +195,21 @@ export function post (url, params) {  // eslint-disable-line no-unused-vars
   let opt = setParams(url, params);
   // 设置公共的user_token
   opt.params.user_token = VueCookies.get("token");
+  return new Promise((resolve, reject) => {
+    axios.post(opt.url, qs.stringify(opt.params))
+    .then(res => { 
+      resolve(res.data); 
+    })
+    .catch(err => { 
+      reject(err.data,'hhhhh') 
+    });
+  });
+};
+
+
+//返回一个Promise(发送post请求,不传user_token)
+export function post2 (url, params) {  // eslint-disable-line no-unused-vars
+  let opt = setParams(url, params);
   return new Promise((resolve, reject) => {
     axios.post(opt.url, qs.stringify(opt.params))
     .then(res => { 
@@ -258,6 +275,7 @@ export function postUpload (url, params) {
 
 export default {
   post,
+  post2,
   get,
   postJson,
   postUpload
