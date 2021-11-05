@@ -3,7 +3,7 @@
  * @Email: dxxtalking@163.com
  * @Date: 2020-12-24 11:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2021-08-26 13:57:53
+ * @LastEditTime: 2021-11-05 15:25:15
  */
 @charset "UTF-8";
 
@@ -281,7 +281,7 @@ html,body,#app,.page-container{
 }
 .el-menu-vertical-demo{
   &:not(.el-menu--collapse) {
-    width: 240px;
+    width: 220px;
     min-height: 400px;
   }
   &.el-menu--collapse{
