@@ -85,7 +85,7 @@
 
       // 角色组
       initRule(){
-				this.$api.c_roleList({
+				this.$api.p_group_rule({
         }).then(data=>{
           if(data.code == 0){
           	this.ruleList = data.data;
@@ -101,8 +101,8 @@
           cell.check_ids = [];
         }
         
-				this.$api.auth_userList({
-					group_id:cell.rule_id,
+				this.$api.p_group_rule_user({
+					id:cell.rule_id,
         }).then(data=>{
           if(data.code == 0){
             cell.rule_id_old = cell.rule_id
@@ -138,7 +138,7 @@
                   return {
                     rule_id:check.rule_id,
                     rule_id_old:check.rule_id,
-                    check_ids:check.check_ids.split(',').map(Number),
+                    check_ids:check.check_ids?check.check_ids.split(',').map(Number):'',
                     id:check.id,
                     function_id:check.function_id,
                     check_state:check.check_state,
@@ -151,7 +151,7 @@
                 return {
                   rule_id:l.rule_id,
                   rule_id_old:l.rule_id,
-                  check_ids:l.check_ids.split(',').map(Number),
+                  check_ids:l.check_ids?l.check_ids.split(',').map(Number):'',
                   check_process:bArray,
                   name:l.name,
                   id:l.id,
@@ -179,7 +179,7 @@
         var _this = this;
         var objNew = {};
         
-        objNew.rule_id = row.rule_id;
+        objNew.rule_id = row.rule_id?row.rule_id:'';
         objNew.check_ids = row.check_ids.join(',');
 
         if(function_type == 2){ // 父级数据

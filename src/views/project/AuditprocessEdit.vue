@@ -2,7 +2,7 @@
 	<el-dialog
 	  :title="processData.title"
 	  :visible.sync="processData.dialog"
-	  width="50%"
+	  width="40%"
 	  top="5vh"
 	  @open="openEdit"
 	  @closed="closedEdit('processForm')"
@@ -36,9 +36,9 @@
 			<el-form-item label="资源审核流程" v-if="processForm.is_resource_apply == 2">
 				<template v-for="(resourceCell,index) in processForm.resource_check_data">
 					<el-row type="flex" align="middle" :gutter="10" class="authCheck_row" :key="index">
-						<el-col :span="10">
+						<el-col :span="9">
 							<el-form-item label-width="0">
-								<el-select v-model="resourceCell.rule_id" clearable filterable placeholder="请选择角色" class="w-100" @blur="blurChange(resourceCell)" @change="ruleChange(resourceCell)">
+								<el-select v-model="resourceCell.rule_id" clearable filterable placeholder="请选择角色" class="w-100" @change="ruleChange(resourceCell)">
 									<el-option
 										v-for="rule in ruleList"
 										:key="rule.id"
@@ -48,7 +48,7 @@
 								</el-select>
 							</el-form-item>
 						</el-col>
-						<el-col :span="10">
+						<el-col :span="9">
 							<el-form-item label-width="0">
 								<el-select v-model="resourceCell.check_ids" collapse-tags clearable filterable multiple placeholder="请选择人员" class="w-100">
 									<el-option
@@ -60,7 +60,7 @@
 								</el-select>
 							</el-form-item>
 						</el-col>
-						<el-col :span="4" class="text-right">
+						<el-col :span="6" class="text-right">
 							<span class="text-primary cursor-pointer" v-if="index == processForm.resource_check_data.length - 1" @click="addPro(processForm.resource_check_data)"><i class="el-icon-plus"></i>审核流程</span>
 							<span class="text-danger cursor-pointer ml-2" v-if="processForm.resource_check_data.length != 1" @click="delField(processForm.resource_check_data,index)">删除</span>
 						</el-col>
@@ -184,7 +184,7 @@
         });
 			},
 			initRule(){
-				this.$api.c_roleList({
+				this.$api.p_group_rule({
         }).then(data=>{
           if(data.code == 0){
           	this.ruleList = data.data;
@@ -208,8 +208,8 @@
           // 清空已选人员
           cell.check_ids = [];
         }
-				this.$api.auth_userList({
-					group_id:cell.rule_id,
+				this.$api.p_group_rule_user({
+					id:cell.rule_id,
         }).then(data=>{
           if(data.code == 0){
 						cell.rule_id_old = cell.rule_id
@@ -244,7 +244,7 @@
 								return {
 									rule_id:item.rule_id,
 									rule_id_old:item.rule_id,
-									check_ids:item.check_ids.split(',').map(Number),
+									check_ids:item.check_ids?item.check_ids.split(',').map(Number):'',
 								}
 							});
 							resourceData.map((item,index) =>{
@@ -265,7 +265,7 @@
 									return {
 										rule_id:b.rule_id,
 										rule_id_old:b.rule_id,
-										check_ids:b.check_ids.split(',').map(Number),
+										check_ids:b.check_ids?b.check_ids.split(',').map(Number):'',
 										authUser:[],
 									}
 								});
@@ -331,11 +331,17 @@
 							}
 						});
 						item.auth_check = item.cellArray.map((a,i) =>{
-							return {
-								rule_id:a.rule_id,
-								check_ids:a.check_ids.join(','),
+							if(!this.commonJs.isEmpty(a.rule_id)){
+								return {
+									rule_id:a.rule_id?a.rule_id:'',
+									check_ids:a.check_ids.join(','),
+								}
+							}else{
+								return {}
 							}
 						});
+						// 过滤掉空的
+						item.auth_check = item.auth_check.filter(item => !this.commonJs.isEmpty(item));
 						delete item.name;
 						delete item.cellArray;
 						checkData.push(item);
@@ -353,6 +359,7 @@
 						}
 					});
 				}
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.processData.isEdit){ // 编辑后提交

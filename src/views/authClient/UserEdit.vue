@@ -9,14 +9,33 @@
 	  <el-form :model="userForm" :rules="rules" ref="userForm" label-width="120px">
 
 	  	<el-form-item label="所属部门" prop="depart_num">
-				<el-select v-model="userForm.depart_num"  clearable filterable placeholder="请选择所属所属部门" class="w-100" @change="onDeptChange" popper-class="dept_select">
-			    <el-option
-			      v-for="item in deptOptions"
-			      :key="item.wid"
-			      :label="item.name"
-			      :value="item.wid">
-			    </el-option>
-			  </el-select>
+				<el-select class="w-100" popper-class="params_select" 
+					v-model="userForm.depart_num" 
+					clearable 
+					filterable
+					:filter-method="initDept"
+					:collapse-tags="true" 
+					placeholder="下拉选择或搜索所属部门"
+					 @change="onDeptChange"
+					 @clear="selectClear">
+					<el-option
+						v-for="item in deptOptions"
+						:key="item.wid"
+						:label="item.name"
+						:value="item.wid">
+					</el-option>
+					<el-pagination
+						class="text-center"
+						small
+						@size-change="sizeChange"
+						@current-change="currentChange"
+						:current-page.sync="currentPage"
+						:total="total"
+						:page-size.sync="pageSize"
+						layout="prev,pager,next,total"
+						>
+					</el-pagination>
+				</el-select>
 		  </el-form-item>
 
 	  	<el-form-item label="职工号" prop="zgh">
@@ -71,7 +90,12 @@
 					phone:"",
 					email:"",
 				},
+				dept_query:"",
 				deptOptions:[],
+				total: 0, //总条数
+        currentPage: 1, //当前页
+        pageSize: 8, //每页显示条数
+
 				zghOptions:[],
 				roleParentOptions:[],
 				rules: {
@@ -99,16 +123,38 @@
 		},
 		methods:{
       // 获取部门列表
-      initDept(){
+      initDept(query){
+				this.dept_query = query;
       	this.$api.c_dept({
+					page:this.currentPage,
+          limit:this.pageSize,
+					keywords:query,
+					type:1,
         }).then(data=>{
           if(data.code == 0){
-            this.deptOptions = data.data;
+						this.total = data.data.total;
+            this.deptOptions = data.data.data;
           }else{
             this.$message.error(data.msg);
           }
         });
       },
+
+			// 每页显示的条数改变
+			sizeChange() {
+				this.currentPage = 1;
+				this.initDept(this.dept_query);
+			},
+			// current-change用于监听页数改变，而内容也发生改变
+			currentChange(){
+				this.initDept(this.dept_query);
+			},
+			selectClear(){
+				this.currentPage = 1;
+				this.dept_query = "";
+				this.initDept();
+			},
+
       // 部门选择后
       onDeptChange(value) {
         this.initUser_zgh(value);
@@ -147,7 +193,18 @@
 			// dialog初始化
 			openEdit(){
 				var _this = this;
-				this.initDept();
+				// 部门回显
+				this.$api.c_dept({// 展示所有的部门，不分页
+        }).then(data=>{
+          if(data.code == 0){
+						// 先获取所有的数据
+            this.deptOptions = data.data;
+						// 再分页获取
+						this.initDept();
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
 				this.initRoleParent();
 				if(this.userData.isEdit){ // 编辑
 					this.$api.c_userEdit({

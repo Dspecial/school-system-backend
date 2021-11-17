@@ -2,45 +2,15 @@
 	<el-dialog
 	  :title="rolePersonData.title"
 	  :visible.sync="rolePersonData.dialog"
-	  width="30%"
+	  width="50%"
 	  @open="openEdit"
 	  @closed="closedEdit('authPersonForm')"
 	  :before-close="handleClose">
 	  <el-form :model="authPersonForm" :rules="rules" ref="authPersonForm" label-width="110px">
 	  	<el-form-item label="角色名称" prop="roleName">
-		    <el-input v-model="authPersonForm.roleName" placeholder="请输入角色名称"></el-input>
+		    <el-input v-model="authPersonForm.roleName" placeholder="请输入角色名称" readonly></el-input>
 		  </el-form-item>
-
-			<el-form-item label="绑定部门" prop="belong_depart">
-				<el-select class="w-100" popper-class="params_select" 
-					v-model="authPersonForm.belong_depart" 
-					clearable 
-					filterable
-					:filter-method="initDept"
-					:collapse-tags="true" 
-					@clear="dept_selectClear"
-					placeholder="下拉选择或搜索绑定部门">
-					<el-option
-						v-for="item in deptOptions"
-						:key="item.wid"
-						:label="item.name"
-						:value="item.wid">
-					</el-option>
-					<el-pagination
-						class="text-center"
-						small
-						@size-change="dept_sizeChange"
-						@current-change="dept_currentChange"
-						:current-page.sync="dept_currentPage"
-						:total="dept_total"
-						:page-size.sync="dept_pageSize"
-						layout="prev,pager,next,total"
-						>
-					</el-pagination>
-				</el-select>
-			</el-form-item>
-
-			<el-form-item label="审核人员" prop="uid">
+			<el-form-item label="添加人员" prop="uid">
 		  	<el-select class="w-100" popper-class="params_select" 
 					v-model="authPersonForm.uid" 
 					clearable 
@@ -49,13 +19,12 @@
 					:filter-method="getUserList"
 					:collapse-tags="true" 
 					placeholder="下拉选择或搜索输入姓名/企业/部门"
-					@change="handleChange"
-					@clear="selectClear">
+					@change="handleChange">
 			    <el-option
 			      v-for="item in uidOptions"
-			      :key="item.id.toString()"
+			      :key="item.id"
 			      :label="item.name"
-			      :value="item.id.toString()">
+			      :value="item.id">
 						{{item.name + '---' +item.job_number + '---' +item.depart_name}}
 			    </el-option>
 					<el-pagination
@@ -72,17 +41,43 @@
 			  </el-select>
 		  </el-form-item>
 
-			<el-form-item label="状态" prop="status">
-				<el-radio-group v-model="authPersonForm.status">
-					<el-radio label="1">使用</el-radio>
-					<el-radio label="2">禁用</el-radio>
-				</el-radio-group>
-			</el-form-item>
-
-			<el-form-item label="备注" prop="remark">
-		  	<el-input type="textarea" v-model="authPersonForm.remark" placeholder="请输入备注" :autosize="{ minRows: 3, maxRows: 8 }"></el-input>
+		  <el-form-item label="已有人员">
+		    <el-row class="hasSelected flex-wrap" type="flex" :gutter="20">
+					<template v-if="personList.length == 0">
+						<el-col :span="8" class="mb-2">
+							<el-tag type="primary" size="large" effect="dark" class="bg-cyan w-100 d-flex justify-content-between align-items-center">
+								<div class="w-90 text-truncate">
+									<span>暂无，在添加人员中选择并添加</span>
+								</div>
+							</el-tag>
+						</el-col>
+					</template>
+					<template v-else>
+						<el-col :span="8" class="mb-2" v-for="(tag,index) in personList.slice((userCurrentPage - 1)*userPageSize,userCurrentPage*userPageSize)" :key="index">
+							<el-tag closable @close="closeTag(tag)" type="primary" size="large" effect="dark" class="bg-cyan w-100 d-flex justify-content-between align-items-center">
+								<div class="w-90 text-truncate">
+									<span>{{tag.job_number}}</span>
+									<span class="ml-2 mr-2">{{tag.name}}</span>
+									<span>{{tag.depart_name}}</span>
+								</div>
+							</el-tag>
+						</el-col>
+					</template>
+		    </el-row>
+				<el-pagination
+					class="text-center mt-3"
+					background
+					@size-change="userSizeChange"
+					@current-change="userCurrentChange"
+					:current-page.sync="userCurrentPage"
+					:total="userTotal"
+					:page-size.sync="userPageSize"
+					layout="prev,pager,next,total"
+					:page-sizes="[9, 15, 21, 30]"
+					:hide-on-single-page="userTotal < userPageSize"
+					>
+				</el-pagination>
 		  </el-form-item>
-
 	  </el-form>
 
 	  <span slot="footer" class="dialog-footer">
@@ -102,23 +97,14 @@
 			return {
 				authPersonForm:{
 					roleName:"",
-					belong_depart:"",
 					uid:[],
-					status:"1",
-					remark:"",
 				},
 				personUidArr:[],
 				uidOptions:[],
 				total: 0, //总条数
         currentPage: 1, //当前页
         pageSize: 8, //每页显示条数
-				uid_query:"",
-
-				dept_query:"",
-				deptOptions:[],
-				dept_total: 0, //总条数
-        dept_currentPage: 1, //当前页
-        dept_pageSize: 8, //每页显示条数
+				uidQuery:"",
 
 				// 已选人员
 				personList:[],
@@ -129,15 +115,9 @@
           roleName: [
             { required: true, message: '请输入角色名称', trigger: 'blur' }
           ],
-					belong_depart:[
-						{ required: true, message: '请选择绑定部门', trigger: 'change' },
-					],
           uid: [
             { required: true, message: '下拉选择或搜索输入学工号', trigger: 'change' }
           ],
-					status:[
-						{ required: true, message: '请选择状态', trigger: 'change' },
-					],
         },
 				
 			}
@@ -147,46 +127,13 @@
 			
 		},
 		methods:{
-			// 获取部门列表
-      initDept(query){
-				this.dept_query = query;
-      	this.$api.c_dept({
-					page:this.dept_currentPage,
-          limit:this.dept_pageSize,
-					keywords:query,
-					type:1,
-        }).then(data=>{
-          if(data.code == 0){
-						this.dept_total = data.data.total;
-            this.deptOptions = data.data.data;
-          }else{
-            this.$message.error(data.msg);
-          }
-        });
-      },
-			
-			// 表格前端分页
-			dept_sizeChange(val) {
-				this.currentPage = 1;
-				this.initDept(this.dept_query);
-			},
-			dept_currentChange(val) {
-				this.initDept(this.dept_query);
-			},
-			dept_selectClear(){
-				this.currentPage = 1;
-				this.dept_query = "";
-				this.initDept();
-			},
-
 			// 获取人员列表
 			getUserList(query){
-				this.uid_query = query;
-				this.$api.c_getTeacherList({
+				this.uidQuery = query;
+				this.$api.c_getUserList({
 					page:this.currentPage,
           limit:this.pageSize,
 					keywords:query,
-					type:1,
         }).then(data=>{
           if(data.code == 0){
 						this.total = data.data.total;
@@ -203,14 +150,8 @@
 			},
 			// current-change用于监听页数改变，而内容也发生改变
 			currentChange(){
-				this.getUserList(this.uid_query);
+				this.getUserList(this.uidQuery);
 			},
-			selectClear(){
-				this.currentPage = 1;
-				this.uid_query = "";
-				this.getUserList();
-			},
-
 			// change改变
 			handleChange(val) {
 				let del_arr = new Array();
@@ -263,21 +204,10 @@
 			},
 			// dialog初始化
 			openEdit(){
-				// 部门回显
-				this.$api.c_dept({// 展示所有的部门，不分页
-        }).then(data=>{
-          if(data.code == 0){
-						// 先获取所有的数据
-            this.deptOptions = data.data;
-						// 再分页获取
-						this.initDept();
-          }else{
-            this.$message.error(data.msg);
-          }
-        });
-
+				this.authPersonForm.roleName = this.rolePersonData.roleName;
 				// 人员回显
-				this.$api.c_getTeacherList({// 展示所有的人员，不分页
+				this.$api.c_getUserList({
+					type:1, // 展示所有的人员，不分页
         }).then(data=>{
           if(data.code == 0){
 						// 先获取所有的数据
@@ -289,22 +219,22 @@
           }
         });
 
-				if(this.rolePersonData.pid != 0){ // 编辑回显
-					this.$api.c_role_setusergroup({
-						id:this.rolePersonData.id, // 角色id
-						function_type:1,
-					}).then(data =>{
-						if(data.code == 0){
-							this.authPersonForm.roleName = data.data.name;
-							this.authPersonForm.belong_depart =  data.data.belong_depart;
-							this.authPersonForm.uid =  data.data.user_ids.split(",");
-							this.authPersonForm.status =  data.data.status;
-							this.authPersonForm.remark =  data.data.remark;
-						}else{
-							this.$message.error(data.msg);
-						}
-					});
-				}
+				this.$api.c_user_setuser({
+					id:this.rolePersonData.id, // 角色id
+					function_type:1,
+        }).then(data =>{
+          if(data.code == 0){
+            // 添加人员回显
+						this.authPersonForm.uid =  data.data.user_ids;
+						// 默认塞入的uids
+						this.personUidArr = data.data.user_ids;
+						// 已有人员
+						this.personList = data.data.user_list;
+						this.userTotal = data.data.user_list.length;
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
 			},
 			// dialog关闭
 			closedEdit(formName){
@@ -320,45 +250,19 @@
 				var _this = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-						if(this.rolePersonData.pid == 0){ // 添加角色
-							this.$api.c_role_setusergroup({
-								pid:this.rolePersonData.id,
-								name:this.authPersonForm.roleName,
-								wid:this.authPersonForm.belong_depart,
-								user_ids:this.authPersonForm.uid.join(","),
-								status:this.authPersonForm.status,
-								remark:this.authPersonForm.remark,
-								// function_type:"",
-							}).then(data => {
-								if(data.code == 0){
-									_this.handleClose();
-									_this.resetForm(formName);
-									_this.loadData();
-								}else{
-									this.$message.error(data.msg);
-								}
-							});
-						}else{
-							this.$api.c_role_setusergroup({ // 编辑
-								id:this.rolePersonData.id, // 角色id
-								pid:this.rolePersonData.pid,
-								name:this.authPersonForm.roleName,
-								wid:this.authPersonForm.belong_depart,
-								user_ids:this.authPersonForm.uid.join(","),
-								status:this.authPersonForm.status,
-								remark:this.authPersonForm.remark,
-								function_type:2,
-							}).then(data => {
-								if(data.code == 0){
-									_this.handleClose();
-									_this.resetForm(formName);
-									_this.loadData();
-								}else{
-									this.$message.error(data.msg);
-								}
-							});
-						}
-						
+						this.$api.c_user_setuser({
+							id:this.rolePersonData.id, // 角色id
+							function_type:2,
+							uid:this.authPersonForm.uid.join(","),
+						}).then(data => {
+							if(data.code == 0){
+								_this.handleClose();
+								_this.resetForm(formName);
+								_this.loadData();
+							}else{
+								this.$message.error(data.msg);
+							}
+						});
           } else {
             console.log('error submit!!');
             return false;

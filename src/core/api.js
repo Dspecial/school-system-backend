@@ -3,7 +3,7 @@
  * @Email: dxxtalking@163.com
  * @Date: 2021-01-24 16:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2021-08-06 15:09:59
+ * @LastEditTime: 2021-11-17 15:28:57
  */
 
 import {post,post2,postJson,postUpload} from '@/core/axios.js';
@@ -55,8 +55,11 @@ export default {
 	c_user_setuser: p => post('/backstage/auth.group/setuser', p),
 	// 人员列表
 	c_getUserList: p => post('/backstage/ajax/get_user_list', p),
+	// 教师列表
+	c_getTeacherList: p => post('/backstage/ajax/get_teacher_list', p),
+	// 添加角色
+	c_role_setusergroup: p => post('/backstage/auth.group/setusergroup', p),
 
-	
 	// 角色列表
 	c_roleList: p => post('/backstage/auth.group/index', p),
 	// 编辑角色
@@ -269,7 +272,10 @@ export default {
 	file_preview: p => post('/api/ajax/preview', p),
 	// 项目审核流程设置
 	p_projectProcess: p => post('/backstage/project.project/get_process_check', p),	
-
+	// 项目审核角色
+	p_group_rule: p => post('/backstage/ajax/get_check_group', p),	
+	// 项目审核人员
+	p_group_rule_user: p => post('/backstage/ajax/get_check_group_by_group ', p),
 
 	// 流程节点管理
 	p_processNode: p => post('/backstage/project.node/index', p),	

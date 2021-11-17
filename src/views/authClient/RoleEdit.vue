@@ -10,37 +10,29 @@
 	  	<el-form-item label="角色名称" prop="name">
 		    <el-input v-model="roleForm.name" placeholder="请输入角色名称"></el-input>
 		  </el-form-item>
-		  <el-form-item label="上级角色" prop="pid">
-		    <el-select v-model="roleForm.pid" clearable filterable placeholder="请选择上级角色" class="w-100" @change="handleChange">
-			    <el-option
-			      v-for="item in roleParentOptions"
-			      :key="item.id"
-			      :label="item.name"
-			      :value="item.id">
-			      {{item.cate_name?item.cate_name+item.name:item.name}}
-			    </el-option>
-			  </el-select>
-		  </el-form-item>
-		  <el-form-item label="权限配置" prop="auth" v-if="isAuth">
-			  <el-tree
-			  	ref="authTree"
-			  	class="authTree"
-				  :data="roleAuthData"
-				  show-checkbox
-				  node-key="id"
-				  :highlight-current="true"
-				  :default-expanded-keys="expandedKeys"
-				  :default-checked-keys="roleForm.auth"
-				  :props="defaultProps"
-				  @check-change="handleCheckChange">
-				</el-tree>
-		  </el-form-item>
-			<el-form-item label="开启部门审核" prop="is_open_depart_check">
-		    <el-radio-group v-model="roleForm.is_open_depart_check">
-			    <el-radio label="2">是</el-radio>
-					<el-radio label="1">否</el-radio>
-			  </el-radio-group>
-		  </el-form-item>
+			<!-- 新增 和 pid=0的编辑 -->
+			<template v-if="isAuth">
+				<el-form-item label="权限配置" prop="auth">
+					<el-tree
+						ref="authTree"
+						class="authTree"
+						:data="roleAuthData"
+						show-checkbox
+						node-key="id"
+						:highlight-current="true"
+						:default-expanded-keys="expandedKeys"
+						:default-checked-keys="roleForm.auth"
+						:props="defaultProps"
+						@check-change="handleCheckChange">
+					</el-tree>
+				</el-form-item>
+				<el-form-item label="开启部门审核" prop="is_open_depart_check">
+					<el-radio-group v-model="roleForm.is_open_depart_check">
+						<el-radio label="2">是</el-radio>
+						<el-radio label="1">否</el-radio>
+					</el-radio-group>
+				</el-form-item>
+			</template>
 		  <el-form-item label="备注" prop="remark">
 		  	<el-input type="textarea" v-model="roleForm.remark" placeholder="请输入备注" :autosize="{ minRows: 3, maxRows: 8 }"></el-input>
 		  </el-form-item>
@@ -88,41 +80,21 @@
           ],
 					is_open_depart_check: [
 						{ required: true, message: '请选择是否开启部门审核', trigger: 'change' },
-					]
+					],
         }
 			}
 		},
-		components: {},
+		components: {
+		},
 		mounted(){
 
 		},
 		methods:{
-			handleChange(value) {
-        this.isAuth = true;
-        this.initRoleAuth(value);
-      },
-			// 获取上级角色
-			initRoleParent(){
-				this.$api.c_roleParent({
-        }).then(data=>{
-          if(data.code == 0){
-          	var topOptions = [
-          		{
-          			name:"顶级",
-          			id:0,
-          		},
-          	];
-            this.roleParentOptions = [...topOptions,...data.data];
-          }else{
-            this.$message.error(data.msg);
-          }
-        });
-			},
-
 			handleCheckChange(data, checked, indeterminate) {
 				this.roleForm.auth = [999]; // 随便写个值，过验证
         // console.log(data, checked, indeterminate);
       },
+
       // 根据角色获取对应的权限列表
 			initRoleAuth(id){
 				this.$api.c_roleAuth({
@@ -135,41 +107,46 @@
           }
         });
 			},
+
 			// dialog初始化
 			openEdit(){
 				var _this = this;
-				this.initRoleParent();
 				if(this.roleData.isEdit){ // 编辑
 					this.$api.c_roleEdit({
 						id:this.roleData.id,
 						func_type:'',
 					}).then(data => {
 						if(data.code == 0){
-							console.log(data.data);
 							this.roleForm.id = data.data.id;
 							this.roleForm.name = data.data.name;
 							this.roleForm.pid = data.data.pid;
-							this.isAuth = true;
-							this.initRoleAuth(data.data.pid);
-							this.roleForm.auth = data.data.children_rule; 
+							// pid=0 即顶级角色
+							if(data.data.pid == 0){
+								this.isAuth = true;
+								this.initRoleAuth(data.data.pid);
+								this.roleForm.auth = data.data.children_rule;
+								this.roleForm.is_open_depart_check = data.data.is_open_depart_check; 
+								// ES6 查出两个数组的不同部分,即：所有父
+								var a = data.data.rules.split(',').map(Number);
+								var b = data.data.children_rule;
+								var c = [...a,...b];
+								var d = new Set(c);
+								var e = Array.from(d);
+								var f = [...e.filter(_=>!a.includes(_)),...e.filter(_=>!b.includes(_))];
+								// 所有父 赋给展开的Key
+								// this.expandedKeys = f;
+							}else{
+								this.isAuth = false;
+							}
 							this.roleForm.remark = data.data.remark;
-							this.roleForm.is_open_depart_check = data.data.is_open_depart_check; 
-
-							// ES6 查出两个数组的不同部分,即：所有父
-							var a = data.data.rules.split(',').map(Number);
-							var b = data.data.children_rule;
-							var c = [...a,...b];
-							var d = new Set(c);
-							var e = Array.from(d);
-							var f = [...e.filter(_=>!a.includes(_)),...e.filter(_=>!b.includes(_))];
-							// 所有父 赋给展开的Key
-							this.expandedKeys = f;
 						}else{
 							this.$message.error(data.msg);
 						}
 					})
 				}else{ // 新增
-					
+					this.isAuth = true;
+					this.roleForm.pid = 0;
+        	this.initRoleAuth(this.roleForm.pid);
 				}
 			},
 			// dialog关闭
@@ -185,10 +162,13 @@
 			// form提交
 			submitForm(formName) {
 				var _this = this;
-				var halfNode = this.$refs.authTree.getHalfCheckedKeys();
-        var checkedNode = this.$refs.authTree.getCheckedKeys();
-        var allTreeNode = [...halfNode,...checkedNode].join(',');
-
+				var halfNode,checkedNode,allTreeNode;
+				if(this.isAuth){
+					halfNode = this.$refs.authTree.getHalfCheckedKeys();
+        	checkedNode = this.$refs.authTree.getCheckedKeys();
+        	allTreeNode = [...halfNode,...checkedNode].join(',');
+				}
+				
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.roleData.isEdit){ // 编辑后提交

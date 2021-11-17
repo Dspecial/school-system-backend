@@ -143,7 +143,7 @@
 							var e = Array.from(d);
 							var f = [...e.filter(_=>!a.includes(_)),...e.filter(_=>!b.includes(_))];
 							// 所有父 赋给展开的Key
-							this.expandedKeys = f;
+							// this.expandedKeys = f;
 						}else{
 							this.$message.error(data.msg);
 						}

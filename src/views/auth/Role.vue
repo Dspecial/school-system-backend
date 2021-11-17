@@ -37,14 +37,12 @@
       </data-tables-server>
     </el-card>
     <role-edit :roleData="roleData"></role-edit>
-    <role-authperson :rolePersonData="rolePersonData"></role-authperson>
 	</div>
 </template>
 
 <script>
 	import GlobalTips from "@/components/GlobalTips";
   import RoleEdit from "./RoleEdit";
-  import RoleAuthperson from "./RoleAuthperson";
 
 	export default {
 		name: 'Role',
@@ -56,7 +54,6 @@
 		components: {
 			GlobalTips,
       RoleEdit,
-      RoleAuthperson,
 		},
 		data () {
 			return {

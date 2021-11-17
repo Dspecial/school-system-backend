@@ -49,7 +49,6 @@
 					advance_money:"",
 					remark:"",
 				},
-				deptOptions:[],
 				rules: {
           depart_id: [
             { required: true, message: '请选择所属部门', trigger: 'blur' }
@@ -72,17 +71,6 @@
 			
 		},
 		methods:{
-			// 获取部门列表
-      initDept(){
-      	this.$api.c_dept({
-        }).then(data=>{
-          if(data.code == 0){
-            this.deptOptions = data.data;
-          }else{
-            this.$message.error(data.msg);
-          }
-        });
-      },
 			// dialog初始化
 			openEdit(){
 				var _this = this;

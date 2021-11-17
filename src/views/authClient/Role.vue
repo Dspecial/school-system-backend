@@ -4,7 +4,7 @@
     <global-tips></global-tips>
     <!-- 角色管理 -->
     <el-card class="mt-3">
-      <data-tables-server :data="tableData" layout="tool, table" :current-page="currentPage":page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
+      <data-tables-server :data="tableData" layout="tool, table" :current-page="currentPage" :page-size="pageSize" :pagination-props="{ background: true, pageSizes: [15,30,45,60], total: total }" @query-change="loadData" :filters="filters" :table-props="tableProps">
         <div class="mb-3" slot="tool">
           <h4 class="fs_18 font-weight-semibold m-0 text-000 mb-3">角色管理</h4>
           <div class="d-flex align-items-center">
@@ -23,16 +23,22 @@
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="角色名称"></el-table-column>
+        <el-table-column prop="check_name" label="审核人员"></el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column prop="createtime" label="创建时间"></el-table-column>
         <el-table-column prop="updatetime" label="编辑时间"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <template v-if="scope.row.id == 1">
+            <template v-if="scope.row.id == 1 || scope.row.id == 2">
               <span v-for="(action,index) in actions1" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
             </template>
             <template v-else>
-              <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+              <template v-if="scope.row.pid == 0">
+                <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+              </template>
+              <template v-else>
+                <span v-for="(action,index) in actions2" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+              </template>
             </template>
           </template>
         </el-table-column>
@@ -90,9 +96,11 @@
           dialog:false,
           title:"",
           id:"",
+          pid:"",
           roleName:"",
         },
         actions1:[],
+        actions2:[],
 			}
 		},
     mounted(){
@@ -120,11 +128,12 @@
                 actions_1.push(item);
               }else if (item.sign == 3){ // 删除
                 actions_2.push(item);
-              }else if (item.sign == 9){ // 人员配置
+              }else if (item.sign == 9){ // 添加角色
                 actions_3.push(item);
               }
             })
-            this.actions1 = [...actions_1,...actions_3];
+            this.actions1 = [...actions_1];
+            this.actions2 = [...actions_1,...actions_2];
           }else{
             this.$message.error(data.msg);
           }
@@ -142,10 +151,14 @@
       // 操作们
       fun(index,row,sign){
         if(sign == 2){ // 编辑
-          this.editRole(index,row);
+          if(row.pid == 0){
+            this.editRole(index,row);
+          }else{
+            this.authPerson(index,row);
+          }
         }else if(sign == 3){ // 删除
           this.handleDel(index,row);
-        }else if(sign == 9){ // 人员配置
+        }else if(sign == 9){ // 添加角色
           this.authPerson(index,row);
         }
       },
@@ -181,11 +194,12 @@
         });
       },
 
-      // 人员配置
+      // 添加角色
       authPerson(index,row){
         this.rolePersonData.dialog = true;
-        this.rolePersonData.title = "人员配置";
+        this.rolePersonData.title = "添加角色";
         this.rolePersonData.id = row.id;
+        this.rolePersonData.pid = row.pid;
         this.rolePersonData.roleName = row.name;
       },
 		},
