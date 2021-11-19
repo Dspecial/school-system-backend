@@ -74,8 +74,8 @@
 			  <el-form-item label="学校名称">
 			    <el-input v-model="basicForm.schoolName" placeholder="请输入学校名称"></el-input>
 			  </el-form-item>
-			  <el-form-item label="版权公司信息">
-			    <el-input v-model="basicForm.companyName" placeholder="请输入版权公司信息"></el-input>
+			  <el-form-item label="版权企业信息">
+			    <el-input v-model="basicForm.companyName" placeholder="请输入版权企业信息"></el-input>
 			  </el-form-item>
 			  <el-form-item label="LOGO设置">
 			    <el-upload

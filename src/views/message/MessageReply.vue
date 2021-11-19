@@ -100,7 +100,7 @@
 				orderInfo:{
 					type:"维保",
 					time:"2020.11.11 12:00",
-					title: "xxx项目，出现系统故障请xx公司快递排除并提交对应文件",
+					title: "xxx项目，出现系统故障请xx企业快递排除并提交对应文件",
 					code:"XD12345",
 					author:"张三 教务处",
 					status:"0",// 0：已解决；1：未解决
@@ -125,7 +125,7 @@
 						role:"1", // 0：提问；1：回答
 						person:"李四",
 						sex:"0", // 0:男；1：女
-						company:"xxxx公司xxxx公司xxxx公司",
+						company:"xxxx企业xxxx企业xxxx企业",
 						title:"此类问题解决方法如下",
 						imgList:[
 							{

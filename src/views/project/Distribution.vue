@@ -66,7 +66,7 @@
         		name:"后勤管理系统",
         		period:"实施",
         		distribution:"完成",
-        		supplier:"上海xxxx技术有限公司",
+        		supplier:"上海xxxx技术有限企业",
         		director:"学工部DKDK张三",
         	},
         	{
@@ -74,7 +74,7 @@
         		name:"后勤管理系统",
         		period:"实施",
         		distribution:"完成",
-        		supplier:"上海xxxx技术有限公司",
+        		supplier:"上海xxxx技术有限企业",
         		director:"学工部DKDK张三",
         	},
         	{
@@ -82,7 +82,7 @@
         		name:"后勤管理系统",
         		period:"实施",
         		distribution:"完成",
-        		supplier:"上海xxxx技术有限公司",
+        		supplier:"上海xxxx技术有限企业",
         		director:"学工部DKDK张三",
         	},
         ],

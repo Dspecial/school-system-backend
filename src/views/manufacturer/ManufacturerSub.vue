@@ -10,7 +10,7 @@
           <div class="d-flex align-items-center">
           	<div class="mr-auto d-flex align-items-center">
           		<el-input
-    				    placeholder="公司名称/营业执照编码/负责人姓名/手机号"
+    				    placeholder="企业名称/营业执照编码/负责人姓名/手机号"
     				    prefix-icon="el-icon-search"
     				    v-model="filters[0].value"
                 clearable>
@@ -21,7 +21,7 @@
         </div>
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="companyName" label="公司名称"></el-table-column>
+        <el-table-column prop="companyName" label="企业名称"></el-table-column>
         <el-table-column prop="blCode" label="营业执照编码"></el-table-column>
         <el-table-column prop="accountNum" label="账户数目"></el-table-column>
         <el-table-column prop="admin" label="账户名" width="300"></el-table-column>
@@ -57,15 +57,15 @@
         },
         tableData: [
         	{
-        		companyName:'XX实业有限公司',
+        		companyName:'XX实业有限企业',
         		blCode:"9NLDE1234555553221",
         		accountNum:"3",
-        		admin:"常州xxxxxx公司、18211122311",
+        		admin:"常州xxxxxx企业、18211122311",
         		psw:"********",
         		post:"负责人",
         	},
         	{
-        		companyName:'XX实业有限公司',
+        		companyName:'XX实业有限企业',
         		blCode:"9NLDE1234555553221",
         		accountNum:"3",
         		admin:"18273727171",
@@ -73,7 +73,7 @@
         		post:"技术",
         	},
         	{
-        		companyName:'XX实业有限公司',
+        		companyName:'XX实业有限企业',
         		blCode:"9NLDE1234555553221",
         		accountNum:"3",
         		admin:"18211122311",

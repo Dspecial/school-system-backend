@@ -10,7 +10,7 @@
           <div class="d-flex align-items-center project_search_div">
           	<div class="d-flex align-items-center">
           		<el-input
-    				    placeholder="请输入项目编号/项目名称/公司名称"
+    				    placeholder="请输入项目编号/项目名称/企业名称"
     				    prefix-icon="el-icon-search"
     				    v-model="filters[0].value"
                 clearable
@@ -46,7 +46,7 @@
         <el-table-column prop="p_name" label="项目名称" width="200"></el-table-column>
         <el-table-column prop="check_process.text" label="项目状态" width="220"></el-table-column>
         <el-table-column prop="projecttime" label="年份"></el-table-column>
-        <el-table-column prop="job_number" label="所属公司" width="220"></el-table-column>
+        <el-table-column prop="job_number" label="所属企业" width="220"></el-table-column>
         <el-table-column prop="name" label="申请人姓名" width="100"></el-table-column>
         <el-table-column prop="depart_name" label="申请人部门" width="200"></el-table-column>
         <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>

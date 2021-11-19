@@ -55,7 +55,7 @@
 				<el-col :span="12">
 					<el-form-item label="建设方式" prop="constructionMode">
 				    <el-select v-model="settingForm.constructionMode" clearable placeholder="请选择建设方式" style="width: 100%;">
-				      <el-option label="中标公司" value="1"></el-option>
+				      <el-option label="中标企业" value="1"></el-option>
 				      <el-option label="自建" value="2"></el-option>
 				    </el-select>
 				  </el-form-item>
