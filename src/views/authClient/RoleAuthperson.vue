@@ -270,7 +270,7 @@
 						// 先获取所有的数据
             this.deptOptions = data.data;
 						// 再分页获取
-						this.initDept();
+						this.dept_selectClear();
           }else{
             this.$message.error(data.msg);
           }
@@ -283,7 +283,7 @@
 						// 先获取所有的数据
             this.uidOptions = data.data;
 						// 再分页获取
-						this.getUserList();
+						this.selectClear();
           }else{
             this.$message.error(data.msg);
           }

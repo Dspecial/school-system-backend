@@ -22,8 +22,10 @@
         <el-table-column prop="name" label="部门名称"></el-table-column>
         <el-table-column prop="alias_name" label="简称"></el-table-column>
         <el-table-column prop="code" label="编号"></el-table-column>
-        <el-table-column prop="createtime" label="创建时间" width="250"></el-table-column>
-        <el-table-column prop="updatetime" label="更新时间" width="250"></el-table-column>
+        <el-table-column prop="charge_name" label="负责人"></el-table-column>
+        <el-table-column prop="leader_name" label="分管领导"></el-table-column>
+        <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
+        <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" width="250" align="center" v-if="$store.getters.getmoreAction.length>0">
           <template slot-scope="scope">
             <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
@@ -34,6 +36,7 @@
     <addfund-dialog :fundData="fundData"></addfund-dialog>
     <fund-list :fundListData="fundListData"></fund-list>
     <use-details :detailsData="detailsData"></use-details>
+    <set-staff :staffData="staffData"></set-staff>
 	</div>
 </template>
 
@@ -42,6 +45,7 @@
 	import AddfundDialog from "./AddfundDialog";
   import FundList from "./FundList";
   import UseDetails from "./UseDetails";
+  import SetStaff from "./SetStaff";
 
 	export default {
 		name: 'Department',
@@ -54,7 +58,8 @@
 			GlobalTips,
 			AddfundDialog,
       FundList,
-      UseDetails
+      UseDetails,
+      SetStaff,
 		},
 		data () {
 			return {
@@ -83,6 +88,11 @@
         	id:"",
         },
         detailsData:{
+          dialog:false,
+        	title:"",
+        	id:"",
+        },
+        staffData:{
           dialog:false,
         	title:"",
         	id:"",
@@ -125,6 +135,8 @@
           this.goFundList(index,row);
         }else if(sign == 7.3){ // 经费明细
           this.goDetails(index,row);
+        }else if(sign == 7.4){ // 设置人员
+          this.settingStaff(index,row);
         }
       },
       // 添加预算
@@ -145,6 +157,12 @@
         this.detailsData.dialog = true;
       	this.detailsData.title = row.name+" — 使用明细";
       	this.detailsData.id = row.wid;
+      },
+      // 设置人员
+      settingStaff(index,row){
+        this.staffData.dialog = true;
+      	this.staffData.title = row.name+" — 设置人员";
+      	this.staffData.id = row.id;
       },
 		},
 	}
