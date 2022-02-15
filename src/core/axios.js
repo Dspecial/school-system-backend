@@ -1,9 +1,9 @@
 /*
  * @Author: dxx
- * @Email: dingxixi@techbloom.net
+ * @Email: dxxtalking@163.com
  * @Date: 2021-10-13 10:32:33
  * @LastEditors: dxx
- * @LastEditTime: 2022-02-15 10:54:55
+ * @LastEditTime: 2022-02-15 13:18:30
  */
 import Vue from 'vue';
 import axios from 'axios';

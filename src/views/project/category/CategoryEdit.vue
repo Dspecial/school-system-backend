@@ -32,6 +32,36 @@
 					</el-pagination>
 			  </el-select>
 		  </el-form-item>
+			<el-form-item label="承办人" prop="hoster_ids">
+		  	<el-select class="w-100" popper-class="params_select" 
+					v-model="categoryForm.hoster_ids" 
+					clearable 
+					filterable
+					multiple
+					:filter-method="getHosterList"
+					:collapse-tags="true" 
+					placeholder="下拉选择或搜索输入姓名/企业/部门"
+					@clear="selectHosterClear">
+			    <el-option
+			      v-for="item in hosterIdOptions"
+			      :key="item.id.toString()"
+			      :label="item.name"
+			      :value="item.id.toString()">
+						{{item.name + '---' +item.job_number + '---' +item.depart_name}}
+			    </el-option>
+					<el-pagination
+						class="text-center"
+						small
+						@size-change="sizeHosterChange"
+						@current-change="currentHosterChange"
+						:current-page.sync="currentHosterPage"
+						:total="totalHoster"
+						:page-size.sync="pageHosterSize"
+						layout="prev,pager,next,total"
+						>
+					</el-pagination>
+			  </el-select>
+		  </el-form-item>
 			<el-form-item label="开启金额申请" prop="is_open_money">
 		    <el-radio-group v-model="categoryForm.is_open_money">
 			    <el-radio label="2">是</el-radio>
@@ -78,6 +108,7 @@
 				categoryForm:{
 					name:"",
 					remark:"",
+					hoster_ids:[],
 					is_open_money:"1",
 					is_need_company:"1",
 					formids:[],
@@ -89,6 +120,14 @@
 				total: 0, //总条数
         currentPage: 1, //当前页
         pageSize: 8, //每页显示条数
+
+				// 承办人
+				hosterIdOptions:[],
+				totalHoster: 0, //总条数
+        currentHosterPage: 1, //当前页
+        pageHosterSize: 8, //每页显示条数
+				hosterId_query:"",
+
 				rules: {
           name: [
             { required: true, message: '请输入项目类别', trigger: 'blur' }
@@ -123,6 +162,39 @@
           }
         });
 			},
+
+			// 获取承办人列表
+			getHosterList(query){
+				this.hosterId_query = query;
+				this.$api.c_getTeacherList({
+					page:this.currentHosterPage,
+          limit:this.pageHosterSize,
+					keywords:query,
+					type:1,
+        }).then(data=>{
+          if(data.code == 0){
+						this.totalHoster = data.data.total;
+            this.hosterIdOptions = data.data.data;
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
+			},
+			// 每页显示的条数改变
+			sizeHosterChange() {
+				this.currentHosterPage = 1;
+				this.getHosterList();
+			},
+			// current-change用于监听页数改变，而内容也发生改变
+			currentHosterChange(){
+				this.getHosterList(this.hosterId_query);
+			},
+			selectHosterClear(){
+				this.currentHosterPage = 1;
+				this.hosterId_query = "";
+				this.getHosterList();
+			},
+
 			// dialog初始化
 			openEdit(){
 				this.$api.p_category_form({
@@ -136,6 +208,19 @@
             this.$message.error(data.msg);
           }
         });
+				// 人员
+				this.$api.c_getTeacherList({// 展示所有的人员，不分页
+        }).then(data=>{
+          if(data.code == 0){
+						// 先获取所有的数据
+            this.hosterIdOptions = data.data;
+						// 再分页获取
+						this.selectHosterClear();
+          }else{
+            this.$message.error(data.msg);
+          }
+        });
+
 				if(this.categoryData.isEdit){ // 编辑
 					this.$api.p_categoryEdit({
 						id:this.categoryData.id,
@@ -145,6 +230,7 @@
 							this.categoryForm.id = data.data.id;
 							this.categoryForm.name = data.data.name;
 							this.categoryForm.remark = data.data.remark;
+							this.categoryForm.hoster_ids = data.data.hoster_ids?data.data.hoster_ids.split(","):[];
 							this.categoryForm.is_open_money = data.data.is_open_money;
 							this.categoryForm.is_need_company = data.data.is_need_company;
 							this.categoryForm.is_resource_apply = data.data.is_resource_apply;
@@ -179,6 +265,7 @@
           		this.$api.p_categoryEdit({
           			id:this.categoryForm.id,
           			name:this.categoryForm.name,
+								hoster_ids:this.categoryForm.hoster_ids.join(","),
 	          		remark:this.categoryForm.remark,
 	          		is_show:this.categoryForm.is_show,
 								is_open_money:this.categoryForm.is_open_money,

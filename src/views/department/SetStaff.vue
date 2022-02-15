@@ -185,7 +185,7 @@
 				var _this = this;
 				this.staffForm.depart_id = this.staffData.id;
 
-				// 人员回显
+				// 人员
 				this.$api.c_getTeacherList({// 展示所有的人员，不分页
         }).then(data=>{
           if(data.code == 0){
@@ -208,8 +208,8 @@
 					function_type:1,
         }).then(data=>{
           if(data.code == 0){
-						this.staffForm.charge_ids =  data.data.charge_ids.split(",");
-						this.staffForm.leader_ids =  data.data.leader_ids.split(",");
+						this.staffForm.charge_ids =  data.data.charge_ids?data.data.charge_ids.split(","):[];
+						this.staffForm.leader_ids =  data.data.leader_ids?data.data.leader_ids.split(","):[];
           }else{
             this.$message.error(data.msg);
           }

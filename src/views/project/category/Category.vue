@@ -33,6 +33,7 @@
         <el-table-column prop="current_fund" label="本年预算金额" width="120"></el-table-column>
         <el-table-column prop="all_fund" label="总预算金额" width="120"></el-table-column>
         <el-table-column prop="aname" label="创建人" width="120"></el-table-column>
+        <el-table-column prop="hoster_name" label="承办人" width="120"></el-table-column>
         <el-table-column prop="aename" label="最新编辑人" width="120"></el-table-column>
         <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
         <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
