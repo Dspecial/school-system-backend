@@ -102,12 +102,6 @@
 				leaderId_query:"",
 
 				rules: {
-          charge_ids: [
-            { required: true, message: '请选择负责人', trigger: 'change' }
-          ],
-          leader_ids: [
-            { required: true, message: '请选择分管领导', trigger: 'change' },
-          ],
         }
 			}
 		},
