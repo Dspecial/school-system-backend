@@ -263,7 +263,7 @@
 
       // 获取该菜单列表下的所有操作按钮
       menuClick(id){
-        this.$cookies.set('back_menu_id', id);
+        this.VueCookies.set('back_menu_id', id);
         // 清空
         this.allAction = {
           addAction:{},

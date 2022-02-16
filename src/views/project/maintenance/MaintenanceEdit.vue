@@ -476,7 +476,7 @@
 	      const formData = new FormData();
 	      formData.append("extend_number", this.maintenanceForm.extend_number);
 	      formData.append("file", params.file);
-	      formData.append("user_token", this.$cookies.get("application_token"));
+	      formData.append("user_token", this.VueCookies.get("application_token"));
 
 				this.$api.p_maintenance_upload(formData).then(data =>{
 					if(data.code == 0){

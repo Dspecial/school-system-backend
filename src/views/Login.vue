@@ -51,7 +51,7 @@
     mounted(){
       this.loginConfig();
       if(this.rememberPwd){
-        this.loginForm.username = this.$cookies.get('userName');
+        this.loginForm.username = this.VueCookies.get('userName');
       }
     },
     methods:{
@@ -86,9 +86,9 @@
         }).then( data =>{
           if(data.code == 0){
             // 存值给cookies
-            this.$cookies.set('token', data.data.token,{expires:7});
-            this.$cookies.set('userId', data.data.id,{expires:7});
-            this.$cookies.set('userName', data.data.name,{expires:7});
+            this.VueCookies.set('token', data.data.token,{expires:7});
+            this.VueCookies.set('userId', data.data.id,{expires:7});
+            this.VueCookies.set('userName', data.data.name,{expires:7});
 
             // dxx：判断，如果初次进入，直接跳转home页面；如果在别的页面停留过久，token失效，则登录以后直接跳转到当前页面
             var redirect = this.$route.query.redirect;
