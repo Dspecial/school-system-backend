@@ -47,6 +47,7 @@
         <el-table-column prop="check_process.text" label="项目状态" width="220"></el-table-column>
         <el-table-column prop="projecttime" label="年份"></el-table-column>
         <el-table-column prop="job_number" label="所属企业" width="220"></el-table-column>
+        <el-table-column prop="hoster_name" label="承办人" width="100"></el-table-column>
         <el-table-column prop="name" label="申请人姓名" width="100"></el-table-column>
         <el-table-column prop="depart_name" label="申请人部门" width="200"></el-table-column>
         <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>

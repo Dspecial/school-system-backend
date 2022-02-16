@@ -21,7 +21,7 @@
             </div>
           </div>
         </div>
-        <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
+        <el-table-column prop="id" label="序号" width="50" type="id"></el-table-column>
         <el-table-column prop="name" label="角色名称"></el-table-column>
         <el-table-column prop="check_name" label="审核人员"></el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
@@ -34,10 +34,22 @@
             </template>
             <template v-else>
               <template v-if="scope.row.pid == 0">
-                <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+                <!-- 一级 -->
+                <template v-if="scope.row.id == 4 || scope.row.id == 5">
+                  <span v-for="(action,index) in actions2" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+                </template>
+                <template v-else>
+                  <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+                </template>
               </template>
+              <!-- 二级 -->
               <template v-else>
-                <span v-for="(action,index) in actions2" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+                <template v-if="scope.row.id == 16 || scope.row.id == 25">
+                  <span v-for="(action,index) in actions2" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+                </template>
+                <template v-else>
+                  <span v-for="(action,index) in actions4" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
+                </template>
               </template>
             </template>
           </template>
@@ -101,6 +113,8 @@
         },
         actions1:[],
         actions2:[],
+        actions3:[],
+        actions4:[],
 			}
 		},
     mounted(){
@@ -133,7 +147,9 @@
               }
             })
             this.actions1 = [...actions_1];
-            this.actions2 = [...actions_1,...actions_2];
+            this.actions2 = [...actions_2];
+            this.actions4 = [...actions_1,...actions_2];
+            
           }else{
             this.$message.error(data.msg);
           }

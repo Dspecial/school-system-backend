@@ -161,6 +161,7 @@
 			handleClose(){
 				this.roleData.dialog = false;
 				this.isAuth = false;
+				this.roleForm.auth = [];
 			},
 			// form提交
 			submitForm(formName) {
