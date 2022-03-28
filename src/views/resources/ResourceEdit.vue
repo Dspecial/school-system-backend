@@ -213,7 +213,7 @@
 			initParams(cate_id){
 				this.$api.cateParamsOption({
 					cate_id:cate_id,
-					function_type:2,
+					function_type:1,
         }).then(data=>{
           if(data.code == 0){
             this.resourceForm.fieldArray = data.data;
