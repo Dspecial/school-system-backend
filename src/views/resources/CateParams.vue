@@ -54,7 +54,7 @@
 			initParams(){
 				this.$api.cateParamsOption({
 					cate_id:this.paramsData.id,
-					function_type:1,
+					function_type:2,
         }).then(data=>{
           if(data.code == 0){
             this.paramsOptions = data.data;
