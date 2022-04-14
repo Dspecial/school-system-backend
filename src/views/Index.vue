@@ -234,7 +234,7 @@
 			this.initResource();
 			this.initRecord();
 			this.initState();
-			this.initPay();
+			this.initPay(this.handleYearIndex);
 		},
 		methods:{
 			// 获取首页资源

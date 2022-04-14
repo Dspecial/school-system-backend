@@ -8,7 +8,7 @@
 	  :before-close="handleClose">
 	  <el-form :model="paramsForm" :rules="rules" ref="paramsForm" label-width="100px" @submit.native.prevent>
 		  <el-form-item label="参数信息" prop="form_text">
-		  	<el-select class="w-100" v-model="paramsForm.form_text" clearable filterable multiple :collapse-tags="false" placeholder="请选择参数信息" @change="handleChange">
+		  	<el-select class="w-100" v-model="paramsForm.form_text" clearable filterable multiple :="false" placeholder="请选择参数信息" @change="handleChange">
 			    <el-option
 			      v-for="item in paramsOptions"
 			      :key="item.id"

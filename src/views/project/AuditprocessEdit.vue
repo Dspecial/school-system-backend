@@ -50,7 +50,7 @@
 						</el-col>
 						<el-col :span="9">
 							<el-form-item label-width="0">
-								<el-select v-model="resourceCell.check_ids" collapse-tags clearable filterable multiple placeholder="请选择人员" class="w-100">
+								<el-select v-model="resourceCell.check_ids" clearable filterable multiple placeholder="请选择人员" class="w-100">
 									<el-option
 										v-for="user in resourceCell.authUser"
 										:key="user.id"
@@ -95,7 +95,7 @@
 				  		</el-col>
 				  		<el-col :span="10">
 						  	<el-form-item label-width="0">
-							  	<el-select v-model="cell.check_ids" clearable filterable multiple collapse-tags placeholder="请选择人员" class="w-100">
+							  	<el-select v-model="cell.check_ids" clearable filterable multiple placeholder="请选择人员" class="w-100">
 							    	<el-option
 								      v-for="user in cell.authUser"
 								      :key="user.id"

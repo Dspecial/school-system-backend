@@ -14,7 +14,6 @@
 					clearable 
 					filterable
 					:filter-method="initDept"
-					:collapse-tags="true" 
 					placeholder="下拉选择或搜索所属部门"
 					 @change="onDeptChange"
 					 @clear="selectClear">

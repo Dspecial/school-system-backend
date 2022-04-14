@@ -17,7 +17,6 @@
 					clearable 
 					filterable
 					:filter-method="initDept"
-					:collapse-tags="true" 
 					@clear="dept_selectClear"
 					placeholder="下拉选择或搜索绑定部门">
 					<el-option
@@ -47,7 +46,6 @@
 					filterable
 					multiple
 					:filter-method="getUserList"
-					:collapse-tags="true" 
 					placeholder="下拉选择或搜索输入姓名/企业/部门"
 					@change="handleChange"
 					@clear="selectClear">

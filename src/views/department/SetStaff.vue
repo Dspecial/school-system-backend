@@ -14,7 +14,6 @@
 					filterable
 					multiple
 					:filter-method="getUserList"
-					:collapse-tags="true" 
 					placeholder="下拉选择或搜索输入姓名/企业/部门"
 					@clear="selectClear">
 			    <el-option
@@ -45,7 +44,6 @@
 					filterable
 					multiple
 					:filter-method="getLeaderList"
-					:collapse-tags="true" 
 					placeholder="下拉选择或搜索输入姓名/企业/部门"
 					@clear="selectLeaderClear">
 			    <el-option

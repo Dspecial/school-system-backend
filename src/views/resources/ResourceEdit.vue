@@ -7,7 +7,7 @@
 	  @closed="closedEdit('resourceForm')"
 	  :before-close="handleClose">
 	  <el-form :model="resourceForm" :rules="rules" ref="resourceForm" label-width="100px" label-position="left">
-	  	<div class="resourceAdd_form p-3 mb-3">
+	  	<div class="resourceAdd_form mb-3 pl-3 pr-3 pt-3">
 	  		<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-primary">基础信息</h4>
 			  <el-row :gutter="20">
 				  <el-col :span="24">
@@ -17,7 +17,7 @@
 					</el-col>
 					<el-col :span="12">
 					  <el-form-item label="数量" prop="number">
-					  	<el-input v-model.number="resourceForm.number" placeholder="请输入资源名称"></el-input>
+					  	<el-input v-model.number="resourceForm.number" placeholder="请输入数量"></el-input>
 					  </el-form-item>
 					</el-col>
 					<el-col :span="12">
@@ -36,16 +36,24 @@
 					  </el-form-item>
 					</el-col>
 					<el-col :span="12">
-					  <el-form-item label="免费维护日期">
-					    <el-date-picker v-model="resourceForm.free_end_date" type="date" clearable placeholder="选择免费维护日期" class="w-100"></el-date-picker>
-					  </el-form-item>
-					</el-col>
-					<el-col :span="24">
 					  <el-form-item label="是否使用" prop="is_use">
 					  	<el-radio-group v-model="resourceForm.is_use">
 						    <el-radio :label="'1'">使用中</el-radio>
 						    <el-radio :label="'2'">已禁用</el-radio>
 						  </el-radio-group>
+					  </el-form-item>
+					</el-col>
+					<el-col :span="12">
+					  <el-form-item label="使用类型" prop="type">
+					  	<el-radio-group v-model="resourceForm.type">
+						    <el-radio :label="'1'">永久</el-radio>
+						    <el-radio :label="'2'">临时</el-radio>
+						  </el-radio-group>
+					  </el-form-item>
+					</el-col>
+					<el-col :span="12" v-if="resourceForm.type == '2'">
+					  <el-form-item label="使用结束时间">
+					    <el-date-picker v-model="resourceForm.usetime" type="date" clearable placeholder="选择使用结束时间" value-format="yyyy-MM-dd" class="w-100"></el-date-picker>
 					  </el-form-item>
 					</el-col>
 					<el-col :span="24">
@@ -56,33 +64,33 @@
 				</el-row>
 		  </div>
 
-		  <div class="resourceAdd_form p-3 mb-3" v-if="isExpand">
+		  <div class="resourceAdd_form mb-3 pl-3 pr-3 pt-3" v-if="isExpand">
 		  	<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-primary">拓展参数</h4>
 		  	<el-row :gutter="20">
 				  <template v-for="(field, index) in resourceForm.fieldArray">
 				  	<!-- 字段类型:1=文本框,2=数字框,3=下拉单选,4=日期选择,5=文件上传,6=文本域 -->
 						<el-col :span="8" v-if="field.name_type == 1" :key="index">
 				  		<el-form-item :label="field.title" :required="field.is_required == 2">
-						  	<el-input v-model="field.val" :placeholder="field.placeholder"></el-input>
+						  	<el-input v-model="field.val" :placeholder="field.placeholder == ''?'请输入'+field.title:field.placeholder"></el-input>
 						  </el-form-item>
 						</el-col>
 
 				  	<el-col :span="8" v-if="field.name_type == 2" :key="index">
 				  		<el-form-item :label="field.title" :required="field.is_required == 2">
-						  	<el-input v-model.number="field.val" :placeholder="field.placeholder"></el-input>
+						  	<el-input v-model.number="field.val" :placeholder="field.placeholder == ''?'请输入'+field.title:field.placeholder"></el-input>
 						  </el-form-item>
 				  	</el-col>
 
 				  	<el-col :span="8" v-if="field.name_type == 3" :key="index">
 				  		<el-form-item :label="field.title" :required="field.is_required == 2">
-						  	<el-select v-model="field.val" :placeholder="field.placeholder" class="w-100" clearable>
+						  	<el-select v-model="field.val" :placeholder="field.placeholder == ''?'请选择'+field.title:field.placeholder" class="w-100" clearable>
 						      <el-option v-for="(option,j) in field.extra_val" :label="option" :value="option" :key="j"></el-option>
 						    </el-select>
 						  </el-form-item>
 				  	</el-col>
 				  	<el-col :span="8" v-if="field.name_type == 4" :key="index">
 				  		<el-form-item :label="field.title" :required="field.is_required == 2">
-						  	<el-date-picker v-model="field.val" type="date" :placeholder="field.placeholder" clearable class="w-100"></el-date-picker>
+						  	<el-date-picker v-model="field.val" type="date" :placeholder="field.placeholder == ''?'请选择'+field.title:field.placeholder" clearable class="w-100"></el-date-picker>
 						  </el-form-item>
 				  	</el-col>
 
@@ -103,7 +111,7 @@
 
 				  	<el-col :span="24" v-if="field.name_type == 6" :key="index">
 				  		<el-form-item :label="field.title" :required="field.is_required == 2">
-						  	<el-input type="textarea" v-model="field.val" :placeholder="field.placeholder" :autosize="{ minRows: 3, maxRows: 8 }"></el-input>
+						  	<el-input type="textarea" v-model="field.val" :placeholder="field.placeholder == ''?'请输入'+field.title:field.placeholder" :autosize="{ minRows: 3, maxRows: 8 }"></el-input>
 						  </el-form-item>
 				  	</el-col>
 				  </template>
@@ -142,12 +150,13 @@
 				resourceForm:{
 					id:"",
 					name:"",
-					number:1,
+					number:"",
 					supplier_id:"",
 					cate_id:"",
-					free_end_date:"",
-					is_use:"", // 默认2禁用
+					is_use:"2", // 默认2禁用
 					remark:"",
+					type:"2",
+					usetime:"",
 					fieldArray:[],
 				},
 				supplierOptions:[],
@@ -164,6 +173,9 @@
           ],
           cate_id: [
             { required: true, message: '请选择所属分类', trigger: 'change' }
+          ],
+					type: [
+            { required: true, message: '请选择使用类型', trigger: 'change' }
           ],
         },
         isExpand:false,// 是否显示拓展参数
@@ -254,7 +266,8 @@
 							this.resourceForm.name = data.data.name;
 							this.resourceForm.number = data.data.number;
 							this.resourceForm.supplier_id = data.data.supplier_id;
-							this.resourceForm.free_end_date = data.data.free_end_date;
+							this.resourceForm.type = data.data.type;
+							this.resourceForm.usetime = data.data.usetime != 0?data.data.usetime:"";
 							this.resourceForm.remark = data.data.remark;
 
 							if(data.data.is_use == 1){
@@ -314,9 +327,10 @@
 								number:this.resourceForm.number,
 								supplier_id:this.resourceForm.supplier_id,
 								cate_id:cate_id,
-								remark:this.resourceForm.remark,
-								free_end_date:this.resourceForm.free_end_date,
 								is_use:this.resourceForm.is_use,
+								type:this.resourceForm.type,
+								usetime:this.resourceForm.usetime,
+								remark:this.resourceForm.remark,
 								detailjson:JSON.stringify(new_arr),
 								function_type:1,
 							}).then(data => {

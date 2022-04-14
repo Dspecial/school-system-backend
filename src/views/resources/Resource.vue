@@ -32,9 +32,13 @@
                 v-model="filters[0].value"
                 clearable>
               </el-input>
-						  <el-select v-model="filters[1].value" placeholder="请选择是否使用" class="ml-3" @change="onChange" clearable>
+						  <el-select v-model="filters[1].value" placeholder="请选择是否使用" class="ml-3" clearable>
 						    <el-option label="使用中" :value="1"></el-option>
                 <el-option label="已禁用" :value="2"></el-option>
+						  </el-select>
+              <el-select v-model="filters[2].value" placeholder="请选择使用类型" class="ml-3" clearable>
+						    <el-option label="永久" :value="'1'"></el-option>
+                <el-option label="临时" :value="'2'"></el-option>
 						  </el-select>
           	</div>
             <div class="ml-auto">
@@ -45,9 +49,10 @@
         <el-table-column type="index" :index="indexMethod" label="序号" width="50" v-if="isShow"></el-table-column>
         <el-table-column prop="id" label="ID" width="60"></el-table-column>
         <el-table-column prop="name" label="资源名称" width="150"></el-table-column>
+        <el-table-column prop="p_name" label="所属项目" width="180"></el-table-column>
         <el-table-column prop="sup_name" label="所属供应商" width="180"></el-table-column>
         <el-table-column prop="number" label="数量"></el-table-column>
-        <el-table-column label="详细参数" width="150">
+        <el-table-column label="详细参数" width="200">
           <template slot-scope="scope">
             <el-popover
               placement="top-start"
@@ -59,8 +64,20 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="cate_name" label="所属分类" width="100"></el-table-column>
-        <el-table-column prop="free_end_date" label="免费维护期" width="120"></el-table-column>
+        <el-table-column prop="cate_name" label="所属分类" width="150"></el-table-column>
+        <el-table-column prop="is_use" label="是否使用">
+          <template slot-scope="scope">
+            <span v-if="scope.row.is_use == 1"><i class="dot bg-success mr-1"></i>使用中</span>
+            <span v-else><i class="dot bg-danger mr-1"></i>已禁用</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="type" label="使用类型">
+          <template slot-scope="scope">
+            <span v-if="scope.row.type == '1'">永久</span>
+            <span v-else>临时</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="usetime" label="使用结束时间" width="120"></el-table-column>
         <el-table-column label="备注" width="150">
           <template slot-scope="scope">
             <el-popover
@@ -73,17 +90,11 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="is_use" label="是否使用">
-          <template slot-scope="scope">
-            <span v-if="scope.row.is_use == 1"><i class="dot bg-success mr-1"></i>使用中</span>
-            <span v-else><i class="dot bg-danger mr-1"></i>已禁用</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="cpu" label="创建人" width="100"></el-table-column>
+        <el-table-column prop="cname" label="创建人" width="100"></el-table-column>
         <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
         <el-table-column prop="ename" label="最新编辑人" width="100"></el-table-column>
         <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="280" align="center">
+        <el-table-column fixed="right" label="操作" width="200" align="center">
           <template slot-scope="scope">
             <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign,action.id)" class="text-primary cursor-pointer mr-2">{{action.title}}</span>
           </template>
@@ -134,6 +145,10 @@
           {
             value: '',
             prop: 'is_use'
+          },
+          {
+            value: '',
+            prop: 'type'
           }
         ],
         total: 0, //总条数
@@ -178,6 +193,7 @@
           limit:this.pageSize,
           keywords:this.filters[0].value,
           is_use:this.filters[1].value,
+          type:this.filters[2].value,
         }).then(data=>{
           if(data.code == 0){
             this.total = data.data.total;
