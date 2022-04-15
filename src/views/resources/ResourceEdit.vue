@@ -6,7 +6,7 @@
 	  @open="openEdit"
 	  @closed="closedEdit('resourceForm')"
 	  :before-close="handleClose">
-	  <el-form :model="resourceForm" :rules="rules" ref="resourceForm" label-width="100px" label-position="left">
+	  <el-form :model="resourceForm" :rules="rules" ref="resourceForm" label-width="110px" label-position="left">
 	  	<div class="resourceAdd_form mb-3 pl-3 pr-3 pt-3">
 	  		<h4 class="fs_18 font-weight-semibold m-0 mb-3 text-primary">基础信息</h4>
 			  <el-row :gutter="20">
@@ -52,7 +52,7 @@
 					  </el-form-item>
 					</el-col>
 					<el-col :span="12" v-if="resourceForm.type == '2'">
-					  <el-form-item label="使用结束时间">
+					  <el-form-item label="使用结束时间" prop="usetime">
 					    <el-date-picker v-model="resourceForm.usetime" type="date" clearable placeholder="选择使用结束时间" value-format="yyyy-MM-dd" class="w-100"></el-date-picker>
 					  </el-form-item>
 					</el-col>
@@ -176,6 +176,9 @@
           ],
 					type: [
             { required: true, message: '请选择使用类型', trigger: 'change' }
+          ],
+					usetime: [
+            { required: true, message: '请选择使用结束时间', trigger: 'change' }
           ],
         },
         isExpand:false,// 是否显示拓展参数
@@ -349,9 +352,10 @@
 								number:this.resourceForm.number,
 								supplier_id:this.resourceForm.supplier_id,
 								cate_id:cate_id,
-								remark:this.resourceForm.remark,
-								free_end_date:this.resourceForm.free_end_date,
 								is_use:this.resourceForm.is_use,
+								type:this.resourceForm.type,
+								usetime:this.resourceForm.usetime,
+								remark:this.resourceForm.remark,
 								detailjson:JSON.stringify(new_arr),
 							}).then(data => {
 								if(data.code == 0){
