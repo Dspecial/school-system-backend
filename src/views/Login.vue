@@ -61,6 +61,7 @@
         }).then(data=>{
           if(data.code == 0){
             this.configName = data.data.system_name;
+            document.title = data.data.system_name;
           }else{
             const h = this.$createElement;
             this.$notify({
