@@ -11,14 +11,8 @@
 	  	<el-form-item label="验收名称" prop="title">
 		    <el-input v-model="configForm.title" placeholder="请填写验收名称"></el-input>
 		  </el-form-item>
-			<el-form-item label="文件上传格式" prop="file_type">
-		    <el-input v-model="configForm.file_type" placeholder="请填写文件上传格式，如:zip,doc...不填则不限制"></el-input>
-		  </el-form-item>
-		  <el-form-item label="文件模式" prop="file_model">
-		    <el-radio-group v-model="configForm.file_model">
-			    <el-radio label="1">单文件</el-radio>
-			    <el-radio label="2">多文件</el-radio>
-			  </el-radio-group>
+			<el-form-item label="分组名称" prop="group_name">
+		    <el-input v-model="configForm.group_name" placeholder="请填写分组名称"></el-input>
 		  </el-form-item>
 		  <el-form-item label="备注">
 		    <el-input type="textarea" v-model="configForm.remark" placeholder="请输入备注" :autosize="{ minRows: 3, maxRows: 5}" maxlength="30" show-word-limit></el-input>
@@ -43,9 +37,8 @@
 			return {
 				configForm:{
 					title:"",
+					group_name:"",
 					category_id:"",
-					file_type:"",
-					file_model:"1",
 					remark:"",
 					sort:"0",
 				},
@@ -74,8 +67,7 @@
 						if(data.code == 0){
 							this.configForm.id = data.data.id;
 							this.configForm.title = data.data.title;
-							this.configForm.file_type = data.data.file_type;
-							this.configForm.file_model = data.data.file_model;
+							this.configForm.group_name = data.data.group_name;
 							this.configForm.remark = data.data.remark;
 							this.configForm.sort = data.data.sort;
 						}else{
@@ -105,8 +97,7 @@
 								id:this.configForm.id,
           			title:this.configForm.title,
 	          		category_id:this.$route.query.id,
-	          		file_type:this.configForm.file_type,
-	          		file_model:this.configForm.file_model,
+	          		group_name:this.configForm.group_name,
 	          		remark:this.configForm.remark,
 	          		sort:this.configForm.sort,
 	          		function_type:1,
@@ -123,8 +114,7 @@
           		this.$api.p_accpetConfigAdd({
 	          		title:this.configForm.title,
 	          		category_id:this.$route.query.id,
-	          		file_type:this.configForm.file_type,
-	          		file_model:this.configForm.file_model,
+	          		group_name:this.configForm.group_name,
 	          		remark:this.configForm.remark,
 	          		sort:this.configForm.sort,
 	          	}).then(data =>{

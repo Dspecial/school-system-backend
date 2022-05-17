@@ -16,6 +16,7 @@
             <span v-else><i class="dot bg-success mr-1"></i>是</span>
           </template>
         </el-table-column>
+        <el-table-column prop="form_info" label="参数"></el-table-column>
         <el-table-column prop="desc" label="备注"></el-table-column>
         <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">

@@ -138,6 +138,7 @@
           
         },
         isShow:false,
+        cateOptions:[],
         tableData: [],
         filters: [
 	        {

@@ -3,7 +3,7 @@
  * @Email: dxxtalking@163.com
  * @Date: 2021-01-24 16:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2022-02-15 11:16:13
+ * @LastEditTime: 2022-05-15 10:40:46
  */
 
 import {postToken,post,postJson,postUpload} from '@/core/axios.js';
@@ -82,7 +82,7 @@ export default {
 	// 删除路由(没有接口)
 	c_routerDel: p => postToken('/backstage/auth.rule/del', p),
 
-
+	
 	/*
 		***专家管理
 	 */

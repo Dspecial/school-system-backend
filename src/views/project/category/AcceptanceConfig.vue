@@ -15,17 +15,11 @@
           </div>
         </div>
         <el-table-column type="index" :index="indexMethod" label="序号" width="50"></el-table-column>
-        <el-table-column prop="title" label="名称"></el-table-column>
-        <el-table-column prop="sort" label="排序"></el-table-column>
-        <el-table-column prop="file_type" label="允许上传类型"></el-table-column>
-        <el-table-column prop="file_model" label="文件模式">
-          <template slot-scope="scope">
-            <span v-if="scope.row.file_model == 1"><i class="dot bg-success mr-1"></i>单文件</span>
-            <span v-else><i class="dot bg-danger mr-1"></i>多文件</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="remark" label="备注"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
+        <el-table-column prop="title" label="验收名称"></el-table-column>
+        <el-table-column prop="group_name" label="分组名称"></el-table-column>
+        <el-table-column prop="sort" label="排序" width="150"></el-table-column>
+        <el-table-column prop="remark" label="备注" width="250"></el-table-column>
+        <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
             <span class="text-primary cursor-pointer ml-3" @click="editCate(scope.$index,scope.row)">编辑</span>
             <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>

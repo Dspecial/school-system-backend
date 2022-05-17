@@ -149,7 +149,7 @@
           type: 'warning'
         }).then(() => {
           // this.$api.c_routerDel({// 没有接口
-
+          //   id:row.id,
           // }).then(data=>{ 
           //    if(data.code == 0){
           //       this.$message({
