@@ -32,6 +32,7 @@
       return {
         allAction:{
           addAction:{},
+          addAction2:{},
           moreAction:[],
         }
       }
@@ -46,6 +47,7 @@
         // 清空
         this.allAction = {
           addAction:{},
+          addAction2:{},
           moreAction:[],
         };
         this.$api.menuButton({
@@ -58,6 +60,8 @@
               data.data.current_menu.map(item=>{
                 if(item.sign == 1){ // 是添加按钮
                   this.allAction.addAction = item;
+                }else if(item.sign == 1.1){ // 是添加按钮2
+                  this.allAction.addAction2 = item;
                 }else{
                   this.allAction.moreAction.push(item);
                 }

@@ -3,7 +3,7 @@
  * @Email: dxxtalking@163.com
  * @Date: 2020-12-24 09:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2021-07-21 13:28:24
+ * @LastEditTime: 2022-05-18 14:56:08
  */
 
 //import $ from 'jquery'; //局部引入jquery
@@ -13,12 +13,14 @@ Vue.use(Vuex);
 
 const state = { // 要设置的全局访问的state对象
 	addAction:{},
+	addAction2:{},
 	moreAction:[],
 };
 
 const mutations = {
 	SET_ACTION: (state, command) => {
 		state.addAction = command.addAction;
+		state.addAction2 = command.addAction2;
 		state.moreAction = command.moreAction;
 	}
 };
@@ -31,6 +33,7 @@ const actions = {
 
 const getters = {   //实时监听state值的变化(最新状态)
 	getaddAction: state => state.addAction,
+	getaddAction2: state => state.addAction2,
 	getmoreAction: state => state.moreAction,
 };
 

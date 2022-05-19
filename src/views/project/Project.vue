@@ -36,7 +36,8 @@
               </el-date-picker>
           	</div>
             <div class="ml-auto">
-              <el-button type="primary" @click="handleAdd()" v-if="$store.getters.getaddAction.title" ><i class="el-icon-plus el-icon--left"></i>{{$store.getters.getaddAction.title}}</el-button>
+              <el-button type="primary" @click="handleAdd_init()" v-if="$store.getters.getaddAction.title" ><i class="el-icon-plus el-icon--left"></i>{{$store.getters.getaddAction.title}}</el-button>
+              <el-button type="primary" @click="handleAdd_complete()" v-if="$store.getters.getaddAction2.title" ><i class="el-icon-plus el-icon--left"></i>{{$store.getters.getaddAction2.title}}</el-button>
             </div>
           </div>
         </div>
@@ -139,10 +140,23 @@
         });
       },
 
-      // 新增项目
-      handleAdd(){
+      // 新增初始项目
+      handleAdd_init(){
       	this.$router.push({
           path:"/project/project/edit",
+          query:{
+            type:1,
+          },
+        });
+      },
+
+      // 新增完成项目
+      handleAdd_complete(){
+      	this.$router.push({
+          path:"/project/project/edit",
+          query:{
+            type:2,
+          },
         });
       },
 
@@ -165,6 +179,7 @@
           path:"/project/project/edit",
           query: {
             id: row.id,
+            type:1,
           }
         })
       },

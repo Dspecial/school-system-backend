@@ -196,7 +196,7 @@
 			    },
 			    series: [
 		        {
-	            name: '资金',
+	            name: '金额',
 	            type: 'pie',
 	            radius: ['50%', '70%'],
 	            center: ['50%', '48%'],
