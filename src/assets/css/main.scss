@@ -3,7 +3,7 @@
  * @Email: dxxtalking@163.com
  * @Date: 2020-12-24 11:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2021-11-05 15:25:15
+ * @LastEditTime: 2022-05-21 23:35:03
  */
 @charset "UTF-8";
 
@@ -545,6 +545,7 @@ html,body,#app,.page-container{
   max-height: 317px;
 }
 .payment_item{
+  margin-bottom: 0 !important;
   .el-form-item__label{
     width: 100%;
     display: flex;
@@ -631,5 +632,58 @@ html,body,#app,.page-container{
   &.menu_arrow i{
     -webkit-transform: rotateZ(180deg);
     transform: rotateZ(180deg);
+  }
+}
+
+.project_form{
+  border-top:1px solid var(--grey-200);
+  margin:0 -30px;
+  padding: 0 30px;
+  clear: both;
+}
+.accept_info{
+	line-height: 36px;
+}
+.accept_info_header{
+	border:1px solid #EBEEF5;
+  border-bottom:0;
+	>.el-row .el-col{
+		border-left:1px solid #EBEEF5;
+	}
+	>.el-row .el-col:first-child{
+		border-left:0;
+	}
+}
+.accept_info_content{
+  border:1px solid #EBEEF5;
+  border-bottom:0;
+  >.el-row{
+    border-bottom:1px solid #EBEEF5;
+  }
+  >.el-row >.el-col{
+		border-left:1px solid #EBEEF5;
+	}
+  >.el-row >.el-col:first-child{
+		border-left:0;
+	}
+  >.el-row >.el-col{
+    >.el-row >.el-col{
+      border-top:1px solid #EBEEF5;
+      border-bottom:1px solid #EBEEF5;
+      border-left:1px solid #EBEEF5;
+    }
+    >.el-row{
+      border-bottom:0;
+    }
+    >.el-row:first-child >.el-col{
+      border-bottom:0;
+      border-top:0;
+    }
+    >.el-row:last-child >.el-col{
+      border-bottom:0;
+    }
+    >.el-row >.el-col:first-child{
+      border-left:0;
+    }
   }
 }

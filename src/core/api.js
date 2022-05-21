@@ -3,7 +3,7 @@
  * @Email: dxxtalking@163.com
  * @Date: 2021-01-24 16:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2022-05-15 10:40:46
+ * @LastEditTime: 2022-05-21 22:12:24
  */
 
 import {postToken,post,postJson,postUpload} from '@/core/axios.js';
@@ -246,7 +246,7 @@ export default {
 
 	// 项目列表
 	p_projectList: p => postToken('/backstage/project.project/index', p),
-	// 新增项目
+	// 新增项目-初始项目
 	p_projectAdd: p => postToken('/backstage/project.project/add', p),
 	// 获取部门
 	p_project_dept: p => postToken('/backstage/ajax/getdepartlist', p),
@@ -278,6 +278,17 @@ export default {
 	p_group_rule: p => postToken('/backstage/ajax/get_check_group', p),	
 	// 项目审核人员
 	p_group_rule_user: p => postToken('/backstage/ajax/get_check_group_by_group ', p),
+
+	// 新增完成项目
+	p_project_completeAdd: p => postToken('/backstage/project.project/addsuccess', p),
+	// 获取专家列表(没有接口)
+	p_projectExpert: p => postToken('/backstage/ajax/get_expert_list', p),
+	// 新增完成项目-实施流程、验收流程-获取额外参数
+	p_getExtraNode: p => postToken('/backstage/ajax/get_extra_node_forms', p),
+	// 新增完成项目-验收流程-获取验收列表
+	p_getAcceptInfo: p => postToken('/backstage/ajax/get_accept_info', p),
+	
+
 
 	// 流程节点管理
 	p_processNode: p => postToken('/backstage/project.node/index', p),	

@@ -141,9 +141,9 @@
 					</el-col>
 
 					<el-col :span="24" v-if="projectForm.is_commit != 1 && is_open_money == 2">
-						<el-form-item label="项目付款信息" class="payment_item">
+						<el-form-item label="合同规定付款计划" class="payment_item">
 							<div slot="label" class="d-flex justify-content-between">
-								<span>项目付款信息</span>
+								<span>合同规定付款计划</span>
 								<span class="text-primary cursor-pointer" @click="addPay(projectForm.agree_payinfo)"><i class="el-icon-plus mr-1"></i>付款信息</span>
 							</div>
 							<template v-for="(cell,INDEX) in projectForm.agree_payinfo">
@@ -710,7 +710,7 @@
 					this.initProjectForms(this.projectForm.p_cate_id,value);
 				}
 			},
-			// 添加项目付款信息
+			// 添加合同规定付款计划
 			addPay(item){
 				item.push({
 					title: "",

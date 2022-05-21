@@ -113,11 +113,11 @@
 						</el-form-item>
 					</el-col>
 					
-					<template v-for="(formItem,j) in projectForm.secondFrom">
+					<div v-for="(formItem,j) in projectForm.secondFrom" :key="j" >
 						<!-- 字段类型:1=文本框,2=数字框,3=下拉单选,4=日期选择,5=文件上传(单选),6=文本域,7=富文本,
 						8=时间选择,9=下拉多选,10=复选,11=单选,12=数组,13=图片上传(单选),14=图片上传(多选),15=文件上传(多选) -->
 						<!-- 1=文本框 -->
-						<el-col :span="12" :key="j" v-if="formItem.name_type == 1">
+						<el-col :span="12" v-if="formItem.name_type == 1">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -127,7 +127,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 2=数字框 -->
-						<el-col :span="12" :key="j" v-else-if="formItem.name_type == 2">
+						<el-col :span="12" v-else-if="formItem.name_type == 2">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false" 
 							:rules="[{ type: 'number', message: formItem.title +'必须为数字值'}]">
 								<template slot="label">
@@ -140,7 +140,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 3=下拉单选 -->
-						<el-col :span="12" :key="j" v-else-if="formItem.name_type == 3">
+						<el-col :span="12" v-else-if="formItem.name_type == 3">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -157,7 +157,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 4=日期选择 -->
-						<el-col :span="12" :key="j" v-else-if="formItem.name_type == 4">
+						<el-col :span="12" v-else-if="formItem.name_type == 4">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -173,7 +173,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 5=文件上传(单选) -->
-						<el-col :span="24" :key="j" v-else-if="formItem.name_type == 5">
+						<el-col :span="24" v-else-if="formItem.name_type == 5">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -199,7 +199,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 6=文本域 -->
-						<el-col :span="24" :key="j" v-else-if="formItem.name_type == 6">
+						<el-col :span="24" v-else-if="formItem.name_type == 6">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -209,7 +209,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 7=富文本 -->
-						<el-col :span="24" :key="j" v-else-if="formItem.name_type == 7">
+						<el-col :span="24" v-else-if="formItem.name_type == 7">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -219,7 +219,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 8=时间选择 -->
-						<el-col :span="12" :key="j" v-else-if="formItem.name_type == 8">
+						<el-col :span="12" v-else-if="formItem.name_type == 8">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -235,7 +235,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 9=下拉多选 -->
-						<el-col :span="12" :key="j" v-else-if="formItem.name_type == 9">
+						<el-col :span="12" v-else-if="formItem.name_type == 9">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -252,7 +252,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 10=复选 -->
-						<el-col :span="12" :key="j" v-else-if="formItem.name_type == 10">
+						<el-col :span="12" v-else-if="formItem.name_type == 10">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -266,7 +266,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 11=单选 -->
-						<el-col :span="12" :key="j" v-else-if="formItem.name_type == 11">
+						<el-col :span="12" v-else-if="formItem.name_type == 11">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -280,7 +280,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 12=数组 -->
-						<el-col :span="24" :key="j" v-else-if="formItem.name_type == 12">
+						<el-col :span="24" v-else-if="formItem.name_type == 12">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false" class="payment_item">
 								<div slot="label" class="d-flex justify-content-between">
 									<div>
@@ -302,7 +302,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 13=图片上传(单选) -->
-						<el-col :span="24" :key="j" v-else-if="formItem.name_type == 13">
+						<el-col :span="24" v-else-if="formItem.name_type == 13">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -326,7 +326,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 14=图片上传(多选) -->
-						<el-col :span="24" :key="j" v-else-if="formItem.name_type == 14">
+						<el-col :span="24" v-else-if="formItem.name_type == 14">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -347,7 +347,7 @@
 							</el-form-item>
 						</el-col>
 						<!-- 15=文件上传(多选) -->
-						<el-col :span="24" :key="j" v-else-if="formItem.name_type == 15">
+						<el-col :span="24" v-else-if="formItem.name_type == 15">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
 									<span>{{ formItem.title }}</span>
@@ -371,7 +371,7 @@
 							</el-form-item>
 						</el-col>
 
-					</template>
+					</div>
 					
 				</el-row>
 				<div class="d-flex justify-content-end">
@@ -596,6 +596,7 @@
 				}else{ // 新增
 					this.initProjectForms(value,this.projectForm.projecttime);
 				}
+				this.projectForm.secondFrom = {};
 			},
 			// 年份change
 			yearChange(value){
@@ -605,7 +606,7 @@
 					this.initProjectForms(this.projectForm.p_cate_id,value);
 				}
 			},
-			// 添加项目付款信息
+			// 添加合同规定付款计划
 			addPay(item){
 				item.push({
 					title: "",
@@ -651,9 +652,7 @@
 						function_type:1,
 					}).then(data =>{
 						if(data.code == 0){
-							
 							this.projectForm.apply_number = data.data.apply_number;
-
 							this.projectForm.p_name = data.data.p_name;
 							this.projectForm.p_cate_id = data.data.p_cate_id;
 							this.projectForm.leader_wid = data.data.leader_wid;

@@ -175,11 +175,17 @@
 
       // 编辑项目
       editProject(index,row){
+        var type = "";
+        if(row.is_commit == 1){
+          type = 1
+        }else{
+          type = 2
+        }
         this.$router.push({
           path:"/project/project/edit",
           query: {
             id: row.id,
-            type:1,
+            type:type,
           }
         })
       },
