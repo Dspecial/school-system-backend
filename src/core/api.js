@@ -3,7 +3,7 @@
  * @Email: dxxtalking@163.com
  * @Date: 2021-01-24 16:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2022-05-21 22:12:24
+ * @LastEditTime: 2022-05-22 22:17:54
  */
 
 import {postToken,post,postJson,postUpload} from '@/core/axios.js';
@@ -266,7 +266,7 @@ export default {
 	p_uploadPayNode: p => postUpload('/api/upload/upload_pay_file', p),
 	// 删除项目
 	p_projectDel: p => postToken('/backstage/project.project/del', p),
-	// 编辑项目
+	// 编辑项目(记录一个问题，编辑完成项目时，评审记录应该是个数组。但目前只取了数组中的第一个值。)
 	p_projectEdit: p => postToken('/backstage/project.project/edit', p),
 	// 项目详情
 	p_projectDetail: p => postToken('/backstage/project.project/details', p),
