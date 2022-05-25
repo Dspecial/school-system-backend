@@ -405,7 +405,7 @@
 											</el-input>
 										</el-col>
 										<el-col :span="24">
-											<el-date-picker type="date" placeholder="选择付款节点，必须大于当前日期" clearable v-model="cell.paytime" value-format="yyyy-MM-dd" :picker-options="startOption" style="width: 100%;"></el-date-picker>
+											<el-date-picker type="date" placeholder="选择付款节点" clearable v-model="cell.paytime" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
 										</el-col>
 										<el-col :span="2" class="text-right">
 											<span class="text-danger cursor-pointer" @click="delpayField(projectForm.agree_payinfo,INDEX)">删除</span>
@@ -461,8 +461,8 @@
 										<el-form-item label="评审日期" prop="recheck_date">
 											<el-date-picker 
 												type="date" 
-												placeholder="请选择评审日期，必须大于当前日期"
-												:picker-options="startOption" 
+												placeholder="请选择评审日期"
+												
 												v-model="recheckForm.recheck_date" 
 												value-format="yyyy-MM-dd"
 												clearable
