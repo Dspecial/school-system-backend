@@ -27,7 +27,7 @@
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column prop="createtime" label="创建时间"></el-table-column>
         <el-table-column prop="updatetime" label="编辑时间"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
+        <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
             <template v-if="scope.row.id == 1 || scope.row.id == 2">
               <span v-for="(action,index) in actions1" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>

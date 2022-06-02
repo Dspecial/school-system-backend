@@ -27,7 +27,7 @@
         <el-table-column prop="distribution" label="资源分配"></el-table-column>
         <el-table-column prop="supplier" label="分配供应商"></el-table-column>
         <el-table-column prop="director" label="项目负责人"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
+        <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
           	<span class="text-primary cursor-pointer">查看</span>
             <span class="text-primary cursor-pointer ml-3" @click="setting(scope.$index,scope.row)">资源配置</span>

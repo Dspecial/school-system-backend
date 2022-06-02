@@ -26,7 +26,7 @@
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column prop="createtime" label="创建时间"></el-table-column>
         <el-table-column prop="updatetime" label="编辑时间"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
+        <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
             <template v-if="scope.row.id != 1">
               <!-- <span class="text-primary cursor-pointer mr-3" @click="authPerson()">人员配置</span> -->

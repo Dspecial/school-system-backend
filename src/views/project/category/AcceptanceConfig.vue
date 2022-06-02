@@ -19,7 +19,7 @@
         <el-table-column prop="group_name" label="分组名称"></el-table-column>
         <el-table-column prop="sort" label="排序" width="150"></el-table-column>
         <el-table-column prop="remark" label="备注" width="250"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="150">
+        <el-table-column fixed="right" label="操作"  width="150">
           <template slot-scope="scope">
             <span class="text-primary cursor-pointer ml-3" @click="editCate(scope.$index,scope.row)">编辑</span>
             <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>

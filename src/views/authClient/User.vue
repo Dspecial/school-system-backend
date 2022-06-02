@@ -54,7 +54,7 @@
         <el-table-column prop="phone" label="手机号" width="150"></el-table-column>
         <el-table-column prop="email" label="邮箱" width="150"></el-table-column>
         <el-table-column prop="lastlogintime" label="上次登录时间"  width="150"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="150" align="center">
+        <el-table-column fixed="right" label="操作" width="150" >
           <template slot-scope="scope">
             <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>

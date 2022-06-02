@@ -58,7 +58,7 @@
         <el-table-column prop="sender" label="发出人"></el-table-column>
         <el-table-column prop="status" label="状态"></el-table-column>
         <el-table-column prop="endTime" label="完结时间"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="250" align="center">
+        <el-table-column fixed="right" label="操作" width="250" >
           <template slot-scope="scope">
           	<span class="text-primary cursor-pointer" @click="showDetail(scope.$index,scope.row)">查看</span>
             <span class="text-primary cursor-pointer ml-3">修改</span>

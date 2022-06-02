@@ -27,7 +27,7 @@
         <el-table-column prop="admin" label="账户名" width="300"></el-table-column>
         <el-table-column prop="psw" label="密码"></el-table-column>
         <el-table-column prop="post" label="职位"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="250" align="center">
+        <el-table-column fixed="right" label="操作" width="250" >
           <template slot-scope="scope">
             <span class="text-primary cursor-pointer">修改</span>
             <span class="text-primary cursor-pointer ml-3">删除</span>

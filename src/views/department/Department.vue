@@ -26,7 +26,7 @@
         <el-table-column prop="leader_name" label="分管领导"></el-table-column>
         <el-table-column prop="createtime" label="创建时间" width="150"></el-table-column>
         <el-table-column prop="updatetime" label="更新时间" width="150"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="250" align="center" v-if="$store.getters.getmoreAction.length>0">
+        <el-table-column fixed="right" label="操作" width="250"  v-if="$store.getters.getmoreAction.length>0">
           <template slot-scope="scope">
             <span v-for="(action,index) in $store.getters.getmoreAction" :key="index" @click="fun(scope.$index,scope.row,action.sign)" class="text-primary cursor-pointer mr-3">{{action.title}}</span>
           </template>

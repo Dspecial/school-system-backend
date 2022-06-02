@@ -51,7 +51,7 @@
         </el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="rulename" label="角色"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="250" align="center">
+        <el-table-column fixed="right" label="操作" width="250" >
           <template slot-scope="scope">
             <span class="text-primary cursor-pointer" @click="editUser(scope.$index,scope.row)">编辑</span>
             <span class="text-primary cursor-pointer ml-3" @click="handleDel(scope.$index,scope.row)">删除</span>
