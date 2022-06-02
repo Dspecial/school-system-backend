@@ -46,7 +46,18 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="remark" label="备注"></el-table-column>
+        <el-table-column prop="remark" label="备注">
+          <template slot-scope="scope">
+            <el-popover
+              placement="top-start"
+              title="备注"
+              width="200"
+              trigger="hover"
+              :content="scope.row.remark">
+              <span class="text-truncate" slot="reference">{{scope.row.remark}}</span>
+            </el-popover>
+          </template>
+        </el-table-column>
         <el-table-column label="是否使用">
           <template slot-scope="scope">
             <span v-if="scope.row.is_show == 1"><i class="dot bg-success mr-1"></i>是</span>
