@@ -3,7 +3,7 @@
  * @Email: dxxtalking@163.com
  * @Date: 2021-01-24 16:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2022-05-22 22:17:54
+ * @LastEditTime: 2022-06-03 22:34:02
  */
 
 import {postToken,post,postJson,postUpload} from '@/core/axios.js';
@@ -241,6 +241,8 @@ export default {
 	p_cateformsAdd: p => postToken('/backstage/project.cateforms/add', p),
 	// 编辑参数
 	p_cateformsEdit: p => postToken('/backstage/project.cateforms/edit', p),
+	// 示例上传
+	p_cateformsUpload: p => postUpload('/backstage/upload/upload_cateforms', p),
 	// 更改状态
 	p_cateformsStatus: p => postToken('/backstage/project.cateforms/tranform', p),
 

@@ -41,6 +41,25 @@
 					<el-option value="15" label="文件上传(多选)"></el-option>
 			  </el-select>
 		  </el-form-item>
+			<el-form-item label="示例" prop="example" v-if="formForm.name_type == 5 || formForm.name_type == 13 || formForm.name_type == 14 || formForm.name_type == 15">
+		  	<div class="d-flex align-items-start justify-content-between">
+					<el-upload
+				  	class="content_upload"
+					  drag
+						:limit="1"
+					  action="void"
+					  :accept="accept"
+					  :auto-upload="true"
+					  :http-request="myUpload"
+					  :file-list="fileList"
+					  :on-success="handleSuccess"
+					  :on-remove="handleRemove"
+					  :before-upload="beforeUpload"
+						:on-exceed="onExceed">
+					  <div class="el-upload__text"><i class="el-icon-upload"></i>将文档拖到此处，或<em>点击选择文档</em></div>
+					</el-upload>
+		  	</div>
+		  </el-form-item>
 			<el-form-item label="数据值" prop="extra_val" v-if="formForm.name_type == 3 || formForm.name_type == 9 || formForm.name_type == 10">
 		  	<el-input type="textarea" v-model="formForm.extra_val" placeholder="请输入数据值,格式如:北京|上海|广州" :autosize="{ minRows: 3, maxRows: 8 }"></el-input>
 		  </el-form-item>
@@ -100,6 +119,9 @@
 					remark:"",
 					is_show:"1",
 				},
+				accept:'.pdf,.doc,.docx,.xls,.xlsx,.zip,.png,.jpg,.jpeg,.PNG,.JPG,.JPEG,.gif',
+				fileList:[],
+				removeFilesArr:[],
 				rules: {
           title: [
             { required: true, message: '请输入类别名称', trigger: 'blur' }
@@ -138,6 +160,7 @@
 							this.formForm.is_required = data.data.is_required;
 							this.formForm.name_type = data.data.name_type;
 							this.formForm.extra_val = data.data.extra_val;
+							this.fileList = data.data.example;
 							this.formForm.remark = data.data.remark;
 							this.formForm.is_show = data.data.is_show;
 						}else{
@@ -148,6 +171,78 @@
 					
 				}
 			},
+
+			/****  上传  ****/
+			myUpload(params){
+	      // 通过 FormData 对象上传文件
+	      const formData = new FormData();
+	      formData.append("file", params.file);
+	      formData.append("user_token", this.VueCookies.get("token"));
+
+				this.$api.p_cateformsUpload(formData).then(data =>{
+					if(data.code == 0){
+						// 回调成功的方法
+						params.onSuccess(data);
+						this.$message.success(data.msg);
+					}else{
+						this.$message.error(data.msg);
+					}
+				});
+			},
+      // 上传成功
+			handleSuccess(res, file, fileList) {
+				this.fileList = fileList;
+      },
+      // 移除上传文件
+      handleRemove(file,fileList) {
+      	var path;
+      	if(file.isExist){ // 原先上传已存在的
+      		path = file.path;
+      	}else{ // 刚刚上传的
+      		if(file.status == 'success'){
+						path = file.response.data.path;
+					}else{
+						return false
+					}
+      	}
+				this.fileList = fileList;
+				this.$message({message: '成功移除' + file.name, type: 'success'});
+				if(this.removeFilesArr.indexOf(path) == -1){
+					this.removeFilesArr.push(path);
+				}
+      },
+
+			// 删除调接口
+			removeFile(path){
+				this.$api.kl_contentUploadDel({
+      		path:path,
+      	}).then(data =>{
+					if(data.code == 0){
+						// this.$message.success("文件更新成功");
+					}else{
+						this.$message.error(data.msg);
+					}
+				});
+			},
+
+      // 上传前验证
+      beforeUpload(file) {
+				var isUpload = true;
+      	// 验证大小等
+				this.fileList.map((fff)=>{
+					if(fff.name == file.name){
+						this.$message.warning("请不要重复上传相同文件！");
+						isUpload = false;
+						return
+					}
+				})
+				return isUpload;
+      },
+			// 文件超出限制
+			onExceed(file,fileList){
+				this.$message.error("只能上传一个文件哦，可以先删除再重新上传！");
+			},
+
 			// dialog关闭
 			closedEdit(formName){
 				this.handleClose();
@@ -160,6 +255,15 @@
 			// form提交
 			submitForm(formName) {
 				var _this = this;
+
+				var exampleArray = this.fileList.map((item)=>{
+					if(this.commonJs.isEmpty(item.response)){
+						return item.path;
+					}else{
+						return item.response.data.path;
+					}
+				})
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
           	if(this.formData.isEdit){ // 编辑后提交
@@ -171,6 +275,7 @@
 								placeholder:this.formForm.placeholder,
 								is_required:this.formForm.is_required,
 								extra_val:this.formForm.extra_val,
+								example:exampleArray.join(','),
 								remark:this.formForm.remark,
 								is_show:this.formForm.is_show,
 								function_type:1,
@@ -191,6 +296,7 @@
 								placeholder:this.formForm.placeholder,
 								is_required:this.formForm.is_required,
 								extra_val:this.formForm.extra_val,
+								example:exampleArray.join(','),
 								remark:this.formForm.remark,
 								is_show:this.formForm.is_show,
 							}).then(data => {
