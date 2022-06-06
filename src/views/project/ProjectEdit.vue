@@ -94,7 +94,7 @@
 									预算金额 <span class="text-danger">(年度可用预算 {{can_used_funds}} 元)</span>
 								</span>
 							</template>
-							<el-input v-model.number="projectForm.budget_amount" placeholder="请输入预算金额">
+							<el-input v-model.number="projectForm.budget_amount" placeholder="请输入预算金额" :readonly="this.projectId?true:false">
 								<span slot="suffix" class="el-input__icon mr-2">元</span>
 							</el-input>
 						</el-form-item>
@@ -109,7 +109,7 @@
 									项目金额 <span class="text-danger">(年度可用预算 {{can_used_funds}} 元)</span>
 								</span>
 							</template>
-							<el-input v-model.number="projectForm.real_amount" placeholder="请输入项目金额">
+							<el-input v-model.number="projectForm.real_amount" placeholder="请输入项目金额" :readonly="this.projectId?true:false">
 								<span slot="suffix" class="el-input__icon mr-2">元</span>
 							</el-input>
 						</el-form-item>
@@ -189,7 +189,7 @@
 						<el-col :span="24" v-else-if="formItem.name_type == 5">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
-									<div class="d-inline-flex align-items-center justify-content-between">
+									<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 										<span>{{ formItem.title }}</span>
 										<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 										<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -329,7 +329,7 @@
 						<el-col :span="24" v-else-if="formItem.name_type == 13">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
-									<div class="d-inline-flex align-items-center justify-content-between">
+									<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 										<span>{{ formItem.title }}</span>
 										<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 										<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -364,7 +364,7 @@
 						<el-col :span="24" v-else-if="formItem.name_type == 14">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
-									<div class="d-inline-flex align-items-center justify-content-between">
+									<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 										<span>{{ formItem.title }}</span>
 										<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 										<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -396,7 +396,7 @@
 						<el-col :span="24" v-else-if="formItem.name_type == 15">
 							<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 								<template slot="label">
-									<div class="d-inline-flex align-items-center justify-content-between">
+									<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 										<span>{{ formItem.title }}</span>
 										<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 										<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -431,7 +431,7 @@
 				</el-row>
 				<el-row :gutter="20" v-if="initType == 2">
 					<!-- 合同规定付款计划 -->
-					<el-col :span="24" v-if="is_open_money == 2">
+					<el-col :span="24" v-if="is_open_money == 2 && !this.projectId">
 						<el-form-item label="合同规定付款计划" class="payment_item">
 							<div slot="label" class="d-flex justify-content-between">
 								<span>合同规定付款计划</span>
@@ -464,98 +464,106 @@
 						<!-- 流程类型 node_id = 1 项目初审 （不需要添加额外字段）；node_id = 2 项目评审；node_id = 6 项目实施；node_id = 10 项目验收；node_id = 11 项目维保（暂时不处理）  -->
 						<!-- 评审记录 -->
 						<div v-if="process.node_id == 2" :key="z" class="project_form">
-							<h4 class="fs_18 font-weight-semibold m-0 text-000 mb-3 mt-3">评审记录</h4>
-							<el-form :model="recheckForm" :rules="recheckRules" ref="recheckForm" label-width="110px" label-position="top" class="pl-3 pr-3">
-								<el-row :gutter="20">
-									<el-col :span="24">
-										<el-form-item label="评审状态" class="payment_item" required prop="sendjson">
-											<div slot="label" class="d-flex justify-content-between">
-												<span>评审状态</span>
-												<span class="text-primary cursor-pointer" @click="addRecheckPro(recheckForm.sendjson)"><i class="el-icon-plus mr-1"></i>评审状态</span>
-											</div>
-											<template v-for="(cell,INDEX) in recheckForm.sendjson">
-												<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3" :key="INDEX">
-													<el-col :span="24">
-														<el-select  v-model="cell.expert_id" placeholder="请选择专家" class="w-100" clearable @change="changeCheck">
-															<el-option
-																v-for="item in expertOptions"
-																:key="item.id"
-																:label="item.e_name"
-																:value="item.id">
-															</el-option>
-														</el-select>
-													</el-col>
-													<el-col :span="24">
-														<el-select v-model="cell.is_pass" clearable placeholder="请选择是否通过" class="w-100">
-															<el-option label="通过" value="1"></el-option>
-															<el-option label="不通过" value="2"></el-option>
-														</el-select>
-													</el-col>
-													<el-col :span="24">
-														<el-input type="textarea" v-model="cell.content" placeholder="请输入评审意见" :rows="1"></el-input>
-													</el-col>
-													<el-col :span="2" class="text-right">
-														<span class="text-danger cursor-pointer" @click="delRecheckField(recheckForm.sendjson,INDEX)">删除</span>
-													</el-col>
-												</el-row>
-											</template>
-										</el-form-item>
-									</el-col>
-									<el-col :span="24">
-										<el-form-item label="评审日期" prop="recheck_date">
-											<el-date-picker 
-												type="date" 
-												placeholder="请选择评审日期"
-												
-												v-model="recheckForm.recheck_date" 
-												value-format="yyyy-MM-dd"
-												clearable
-												style="width: 100%;"></el-date-picker>
-										</el-form-item>
-									</el-col>
-									<el-col :span="24">
-										<el-form-item label="评审内容" prop="content">
-											<el-input type="textarea" v-model="recheckForm.content" placeholder="请输入评审内容" :rows="3"></el-input>
-										</el-form-item>
-									</el-col>
-									<el-col :span="24">
-										<el-form-item label="方案附件" prop="planattach">
-											<el-upload
-												class="my_upload"
-												drag
-												action="void"
-												accept=".pdf,.doc,.docx,.xls,.xlsx,.zip,.jpg,.png,.JPEG"
-												:auto-upload="true"
-												:http-request="myUploadPlan"
-												:show-file-list="true"
-												:file-list="filesListPlan"
-												:before-upload="beforeUploadPlan"
-												:on-success="handleSuccessPlan"
-												:on-remove="handleRemovePlan">
-												<div class="el-upload__text"><i class="el-icon-upload"></i>将文档拖到此处，或<em>点击选择文档</em></div>
-											</el-upload>
-										</el-form-item>
-									</el-col>
-									<el-col :span="24">
-										<el-form-item label="专家签字附件" prop="expertattch">
-											<el-upload
-												class="my_upload"
-												drag
-												action="void"
-												accept=".pdf,.doc,.docx,.xls,.xlsx,.zip,.jpg,.png,.JPEG"
-												:auto-upload="true"
-												:http-request="myUploadExpert"
-												:show-file-list="true"
-												:file-list="filesListExpert"
-												:before-upload="beforeUploadExpert"
-												:on-success="handleSuccessExpert"
-												:on-remove="handleRemoveExpert">
-												<div class="el-upload__text"><i class="el-icon-upload"></i>将文档拖到此处，或<em>点击选择文档</em></div>
-											</el-upload>
-										</el-form-item>
-									</el-col>
-								</el-row>
-							</el-form>
+							<div class="d-flex justify-content-between align-items-center">
+								<h4 class="fs_18 font-weight-semibold m-0 text-000 mb-3 mt-3">评审记录</h4>
+								<span class="text-primary cursor-pointer" @click="addRecheckItem(recheckForm)"><i class="el-icon-circle-plus-outline mr-1"></i>评审记录</span>
+							</div>
+							<div v-for="(recheckItem,reIndex) in recheckForm" :key="reIndex" class="project_form_recheck">
+								<div class="d-flex align-items-center pb-2" v-if="recheckForm.length > 1">
+									<span class="recheck_index_title fs_16">记录 {{ reIndex+1}} :</span>
+									<span class="text-danger cursor-pointer ml-3" @click="delRecheckItem(recheckForm)"><i class="el-icon-remove-outline mr-1"></i></span>
+								</div>
+								<el-form :model="recheckItem" :rules="recheckRules" ref="recheckForm" label-width="110px" label-position="top" class="pl-3 pr-3">
+									<el-row :gutter="20">
+										<el-col :span="24">
+											<el-form-item label="评审状态" class="payment_item" required prop="sendjson">
+												<div slot="label" class="d-flex justify-content-between">
+													<span>评审状态</span>
+													<span class="text-primary cursor-pointer" @click="addRecheckPro(recheckItem.sendjson)"><i class="el-icon-plus mr-1"></i>评审状态</span>
+												</div>
+												<template v-for="(cell,INDEX) in recheckItem.sendjson">
+													<el-row type="flex" align="middle" :gutter="20" class="cell_row mb-3" :key="INDEX">
+														<el-col :span="24">
+															<el-select  v-model="cell.expert_id" placeholder="请选择专家" class="w-100" clearable @change="changeCheck">
+																<el-option
+																	v-for="item in expertOptions"
+																	:key="item.id"
+																	:label="item.e_name"
+																	:value="item.id">
+																</el-option>
+															</el-select>
+														</el-col>
+														<el-col :span="24">
+															<el-select v-model="cell.is_pass" clearable placeholder="请选择是否通过" class="w-100">
+																<el-option label="通过" value="1"></el-option>
+																<el-option label="不通过" value="2"></el-option>
+															</el-select>
+														</el-col>
+														<el-col :span="24">
+															<el-input type="textarea" v-model="cell.content" placeholder="请输入评审意见" :rows="1"></el-input>
+														</el-col>
+														<el-col :span="2" class="text-right">
+															<span class="text-danger cursor-pointer" @click="delRecheckField(recheckItem.sendjson,INDEX)">删除</span>
+														</el-col>
+													</el-row>
+												</template>
+											</el-form-item>
+										</el-col>
+										<el-col :span="24">
+											<el-form-item label="评审日期" prop="recheck_date">
+												<el-date-picker 
+													type="date" 
+													placeholder="请选择评审日期"
+													v-model="recheckItem.recheck_date" 
+													value-format="yyyy-MM-dd"
+													clearable
+													style="width: 100%;"></el-date-picker>
+											</el-form-item>
+										</el-col>
+										<el-col :span="24">
+											<el-form-item label="评审内容" prop="content">
+												<el-input type="textarea" v-model="recheckItem.content" placeholder="请输入评审内容" :rows="3"></el-input>
+											</el-form-item>
+										</el-col>
+										<el-col :span="24">
+											<el-form-item label="方案附件" prop="planattach">
+												<el-upload
+													class="my_upload"
+													drag
+													action="void"
+													accept=".pdf,.doc,.docx,.xls,.xlsx,.zip,.jpg,.png,.JPEG"
+													:auto-upload="true"
+													:http-request="myUploadPlan"
+													:show-file-list="true"
+													:file-list="recheckItem.planattach"
+													:on-success="(res, file, fileList)=>handleSuccessPlan(res, file, fileList,recheckItem)"
+													:on-remove="(file, fileList)=>handleRemovePlan(file, fileList,recheckItem)"
+													:before-upload="(file)=>beforeUploadPlan(file,recheckItem)">
+													<div class="el-upload__text"><i class="el-icon-upload"></i>将文档拖到此处，或<em>点击选择文档</em></div>
+												</el-upload>
+											</el-form-item>
+										</el-col>
+										<el-col :span="24">
+											<el-form-item label="专家签字附件" prop="expertattch">
+												<el-upload
+													class="my_upload"
+													drag
+													action="void"
+													accept=".pdf,.doc,.docx,.xls,.xlsx,.zip,.jpg,.png,.JPEG"
+													:auto-upload="true"
+													:http-request="myUploadExpert"
+													:show-file-list="true"
+													:file-list="recheckItem.expertattch"
+													:on-success="(res, file, fileList)=>handleSuccessExpert(res, file, fileList,recheckItem)"
+													:on-remove="(file, fileList)=>handleRemoveExpert(file, fileList,recheckItem)"
+													:before-upload="(file)=>beforeUploadExpert(file,recheckItem)">
+													<div class="el-upload__text"><i class="el-icon-upload"></i>将文档拖到此处，或<em>点击选择文档</em></div>
+												</el-upload>
+											</el-form-item>
+										</el-col>
+									</el-row>
+								</el-form>
+							</div>
 						</div>
 
 						<!-- 实施记录 -->
@@ -626,7 +634,7 @@
 									<el-col :span="24" v-else-if="formItem.name_type == 5">
 										<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 											<template slot="label">
-												<div class="d-inline-flex align-items-center justify-content-between">
+												<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 													<span>{{ formItem.title }}</span>
 													<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 													<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -766,7 +774,7 @@
 									<el-col :span="24" v-else-if="formItem.name_type == 13">
 										<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 											<template slot="label">
-												<div class="d-inline-flex align-items-center justify-content-between">
+												<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 													<span>{{ formItem.title }}</span>
 													<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 													<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -801,7 +809,7 @@
 									<el-col :span="24" v-else-if="formItem.name_type == 14">
 										<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 											<template slot="label">
-												<div class="d-inline-flex align-items-center justify-content-between">
+												<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 													<span>{{ formItem.title }}</span>
 													<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 													<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -833,7 +841,7 @@
 									<el-col :span="24" v-else-if="formItem.name_type == 15">
 										<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 											<template slot="label">
-												<div class="d-inline-flex align-items-center justify-content-between">
+												<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 													<span>{{ formItem.title }}</span>
 													<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 													<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -982,7 +990,7 @@
 										<el-col :span="24" v-else-if="formItem.name_type == 5">
 											<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 												<template slot="label">
-													<div class="d-inline-flex align-items-center justify-content-between">
+													<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 														<span>{{ formItem.title }}</span>
 														<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 														<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -1122,7 +1130,7 @@
 										<el-col :span="24" v-else-if="formItem.name_type == 13">
 											<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 												<template slot="label">
-													<div class="d-inline-flex align-items-center justify-content-between">
+													<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 														<span>{{ formItem.title }}</span>
 														<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 														<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -1157,7 +1165,7 @@
 										<el-col :span="24" v-else-if="formItem.name_type == 14">
 											<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 												<template slot="label">
-													<div class="d-inline-flex align-items-center justify-content-between">
+													<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 														<span>{{ formItem.title }}</span>
 														<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 														<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -1189,7 +1197,7 @@
 										<el-col :span="24" v-else-if="formItem.name_type == 15">
 											<el-form-item :label="formItem.title" :required="formItem.is_required == 2?true:false">
 												<template slot="label">
-													<div class="d-inline-flex align-items-center justify-content-between">
+													<div class="d-inline-flex align-items-center justify-content-between" v-if="formItem.example">
 														<span>{{ formItem.title }}</span>
 														<span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
 														<div class="d-flex align-items-center justify-content-between ml-5 text-primary">
@@ -1319,17 +1327,13 @@
 
 				// 项目评审
 				expertOptions:[],
-				recheckForm:{
+				recheckForm:[{
 					sendjson:[{}],
 					recheck_date:"",
 					content:"",
 					planattach:[],
 					expertattch:[],
-				},
-				filesListPlan:[],
-				removeFilesPlanArr:[],
-				filesListExpert:[],
-				removeFilesExpertArr:[],
+				}],
 				recheckRules: {
 					sendjson: [
             { required: true, message: '请选择评审状态', trigger: 'change' }
@@ -1544,17 +1548,13 @@
 				this.projectForm.processForms = [];
 
 				// 项目评审
-				this.recheckForm = {
+				this.recheckForm = [{
 					sendjson:[{}],
 					recheck_date:"",
 					content:"",
 					planattach:[],
 					expertattch:[],
-				},
-				this.filesListPlan =[],
-				this.removeFilesPlanArr =[],
-				this.filesListExpert =[],
-				this.removeFilesExpertArr =[],
+				}],
 
 				this.runningForm = {
 					runningExtraForms:[],
@@ -1653,14 +1653,15 @@
 								// 合同规定付款计划
 								this.projectForm.agree_payinfo = data.data.pay_info;
 								// 评审
-								this.recheckForm.sendjson = data.data.recheck_info[0].recheck_detail;
-								this.recheckForm.recheck_date = data.data.recheck_info[0].recheck_date;
-								this.recheckForm.content = data.data.recheck_info[0].content;
-								this.recheckForm.planattach = data.data.recheck_info[0].planattach;
-								this.recheckForm.expertattch = data.data.recheck_info[0].expertattch;
-								this.filesListPlan = data.data.recheck_info[0].planattach;
-								this.filesListExpert = data.data.recheck_info[0].expertattch;
-								
+								this.recheckForm = data.data.recheck_info.map((item,index)=>{
+									return {
+										sendjson:item.recheck_detail,
+										recheck_date:item.recheck_date,
+										content:item.content,
+										planattach:item.planattach,
+										expertattch:item.expertattch,
+									}
+								});
 								// 实施
 								var runningExtraForms = data.data.info.runningextra;
 								runningExtraForms.map((item)=>{
@@ -1741,25 +1742,36 @@
 					});
 				};
 				// 评审
-				var recheckSendjson = new Array;
-				var isArr = this.commonJs.isEmpty(this.recheckForm.sendjson[0]);
-				if(!isArr){
-					recheckSendjson = this.recheckForm.sendjson
-				}
-				var planattachArr = this.filesListPlan.map((item)=>{
-					if(item.isExist){
-						return item.path;
+				var recheckFormArray =  this.recheckForm.map((recheckItem,index)=>{
+					var recheckSendjson = new Array;
+					var isArr = this.commonJs.isEmpty(recheckItem.sendjson[0]);
+					if(!isArr){
+						recheckSendjson = recheckItem.sendjson;
+						var planattachArr = recheckItem.planattach.map((item)=>{
+							if(item.isExist){
+								return item.path;
+							}else{
+								return item.response.data.path
+							}
+						})
+						var expertattchArr = recheckItem.expertattch.map((item)=>{
+							if(item.isExist){
+								return item.path;
+							}else{
+								return item.response.data.path
+							}
+						})
+						return {
+							sendjson: JSON.stringify( recheckSendjson ),
+							recheck_date: recheckItem.recheck_date,
+							content: recheckItem.content,
+							planattach: planattachArr.join(','),
+							expertattch: expertattchArr.join(','),
+						}
 					}else{
-						return item.response.data.path
+						return {};
 					}
-				})
-				var expertattchArr = this.filesListExpert.map((item)=>{
-					if(item.isExist){
-						return item.path;
-					}else{
-						return item.response.data.path
-					}
-				})
+				});
 
 				// 实施
 				var sendRunningExtra = new Array;
@@ -1825,7 +1837,31 @@
 					});
 				};
 
-				var completeSubmitData = {
+				var completeSubmitData_edit = {
+					basic:{
+						apply_number:this.projectForm.apply_number,
+						apply_id:this.projectForm.apply_id,
+						p_cate_id:this.projectForm.p_cate_id,
+						leader_id:this.projectForm.leader_id,
+						p_name:this.projectForm.p_name,
+						projecttime:this.projectForm.projecttime,
+						// budget_amount:this.projectForm.budget_amount,
+						// real_amount:this.projectForm.real_amount,
+						company_id:this.projectForm.company_id,
+						datajson:JSON.stringify(senddata),
+					},
+					recheck:JSON.stringify(recheckFormArray),
+					running:{
+						runningextra:JSON.stringify(sendRunningExtra),
+						// agree_payinfo:JSON.stringify( payArr ),
+					},
+					accept:{
+						sendjson:JSON.stringify(acceptInfoJson),
+						acceptextra:JSON.stringify(sendAcceptExtra),
+					},
+				};
+
+				var completeSubmitData_add = {
 					basic:{
 						apply_number:this.projectForm.apply_number,
 						apply_id:this.projectForm.apply_id,
@@ -1838,13 +1874,7 @@
 						company_id:this.projectForm.company_id,
 						datajson:JSON.stringify(senddata),
 					},
-					recheck:{
-						sendjson:JSON.stringify( recheckSendjson ),
-						recheck_date: this.recheckForm.recheck_date,
-						content: this.recheckForm.content,
-						planattach:planattachArr.join(','),
-						expertattch:expertattchArr.join(','),
-					},
+					recheck:JSON.stringify(recheckFormArray),
 					running:{
 						runningextra:JSON.stringify(sendRunningExtra),
 						agree_payinfo:JSON.stringify( payArr ),
@@ -1854,12 +1884,12 @@
 						acceptextra:JSON.stringify(sendAcceptExtra),
 					},
 				};
-
+				
 				if(this.projectId){ // 编辑
 					this.$api.p_projectEdit({
 						id:this.projectId,
 						function_type:2,
-						...completeSubmitData,
+						...completeSubmitData_edit,
 					}).then(data =>{
 						if(data.code == 0){
 							this.removeFilesArr.map((path)=>{
@@ -1903,7 +1933,7 @@
 						});
 					}else{ // 新增完成项目 
 						this.$api.p_project_completeAdd({
-							...completeSubmitData,
+							...completeSubmitData_add,
 						}).then(data =>{
 							if(data.code == 0){
 								this.removeFilesArr.map((path)=>{
@@ -2021,6 +2051,20 @@
 				})
 				this.$set(this.expertOptions);
 			},
+			// 添加评审记录
+			addRecheckItem(item){
+				item.push({
+					sendjson:[{}],
+					recheck_date:"",
+					content:"",
+					planattach:[],
+					expertattch:[],
+				});
+			},
+			// 删除字段
+			delRecheckItem(item,index){
+				item.splice(index, 1);
+			},
 			// 添加审核流程
 			addRecheckPro(item){
 				item.push({});
@@ -2049,37 +2093,34 @@
 				});
 			},
 			
-      // 上传成功
-			handleSuccessPlan(res, file, fileList) {
-				this.filesListPlan = fileList;
-				this.recheckForm.planattach = fileList.map((item,index)=>{
-					return item.name
-				});
+			// 上传成功
+			handleSuccessPlan(res, file, fileList, recheckItem) {
+				recheckItem.planattach = fileList;
       },
-
-      // 移除上传文件
-      handleRemovePlan(file,fileList) {
+			// 移除上传文件
+      handleRemovePlan(file,fileList,recheckItem) {
       	var path;
-				if(file.status == 'success'){
-					if(file.isExist){ // 原先上传已存在的
-						path = file.path;
-					}else{ // 刚刚上传的
+      	if(file.isExist){ // 原先上传已存在的
+      		path = file.path;
+      	}else{ // 刚刚上传的
+					if(file.status == 'success'){
 						path = file.response.data.path;
+					}else{
+						return false
 					}
-					this.filesListPlan = fileList;
-					this.$message({message: '成功移除' + file.name, type: 'success'});
+      	}
+				recheckItem.planattach = fileList;
+				this.$message({message: '成功移除' + file.name, type: 'success'});
 
-					if(this.removeFilesPlanArr.indexOf(path) == -1){
-						this.removeFilesPlanArr.push(path);
-					}
+				if(this.removeFilesArr.indexOf(path) == -1){
+					this.removeFilesArr.push(path);
 				}
       },
-      
-      // 上传前验证
-      beforeUploadPlan(file) {
+			// 上传前验证
+      beforeUploadPlan(file,recheckItem) {
 				var isUpload = true;
       	// 验证大小等
-				this.filesListPlan.map((fff)=>{
+				recheckItem.planattach.map((fff)=>{
 					if(fff.name == file.name){
 						this.$message.warning("请不要重复上传相同文件！");
 						isUpload = false;
@@ -2107,38 +2148,35 @@
 					}
 				});
 			},
-			
-      // 上传成功
-			handleSuccessExpert(res, file, fileList) {
-				this.filesListExpert = fileList;
-				this.recheckForm.expertattch = fileList.map((item,index)=>{
-					return item.name
-				});
+
+			// 上传成功
+			handleSuccessExpert(res, file, fileList, recheckItem) {
+				recheckItem.expertattch = fileList;
       },
-
-      // 移除上传文件
-      handleRemoveExpert(file,fileList) {
+			// 移除上传文件
+      handleRemoveExpert(file,fileList,recheckItem) {
       	var path;
-				if(file.status == 'success'){
-					if(file.isExist){ // 原先上传已存在的
-						path = file.path;
-					}else{ // 刚刚上传的
+      	if(file.isExist){ // 原先上传已存在的
+      		path = file.path;
+      	}else{ // 刚刚上传的
+					if(file.status == 'success'){
 						path = file.response.data.path;
+					}else{
+						return false
 					}
-					this.filesListExpert = fileList;
-					this.$message({message: '成功移除' + file.name, type: 'success'});
+      	}
+				recheckItem.expertattch = fileList;
+				this.$message({message: '成功移除' + file.name, type: 'success'});
 
-					if(this.removeFilesExpertArr.indexOf(path) == -1){
-						this.removeFilesExpertArr.push(path);
-					}
+				if(this.removeFilesArr.indexOf(path) == -1){
+					this.removeFilesArr.push(path);
 				}
       },
-
-      // 上传前验证
-      beforeUploadExpert(file) {
+			// 上传前验证
+      beforeUploadExpert(file,recheckItem) {
 				var isUpload = true;
       	// 验证大小等
-				this.filesListExpert.map((fff)=>{
+				recheckItem.expertattch.map((fff)=>{
 					if(fff.name == file.name){
 						this.$message.warning("请不要重复上传相同文件！");
 						isUpload = false;

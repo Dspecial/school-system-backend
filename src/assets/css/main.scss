@@ -3,7 +3,7 @@
  * @Email: dxxtalking@163.com
  * @Date: 2020-12-24 11:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2022-05-21 23:35:03
+ * @LastEditTime: 2022-06-05 16:33:48
  */
 @charset "UTF-8";
 
@@ -641,6 +641,15 @@ html,body,#app,.page-container{
   padding: 0 30px;
   clear: both;
 }
+.project_form_recheck{
+  border-bottom: 1px dashed var(--grey-300);
+  margin-bottom: 1.25rem;
+}
+.project_form_recheck:last-child{
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+
 .accept_info{
 	line-height: 36px;
 }
