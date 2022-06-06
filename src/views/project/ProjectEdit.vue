@@ -471,7 +471,7 @@
 							<div v-for="(recheckItem,reIndex) in recheckForm" :key="reIndex" class="project_form_recheck">
 								<div class="d-flex align-items-center pb-2" v-if="recheckForm.length > 1">
 									<span class="recheck_index_title fs_16">记录 {{ reIndex+1}} :</span>
-									<span class="text-danger cursor-pointer ml-3" @click="delRecheckItem(recheckForm)"><i class="el-icon-remove-outline mr-1"></i></span>
+									<span class="text-danger cursor-pointer ml-3" @click="delRecheckItem(recheckForm,reIndex)"><i class="el-icon-remove-outline mr-1"></i></span>
 								</div>
 								<el-form :model="recheckItem" :rules="recheckRules" ref="recheckForm" label-width="110px" label-position="top" class="pl-3 pr-3">
 									<el-row :gutter="20">
@@ -656,7 +656,7 @@
 													action="void"
 													:accept="accept_file"
 													:auto-upload="true"
-													:http-request="myUpload"
+													:http-request="myUploadForce"
 													:file-list="formItem.value"
 													:on-success="(res, file, fileList)=>handleSuccess(res, file, fileList,formItem)"
 													:on-remove="(file, fileList)=>handleRemove(file, fileList,formItem)"
@@ -794,7 +794,7 @@
 												:limit="1"
 												list-type="picture-card"
 												:auto-upload="true"
-												:http-request="myUpload"
+												:http-request="myUploadForce"
 												:file-list="formItem.value"
 												:on-success="(res, file, fileList)=>handleSuccess(res, file, fileList,formItem)"
 												:on-remove="(file, fileList)=>handleRemove(file, fileList,formItem)"
@@ -828,7 +828,7 @@
 												:accept="accept_img"
 												list-type="picture-card"
 												:auto-upload="true"
-												:http-request="myUpload"
+												:http-request="myUploadForce"
 												:file-list="formItem.value"
 												:on-success="(res, file, fileList)=>handleSuccess(res, file, fileList,formItem)"
 												:on-remove="(file, fileList)=>handleRemove(file, fileList,formItem)"
@@ -862,7 +862,7 @@
 													action="void"
 													:accept="accept_file"
 													:auto-upload="true"
-													:http-request="myUpload"
+													:http-request="myUploadForce"
 													:file-list="formItem.value"
 													:on-success="(res, file, fileList)=>handleSuccess(res, file, fileList,formItem)"
 													:on-remove="(file, fileList)=>handleRemove(file, fileList,formItem)"
@@ -1012,7 +1012,7 @@
 														action="void"
 														:accept="accept_file"
 														:auto-upload="true"
-														:http-request="myUpload"
+														:http-request="myUploadAccept"
 														:file-list="formItem.value"
 														:on-success="(res, file, fileList)=>handleSuccess(res, file, fileList,formItem)"
 														:on-remove="(file, fileList)=>handleRemove(file, fileList,formItem)"
@@ -1150,7 +1150,7 @@
 													:limit="1"
 													list-type="picture-card"
 													:auto-upload="true"
-													:http-request="myUpload"
+													:http-request="myUploadAccept"
 													:file-list="formItem.value"
 													:on-success="(res, file, fileList)=>handleSuccess(res, file, fileList,formItem)"
 													:on-remove="(file, fileList)=>handleRemove(file, fileList,formItem)"
@@ -1184,7 +1184,7 @@
 													:accept="accept_img"
 													list-type="picture-card"
 													:auto-upload="true"
-													:http-request="myUpload"
+													:http-request="myUploadAccept"
 													:file-list="formItem.value"
 													:on-success="(res, file, fileList)=>handleSuccess(res, file, fileList,formItem)"
 													:on-remove="(file, fileList)=>handleRemove(file, fileList,formItem)"
@@ -1218,7 +1218,7 @@
 														action="void"
 														:accept="accept_file"
 														:auto-upload="true"
-														:http-request="myUpload"
+														:http-request="myUploadAccept"
 														:file-list="formItem.value"
 														:on-success="(res, file, fileList)=>handleSuccess(res, file, fileList,formItem)"
 														:on-remove="(file, fileList)=>handleRemove(file, fileList,formItem)"
@@ -1958,6 +1958,45 @@
 	      // 通过 FormData 对象上传文件
 	      const formData = new FormData();
 	      formData.append("apply_number", this.projectForm.apply_number);
+	      formData.append("type", 'chushen');
+	      formData.append("file", params.file);
+				formData.append("user_token", this.VueCookies.get("token"));
+
+				this.$api.p_upload(formData).then(data =>{
+					if(data.code == 0){
+						// 回调成功的方法
+						params.onSuccess(data);
+						this.$message.success(data.msg);
+					}else{
+						this.$message.error(data.msg);
+					}
+				});
+			},
+
+			myUploadForce(params){
+	      // 通过 FormData 对象上传文件
+	      const formData = new FormData();
+	      formData.append("apply_number", this.projectForm.apply_number);
+	      formData.append("type", 'shishi');
+	      formData.append("file", params.file);
+				formData.append("user_token", this.VueCookies.get("token"));
+
+				this.$api.p_upload(formData).then(data =>{
+					if(data.code == 0){
+						// 回调成功的方法
+						params.onSuccess(data);
+						this.$message.success(data.msg);
+					}else{
+						this.$message.error(data.msg);
+					}
+				});
+			},
+
+			myUploadAccept(params){
+	      // 通过 FormData 对象上传文件
+	      const formData = new FormData();
+	      formData.append("apply_number", this.projectForm.apply_number);
+	      formData.append("type", 'yanshou');
 	      formData.append("file", params.file);
 				formData.append("user_token", this.VueCookies.get("token"));
 
@@ -2079,6 +2118,7 @@
 	      // 通过 FormData 对象上传文件
 	      const formData = new FormData();
 	      formData.append("apply_number", this.projectForm.apply_number);
+				formData.append("type", 'pingshen');
 	      formData.append("file", params.file);
 	      formData.append("user_token", this.VueCookies.get("token"));
 
@@ -2135,6 +2175,7 @@
 	      // 通过 FormData 对象上传文件
 	      const formData = new FormData();
 	      formData.append("apply_number", this.projectForm.apply_number);
+				formData.append("type", 'pingshen');
 	      formData.append("file", params.file);
 	      formData.append("user_token", this.VueCookies.get("token"));
 

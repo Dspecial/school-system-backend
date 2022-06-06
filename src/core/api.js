@@ -3,7 +3,7 @@
  * @Email: dxxtalking@163.com
  * @Date: 2021-01-24 16:09:03
  * @LastEditors: dxx
- * @LastEditTime: 2022-06-03 22:34:02
+ * @LastEditTime: 2022-06-06 18:58:09
  */
 
 import {postToken,post,postJson,postUpload} from '@/core/axios.js';
@@ -261,7 +261,7 @@ export default {
 	// 获取企业列表
 	p_project_company: p => postToken('/api/ajax/get_company_list', p),
 	// 表单中文件上传
-	p_upload: p => postUpload('/backstage/upload/upload', p),
+	p_upload: p => postUpload('/backstage/upload/upload_file', p),
 	// 表单中文件上传后删除
 	p_uploadDel: p => postToken('/backstage/upload/del_upload', p),
 	// 上传付款附件或凭证
