@@ -251,6 +251,7 @@
 			// 右上角x关闭
 			handleClose(){
 				this.formData.dialog = false;
+				this.fileList = [];
 			},
 			// form提交
 			submitForm(formName) {
