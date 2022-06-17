@@ -393,9 +393,9 @@
 							files:files.join(","),
 						}).then(data =>{
 							if(data.code == 0){
-								this.removeFilesArr.map((path)=>{
-									_this.removeFile(path);
-								})
+								// this.removeFilesArr.map((path)=>{
+								// 	_this.removeFile(path);
+								// })
 								this.$message({
 									message: data.msg,
 									type: 'success'

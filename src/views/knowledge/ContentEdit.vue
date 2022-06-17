@@ -260,9 +260,9 @@
           			function_type:1,
 							}).then(data => {
 								if(data.code == 0){
-									_this.removeFilesArr.map((path)=>{
-										_this.removeFile(path);
-									})
+									// _this.removeFilesArr.map((path)=>{
+									// 	_this.removeFile(path);
+									// })
 									_this.handleClose();
 									_this.resetForm(formName);
 									_this.loadData();
@@ -282,9 +282,9 @@
           			sort:this.contentForm.sort,
 							}).then(data => {
 								if(data.code == 0){
-									_this.removeFilesArr.map((path)=>{
-										_this.removeFile(path);
-									})
+									// _this.removeFilesArr.map((path)=>{
+									// 	_this.removeFile(path);
+									// })
 									_this.handleClose();
 									_this.resetForm(formName);
 									_this.loadData();

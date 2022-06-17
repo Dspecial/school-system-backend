@@ -2193,9 +2193,9 @@
 						...completeSubmitData_edit,
 					}).then(data =>{
 						if(data.code == 0){
-							this.removeFilesArr.map((path)=>{
-								_this.removeFile(path);
-							})
+							// this.removeFilesArr.map((path)=>{
+							// 	_this.removeFile(path);
+							// })
 							this.$message({
 								message: data.msg,
 								type: 'success'
@@ -2220,9 +2220,9 @@
 							senddata:JSON.stringify(senddata),
 						}).then(data =>{
 							if(data.code == 0){
-								this.removeFilesArr.map((path)=>{
-									_this.removeFile(path);
-								})
+								// this.removeFilesArr.map((path)=>{
+								// 	_this.removeFile(path);
+								// })
 								this.$message({
 									message: data.msg,
 									type: 'success'
@@ -2237,9 +2237,9 @@
 							...completeSubmitData_add,
 						}).then(data =>{
 							if(data.code == 0){
-								this.removeFilesArr.map((path)=>{
-									_this.removeFile(path);
-								})
+								// this.removeFilesArr.map((path)=>{
+								// 	_this.removeFile(path);
+								// })
 								this.$message({
 									message: data.msg,
 									type: 'success'

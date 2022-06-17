@@ -168,9 +168,9 @@
 								function_type:1,
 							}).then(data => {
 								if(data.code == 0){
-									_this.removeFilesArr.map((path)=>{
-										_this.removeFile(path);
-									})
+									// _this.removeFilesArr.map((path)=>{
+									// 	_this.removeFile(path);
+									// })
 									_this.handleClose();
 									_this.resetForm(formName);
 									_this.loadData();
@@ -186,9 +186,9 @@
 								icon:this.cateForm.icon.join(","),
 							}).then(data => {
 								if(data.code == 0){
-									_this.removeFilesArr.map((path)=>{
-										_this.removeFile(path);
-									})
+									// _this.removeFilesArr.map((path)=>{
+									// 	_this.removeFile(path);
+									// })
 									_this.handleClose();
 									_this.resetForm(formName);
 									_this.loadData();
