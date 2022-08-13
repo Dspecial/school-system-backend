@@ -3,30 +3,30 @@
  * @Email: dxxtalking@163.com
  * @Date: 2020-12-29 15:50:42
  * @LastEditors: dxx
- * @LastEditTime: 2021-07-07 17:09:49
+ * @LastEditTime: 2022-08-13 15:10:44
  */
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
-import Vue from 'vue'
-import App from './App'
-import router from './router'
+import Vue from 'vue';
+import App from './App';
+import router from './router';
 import store from './store'; // 引入vuex
 import ElementUI from 'element-ui';
 import VueDataTables from 'vue-data-tables';
-import moment from 'moment'; 
+import moment from 'moment';
 import echarts from 'echarts';
-import VueCookies  from 'vue-cookies'; 
+import VueCookies from 'vue-cookies';
 import api from '@/core/api.js'; // 引入公共api
 import commonJs from '@/core/commonJs.js'; // 引入公共js
 import { quillEditor } from 'vue-quill-editor'; // 引入富文本编辑器
 import globalUrl from '@/core/globalUrl.js';
 
-Vue.use(ElementUI, { size: 'small', zIndex: 3000 });// 声明使用ElementUI
+Vue.use(ElementUI, { size: 'small', zIndex: 3000 }); // 声明使用ElementUI
 Vue.use(VueDataTables);
 Vue.use(VueCookies);
 Vue.use(echarts);
-Vue.prototype.$echarts = echarts
+Vue.prototype.$echarts = echarts;
 Vue.prototype.commonJs = commonJs; // 挂载原型链
 Vue.prototype.$api = api;
 Vue.prototype.$globalUrl = globalUrl;
@@ -35,14 +35,14 @@ Vue.prototype.$moment = moment;
 
 Vue.use(quillEditor);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 import iconPicker from 'e-icon-picker';
-import "e-icon-picker/dist/symbol.js"; //基本彩色图标库
-import 'e-icon-picker/dist/index.css'; // 基本样式，包含基本图标
+import 'e-icon-picker/lib/symbol.js'; //基本彩色图标库
+import 'e-icon-picker/lib/index.css'; // 基本样式，包含基本图标
 import 'font-awesome/css/font-awesome.min.css'; //font-awesome 图标库
 import 'element-ui/lib/theme-chalk/icon.css'; //element-ui 图标库
-Vue.use(iconPicker, {FontAwesome: false, ElementUI: true, eIcon: false, eIconSymbol: false});//使用e-icon-picker
+Vue.use(iconPicker, { FontAwesome: false, ElementUI: true, eIcon: false, eIconSymbol: false }); //使用e-icon-picker
 
 // import 'element-ui/lib/theme-chalk/index.css'; // element-ui样式表
 import './assets/css/icons/icomoon/styles.css'; // 字体图标iconmoon
@@ -56,5 +56,5 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>'
-})
+  template: '<App/>',
+});
