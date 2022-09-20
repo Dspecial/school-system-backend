@@ -73,7 +73,7 @@
 							<el-table-column type="expand" label="" width="50">
 								<template slot-scope="scope">
 									<div class="d-flex align-items-center justify-content-between files_list" v-for="(file,index) in scope.row.files" :key="index">
-										<div class="cursor-pointer view">
+										<div class="cursor-pointer view" @click="downloadview(file)">
 											<i class="el-icon-document mr-2"></i><span>{{file.name}}</span>
 										</div>
 										<div class="opacity-80">

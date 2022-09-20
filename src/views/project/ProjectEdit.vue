@@ -166,7 +166,7 @@
                     <span>{{ formItem.title }}</span>
                     <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                     <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                      <div class="cursor-pointer view">
+                      <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                         <i class="el-icon-document mr-2"></i>
                         <span>示例下载</span>
                       </div>
@@ -317,7 +317,7 @@
                     <span>{{ formItem.title }}</span>
                     <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                     <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                      <div class="cursor-pointer view">
+                      <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                         <i class="el-icon-document mr-2"></i>
                         <span>示例下载</span>
                       </div>
@@ -354,7 +354,7 @@
                     <span>{{ formItem.title }}</span>
                     <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                     <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                      <div class="cursor-pointer view">
+                      <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                         <i class="el-icon-document mr-2"></i>
                         <span>示例下载</span>
                       </div>
@@ -388,7 +388,7 @@
                     <span>{{ formItem.title }}</span>
                     <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                     <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                      <div class="cursor-pointer view">
+                      <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                         <i class="el-icon-document mr-2"></i>
                         <span>示例下载</span>
                       </div>
@@ -601,7 +601,7 @@
                               <span>{{ formItem.title }}</span>
                               <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                               <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                                <div class="cursor-pointer view">
+                                <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                   <i class="el-icon-document mr-2"></i>
                                   <span>示例下载</span>
                                 </div>
@@ -752,7 +752,7 @@
                               <span>{{ formItem.title }}</span>
                               <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                               <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                                <div class="cursor-pointer view">
+                                <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                   <i class="el-icon-document mr-2"></i>
                                   <span>示例下载</span>
                                 </div>
@@ -789,7 +789,7 @@
                               <span>{{ formItem.title }}</span>
                               <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                               <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                                <div class="cursor-pointer view">
+                                <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                   <i class="el-icon-document mr-2"></i>
                                   <span>示例下载</span>
                                 </div>
@@ -823,7 +823,7 @@
                               <span>{{ formItem.title }}</span>
                               <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                               <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                                <div class="cursor-pointer view">
+                                <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                   <i class="el-icon-document mr-2"></i>
                                   <span>示例下载</span>
                                 </div>
@@ -934,7 +934,7 @@
                             <span>{{ formItem.title }}</span>
                             <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                             <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                              <div class="cursor-pointer view">
+                              <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                 <i class="el-icon-document mr-2"></i>
                                 <span>示例下载</span>
                               </div>
@@ -1085,7 +1085,7 @@
                             <span>{{ formItem.title }}</span>
                             <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                             <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                              <div class="cursor-pointer view">
+                              <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                 <i class="el-icon-document mr-2"></i>
                                 <span>示例下载</span>
                               </div>
@@ -1122,7 +1122,7 @@
                             <span>{{ formItem.title }}</span>
                             <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                             <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                              <div class="cursor-pointer view">
+                              <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                 <i class="el-icon-document mr-2"></i>
                                 <span>示例下载</span>
                               </div>
@@ -1156,7 +1156,7 @@
                             <span>{{ formItem.title }}</span>
                             <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                             <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                              <div class="cursor-pointer view">
+                              <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                 <i class="el-icon-document mr-2"></i>
                                 <span>示例下载</span>
                               </div>
@@ -1311,7 +1311,7 @@
                             <span>{{ formItem.title }}</span>
                             <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                             <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                              <div class="cursor-pointer view">
+                              <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                 <i class="el-icon-document mr-2"></i>
                                 <span>示例下载</span>
                               </div>
@@ -1462,7 +1462,7 @@
                             <span>{{ formItem.title }}</span>
                             <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                             <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                              <div class="cursor-pointer view">
+                              <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                 <i class="el-icon-document mr-2"></i>
                                 <span>示例下载</span>
                               </div>
@@ -1499,7 +1499,7 @@
                             <span>{{ formItem.title }}</span>
                             <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                             <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                              <div class="cursor-pointer view">
+                              <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                 <i class="el-icon-document mr-2"></i>
                                 <span>示例下载</span>
                               </div>
@@ -1533,7 +1533,7 @@
                             <span>{{ formItem.title }}</span>
                             <span class="ml-1 text-danger" v-if="formItem.remark">({{ formItem.remark }})</span>
                             <div class="d-flex align-items-center justify-content-between ml-5 text-primary">
-                              <div class="cursor-pointer view">
+                              <div class="cursor-pointer view" @click="downloadview(formItem.example)">
                                 <i class="el-icon-document mr-2"></i>
                                 <span>示例下载</span>
                               </div>
